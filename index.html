@@ -1,0 +1,2768 @@
+
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Магические квадраты </title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<style>
+.top-bar {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 1000;
+  background: none;
+  box-shadow: none;
+}
+.top-bar .custom-button {
+  font-family: inherit;
+  font-weight: bold;
+  background-color: #c49b7e;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.top-bar .custom-button:hover {
+  background-color: #b48768;
+}
+
+  .dimmed {
+    opacity: 0.2 !important;
+    transition: opacity 0.3s ease;
+  }
+
+  .highlighted {
+    opacity: 1 !important;
+    filter: drop-shadow(0 0 3px currentColor);
+  }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Raleway', sans-serif;
+      background: linear-gradient(135deg, #fdfcfb, #e2d1c3);
+      color: #333;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    body {
+      padding: 2rem;
+    }
+    select, button {
+      font-size: 1.2rem;
+      padding: 0.5rem;
+      margin: 0.5rem;
+      font-family: 'Raleway', sans-serif;
+    }
+    .container {
+      position: relative;
+      display: inline-block;
+      margin: 0 auto;
+    }
+    table {
+      width: 100%;
+      max-width: 480px;
+      min-width: 300px;
+      border-collapse: collapse;
+      position: relative;
+      z-index: 1;
+      margin: 0 auto;
+    }
+    td {
+      width: 160px;
+      height: 160px;
+      font-size: 2.5rem;
+      border: 1px solid #aaa;
+      text-align: center;
+      vertical-align: middle;
+      background: white;
+      position: relative;
+      animation: fadeInScale 0.5s ease forwards;
+    }
+    .digit-span {
+      display: inline-block;
+      width: 1ch;
+    }
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .center-dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: black;
+      opacity: 0.3;
+      z-index: 3;
+      pointer-events: none;
+    }
+    line.animated {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: draw 1s ease forwards;
+    }
+    @keyframes draw {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.3);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  
+td { font-family: 'Fira Mono', monospace !important; }
+body {
+  background: linear-gradient(135deg, #fdfcfb, #e2d1c3);
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+
+td {
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  animation: pop 0.4s ease-in-out;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+td:hover {
+  box-shadow: 0 0 10px #00c3ff;
+  transform: scale(1.05);
+}
+
+@keyframes pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+table {
+  border: 2px solid #444;
+  border-radius: 16px;
+  padding: 1rem;
+  background: #fff;
+  margin: 1rem auto;
+}
+
+line.animated {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw 1.2s ease forwards;
+}
+
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+#analysis-output table td {
+  width: 120px !important;
+  height: 120px !important;
+  font-size: 1.6rem !important;
+}
+
+#analysis-output table td {
+  width: 96px !important;
+  height: 96px !important;
+  font-size: 1.4rem !important;
+}
+
+body {
+  background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+  background-size: 400px 400px;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  background-blend-mode: overlay;
+}
+
+table#square {
+  border: 4px solid gold;
+  border-radius: 16px;
+  padding: 1rem;
+  background: #fff;
+  margin: 1rem auto;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+}
+
+button {
+  background: linear-gradient(to right, #d4bfa3, #caa98c);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+}
+
+
+.description-box {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 1.5rem;
+  margin: 2rem auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 800px;
+  text-align: left;
+}
+
+
+td {
+  width: 160px;
+  height: 160px;
+  font-size: 2.5rem;
+  border: 1px solid #aaa;
+  text-align: center;
+  vertical-align: middle;
+  background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: pop 0.4s ease-in-out;
+  font-family: 'Fira Mono', monospace !important;
+}
+td:hover {
+  box-shadow: 0 0 10px #00c3ff;
+  transform: scale(1.05);
+}
+@keyframes pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+
+
+select {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  padding-right: 2rem;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+select:focus {
+  outline: none;
+  border-color: #d4bfa3;
+  box-shadow: 0 0 0 3px rgba(202, 169, 140, 0.3);
+}
+.key-select-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+label {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin: auto 0.5rem;
+}
+
+
+
+.select-pair {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.combo-text {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0 4px;
+}
+
+
+
+.digit-span {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 2.2rem;
+}
+
+
+
+.digit-span {
+  font-family: 'Source Code Pro', monospace;
+  font-weight: 500;
+  font-size: 2.2rem;
+}
+select {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  padding-right: 2rem;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+
+.key-info-hint {
+  background: rgba(255, 255, 255, 0.7);
+  border-left: 4px solid #caa98c;
+  padding: 1rem;
+  margin: 1rem auto 2rem auto;
+  max-width: 600px;
+  border-radius: 10px;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+
+
+.subheading {
+  font-family: 'Merriweather', serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  margin-top: -1rem;
+  margin-bottom: 2rem;
+  color: #555;
+  background: linear-gradient(to right, #b49c7f, #d2b89a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+
+.resource-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  background: linear-gradient(to right, #caa98c, #b5956b);
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+}
+.resource-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+.top-right-button {
+  position: absolute;
+  top: 1.2rem;
+  right: 2rem;
+  z-index: 1000;
+}
+
+
+.tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translateY(-10px);
+  z-index: 9999;
+}
+.tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.styled-select {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  padding-right: 2rem;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+
+
+
+
+
+select, #combo1, #combo2, #select1, #select2 {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  padding-right: 3rem;
+  font-size: 1.1rem;
+  min-width: 80px;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+.step-card {
+  border: 2px solid #caa98c !important;
+  border-radius: 16px !important;
+  padding: 1.5rem !important;
+  background-color: white !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+
+.lang-ru, .lang-uk, .lang-en, .lang-de {
+  display: none;
+}
+.lang-visible {
+  display: block !important;
+}
+</style>
+<style>
+.step-card {
+  display: none;
+  transition: opacity 0.4s ease;
+}
+.step-card.active {
+  display: block;
+}
+
+.styled-select {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  padding-right: 2rem;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+
+
+
+
+
+select, #combo1, #combo2, #select1, #select2 {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  padding-right: 3rem;
+  font-size: 1.1rem;
+  min-width: 80px;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+.lang-ru, .lang-uk, .lang-en, .lang-de {
+  display: none;
+}
+.lang-visible {
+  display: block !important;
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Mono&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&amp;display=swap" rel="stylesheet"/><style>
+select[title] {
+    cursor: help;
+}
+  h1 {
+  font-family: 'Merriweather', serif;
+  font-size: 3rem;
+  margin-top: 2rem;
+  padding: 1rem 2.5rem;
+  background: #f7f3ed;
+  border-radius: 3rem;
+  border: 2px solid #b5956b;
+  display: inline-block;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+  background-clip: padding-box;
+  background-origin: padding-box;
+  background-image: linear-gradient(to right, #d4bfa3, #caa98c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.07);
+}
+
+.top-right-button {
+  position: absolute;
+  top: 1.2rem;
+  right: 2rem;
+  z-index: 1000;
+}
+
+
+.styled-select {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  padding-right: 2rem;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+
+
+
+
+
+select, #combo1, #combo2, #select1, #select2 {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  padding-right: 3rem;
+  font-size: 1.1rem;
+  min-width: 80px;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+.lang-ru, .lang-uk, .lang-en, .lang-de {
+  display: none;
+}
+.lang-visible {
+  display: block !important;
+}
+</style><style>
+/* Уменьшаем размер таблиц в шагах */
+#intro-step-output table {
+  font-size: 1.2rem !important;
+  border: 1px solid #bbb !important;
+}
+
+#intro-step-output table td {
+  font-size: 1rem !important;
+  padding: 0.4rem !important;
+  width: 50px !important;
+  height: 50px !important;
+}
+
+#intro-step-output div[id^="step"] {
+  max-width: 500px !important;
+  margin: 0.6rem auto !important;
+  padding: 0.6rem !important;
+  font-size: 0.95rem !important;
+}
+
+#intro-step-output h3 {
+  font-size: 1.1rem !important;
+}
+
+#intro-step-output p, #intro-step-output ul, #intro-step-output li {
+  font-size: 0.9rem !important;
+}
+
+.styled-select {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  padding-right: 2rem;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+
+
+
+
+
+select, #combo1, #combo2, #select1, #select2 {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  padding-right: 3rem;
+  font-size: 1.1rem;
+  min-width: 80px;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+.lang-ru, .lang-uk, .lang-en, .lang-de {
+  display: none;
+}
+.lang-visible {
+  display: block !important;
+}
+</style><style>
+#intro-step-output div[id^="step"] {
+  background: #ffffff !important;
+}
+
+.styled-select {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  padding-right: 2rem;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+
+
+
+
+
+select, #combo1, #combo2, #select1, #select2 {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  padding-right: 3rem;
+  font-size: 1.1rem;
+  min-width: 80px;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+.lang-ru, .lang-uk, .lang-en, .lang-de {
+  display: none;
+}
+.lang-visible {
+  display: block !important;
+}
+</style>
+<style>
+  #intro-step-output.step-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #intro-step-output.step-grid > div[id^="step"] {
+    flex: 1 1 calc(33.33% - 1rem);
+    min-width: 280px;
+    max-width: 340px;
+  }
+
+  @media (max-width: 900px) {
+    #intro-step-output.step-grid > div[id^="step"] {
+      flex: 1 1 calc(50% - 1rem);
+    }
+  }
+
+  @media (max-width: 600px) {
+    #intro-step-output.step-grid > div[id^="step"] {
+      flex: 1 1 100%;
+    }
+  }
+
+.styled-select {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  padding-right: 2rem;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+
+
+
+
+
+select, #combo1, #combo2, #select1, #select2 {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  padding-right: 3rem;
+  font-size: 1.1rem;
+  min-width: 80px;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+.lang-ru, .lang-uk, .lang-en, .lang-de {
+  display: none;
+}
+.lang-visible {
+  display: block !important;
+}
+</style>
+<style>
+.lang-selector {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+}
+.lang-selector select {
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  border: 2px solid #caa98c;
+  font-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+  background: #fff;
+  cursor: pointer;
+}
+
+.lang-ru, .lang-uk, .lang-en, .lang-de {
+  display: none;
+}
+.lang-visible {
+  display: block !important;
+}
+</style></head>
+<body>
+<div class="lang-selector">
+<select id="language-select">
+<option value="ru">🇷🇺 Русский</option>
+<option value="uk">🇺🇦 Українська</option>
+<option value="en">🇬🇧 English</option>
+<option value="de">🇩🇪 Deutsch</option>
+</select>
+</div>
+<div class="top-bar">
+<a class="custom-button" data-i18n="resources" data-tooltip="Полезные ссылки" data-tooltip-key="resources_tip" href="resources.html">🔗 Ресурсы</a>
+<button class="custom-button" data-i18n="training" data-tooltip="Обучение в пошаговом режиме" data-tooltip-key="training_tip" id="start-intro">🧠 Обучающий режим</button>
+<button class="custom-button" data-i18n="analyze" data-tooltip="Анализ текущего квадрата и преобразование в магический, если это возможно" data-tooltip-key="analyze_tip" id="analyze-auto-btn">📊 Анализ</button>
+</div>
+<h1 data-i18n="heading">Магические квадраты </h1>
+<h2 class="subheading" data-i18n="subheading">по методике Аслана Уарзиаты</h2>
+
+
+<p class="key-info-hint" data-i18n="how_text" data-html="true"></p>
+
+
+
+<div class="key-select-group">
+<label for="key1" data-i18n="label_key1">Ключ 1:</label>
+<div class="select-pair">
+<select data-tooltip="Выберите первый ключ — три уникальные цифры" id="key1"></select>
+<span class="combo-text" data-i18n="in_combination">в комбинации</span>
+<select data-tooltip="Выберите порядок цифр для ключа 1" id="order1"></select>
+</div>
+</div>
+<div class="key-select-group">
+<label for="key2" data-i18n="label_key2">Ключ 2:</label>
+<div class="select-pair">
+<select data-tooltip="Выберите второй ключ — три другие цифры" id="key2"></select>
+<span class="combo-text" data-i18n="in_combination">в комбинации</span>
+<select data-tooltip="Выберите порядок цифр для ключа 2" id="order2"></select>
+</div>
+</div>
+<button data-i18n="build" data-tooltip="Создать магический квадрат" onclick="buildSquare()">Построить</button>
+<div class="outer-wrapper" style="display: flex; justify-content: center;"><div class="container">
+<svg id="lines" xmlns="http://www.w3.org/2000/svg"></svg>
+<table id="square"></table></div></div>
+<div>
+</div>
+<div style="margin-top: 2rem;">
+</div>
+<div id="intro-anchor" style="height: 1px;"></div>
+<div class="step-grid" id="intro-step-output" style="margin-top: 2rem;"></div>
+<div id="analyze-anchor" style="height: 1px;"></div>
+<div class="description-box" id="analysis-results">
+  <div class="lang-ru lang-visible">
+    <h2>Как строится квадрат?</h2>
+    <p>Построение квадрата происходит по методике Аслана Уарзиаты. Пройдите обучающий режим для лучшего ознакомления.</p>
+    <p>Итог — магический квадрат, где сумма строк, столбцов и диагоналей одинакова. Одинаковые цифры соединяются цветными линиями, формируя восьмилучевую звезду.</p>
+    <p>Примечание: иногда квадрат будет базовым, т.е. суммы его столбцов и рядов будут одинаковы, а диагоналей — нет. При нажатии кнопки "Анализ" сайт превратит его в магический. В редких случаях квадрат не имеет свойства преобразовываться в магический.</p>
+  </div>
+
+  <div class="lang-en">
+    <h2>How is the square built?</h2>
+    <p>The square is built using the method of Aslan Uarziaty. Go through the training mode to better understand it.</p>
+    <p>The result is a magic square where the sums of rows, columns, and diagonals are equal. Identical digits are connected with colored lines, forming an eight-pointed star.</p>
+    <p>Note: sometimes the square will be a base square, meaning its rows and columns have equal sums, but not the diagonals. Pressing the "Analyze" button will transform it into a magic square. In rare cases, the square cannot be transformed into a magic one.</p>
+  </div>
+
+  <div class="lang-uk">
+    <h2>Як будується квадрат?</h2>
+    <p>Побудова квадрата відбувається за методикою Аслана Уарзіати. Пройдіть навчальний режим для кращого ознайомлення.</p>
+    <p>У підсумку — магічний квадрат, у якому суми рядків, стовпців і діагоналей однакові. Однакові цифри з'єднуються кольоровими лініями, утворюючи восьмипроменеву зірку.</p>
+    <p>Примітка: іноді квадрат буде базовим, тобто суми його рядків і стовпців однакові, але діагоналей — ні. Натиснувши кнопку "Аналіз", сайт перетворить його на магічний. У рідкісних випадках квадрат не можна перетворити на магічний.</p>
+  </div>
+
+  <div class="lang-de">
+    <h2>Wie wird das Quadrat gebaut?</h2>
+    <p>Das Quadrat wird nach der Methode von Aslan Uarziaty erstellt. Verwenden Sie den Lernmodus für ein besseres Verständnis.</p>
+    <p>Das Ergebnis ist ein magisches Quadrat, bei dem die Summen der Zeilen, Spalten und Diagonalen gleich sind. Gleiche Ziffern werden mit farbigen Linien verbunden, wodurch ein achtstrahliger Stern entsteht.</p>
+    <p>Hinweis: Manchmal ist das Quadrat ein Basiskästchen, d. h. Zeilen- und Spaltensummen sind gleich, aber nicht die Diagonalen. Mit einem Klick auf "Analyse" wird es in ein magisches Quadrat umgewandelt. In seltenen Fällen kann das Quadrat nicht in ein magisches umgewandelt werden.</p>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+);
+          document.querySelectorAll("#lines line").forEach(line => {
+            if (line.getAttribute("data-digit") === digit) {
+              line.classList.add("highlighted");
+              line.classList.remove("dimmed");
+            } else {
+              line.classList.add("dimmed");
+              line.classList.remove("highlighted");
+            }
+          });
+        });
+
+        span.addEventListener("mouseleave", () => {
+          document.querySelectorAll(".digit-span, #lines line").forEach(el => {
+            el.classList.remove("dimmed", "highlighted");
+          });
+        });
+        cell.appendChild(span);
+      });
+      cell.setAttribute("data-val", square[i][j]);
+      const dot = document.createElement('div');
+      dot.className = 'center-dot';
+      cell.appendChild(dot);
+      row.appendChild(cell);
+    }
+    table.appendChild(row);
+  }
+}
+
+function drawLines(square) {
+  const svg = document.getElementById('lines');
+  const table = document.getElementById('square');
+  const svgRect = svg.getBoundingClientRect();
+  svg.innerHTML = '';
+
+  const digitMap = {};
+  const palette = {
+    "1": "red", "2": "blue", "3": "green", "4": "orange", "5": "purple",
+    "6": "teal", "7": "brown", "8": "magenta", "9": "gold"
+  };
+
+  const cells = [...table.querySelectorAll('td')];
+  cells.forEach(td => {
+    const val = td.getAttribute("data-val");
+    const digits = val.toString().padStart(2, '0').split('');
+    const box = td.getBoundingClientRect();
+    const cx = box.left + box.width / 2 - svgRect.left;
+    const cy = box.top + box.height / 2 - svgRect.top;
+
+    digits.forEach(d => {
+      if (!digitMap[d]) digitMap[d] = [];
+      digitMap[d].push({ x: cx, y: cy });
+    });
+  });
+
+  Object.keys(digitMap).forEach(d => {
+    const spans = document.querySelectorAll(`.digit-span[data-digit='${d}']`);
+    spans.forEach(span => {
+      span.style.color = palette[d] || "gray";
+    });
+  });
+
+  let delay = 0;
+  for (let digit in digitMap) {
+    const points = digitMap[digit];
+    const color = palette[digit] || "gray";
+    for (let i = 0; i < points.length; i++) {
+      for (let j = i + 1; j < points.length; j++) {
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", points[i].x);
+        line.setAttribute("y1", points[i].y);
+        line.setAttribute("x2", points[j].x);
+        line.setAttribute("y2", points[j].y);
+        line.setAttribute("stroke", color);
+        line.setAttribute("stroke-width", "3");
+        line.setAttribute("data-digit", digit);
+        line.classList.add("animated");
+        setTimeout(() => svg.appendChild(line), delay);
+        delay += 100;
+      }
+    }
+  }
+}
+
+
+  updateOrderSelect('order1', "147"); setTimeout(disableInvalidKeys, 0);
+  updateOrderSelect('order2', "369");
+  key1.value = "147";
+  key2.value = "369";
+  key1.addEventListener('change', e => { updateOrderSelect('order1', e.target.value); setTimeout(disableInvalidKeys, 0); });
+  key2.addEventListener('change', e => updateOrderSelect('order2', e.target.value));
+});
+</script>
+<script>
+function autoAnalyzeSquare() {
+  const table = document.querySelector("table");
+  if (!table) return alert("Квадрат не найден.");
+
+  const rows = table.querySelectorAll("tr");
+  if (rows.length !== 3) return (function(){
+  let lang = localStorage.getItem('lang');
+if (!lang) {
+  lang = 'ru';
+  localStorage.setItem('lang', lang);
+}
+  console.log("DEBUG: текущий язык lang =", lang);
+  const messages = {
+    ru: "Ошибка: сначала постройте квадрат.",
+    uk: "Помилка: спершу побудуйте квадрат.",
+    en: "Error: please build the square first.",
+    de: "Fehler: Bitte zuerst das Quadrat erstellen."
+  };
+  alert(messages[lang]);
+})();
+
+  const matrix = [];
+  for (let row of rows) {
+    const cells = row.querySelectorAll("td");
+    if (cells.length !== 3) return alert("Ошибка: строка должна содержать 3 ячейки.");
+    const nums = [];
+    for (let cell of cells) {
+      const val = parseInt(cell.getAttribute("data-val"));
+      if (isNaN(val)) return alert("Ошибка: не удалось извлечь число.");
+      nums.push(val);
+    }
+    matrix.push(nums);
+  }
+
+  function renderSquare(matrix, title) {
+    const wrapper = document.createElement("div");
+    wrapper.style.margin = "2rem auto";
+    wrapper.style.padding = "1rem";
+    wrapper.style.border = "1px solid #ccc";
+    wrapper.style.borderRadius = "8px";
+    wrapper.style.background = "#fafafa";
+    wrapper.style.marginRight = "1rem";
+    wrapper.style.display = "inline-block";
+    const resultTable = document.createElement("table");
+    resultTable.style.borderCollapse = "collapse";
+    resultTable.style.margin = "0 auto";
+
+    // Антидиагональ
+    const rightDiagSum = matrix[0][2] + matrix[1][1] + matrix[2][0];
+    const top = document.createElement("tr");
+    top.innerHTML = "<td></td><td></td><td></td><td class='sum-diag'>↙ " + rightDiagSum + "</td>";
+    resultTable.appendChild(top);
+
+    for (let i = 0; i < 3; i++) {
+      const tr = document.createElement("tr");
+      for (let j = 0; j < 3; j++) {
+        const td = document.createElement("td");
+        td.textContent = matrix[i][j];
+        td.setAttribute("data-val", matrix[i][j]);
+        td.style.border = "1px solid #555";
+        td.style.width = "45px";
+        td.style.height = "45px";
+        td.style.textAlign = "center";
+        td.style.fontSize = "1.5rem";
+        td.style.fontFamily = "'Fira Mono', monospace";
+        td.style.background = "#fff";
+        tr.appendChild(td);
+      }
+      const rowSum = matrix[i][0] + matrix[i][1] + matrix[i][2];
+      const sumTd = document.createElement("td");
+      sumTd.textContent = "⇨ " + rowSum;
+      sumTd.className = "sum-row";
+      tr.appendChild(sumTd);
+      resultTable.appendChild(tr);
+    }
+
+    const colSumRow = document.createElement("tr");
+    for (let j = 0; j < 3; j++) {
+      const colSum = matrix[0][j] + matrix[1][j] + matrix[2][j];
+      const td = document.createElement("td");
+      td.textContent = "⇩ " + colSum;
+      td.className = "sum-col";
+      colSumRow.appendChild(td);
+    }
+    const leftDiagSum = matrix[0][0] + matrix[1][1] + matrix[2][2];
+    const diagTd = document.createElement("td");
+    diagTd.textContent = "↘ " + leftDiagSum;
+    diagTd.className = "sum-diag";
+    colSumRow.appendChild(diagTd);
+    resultTable.appendChild(colSumRow);
+
+    const label = document.createElement("div");
+    
+    label.innerHTML = `
+      <div class="lang-ru">` + (title === "Исходный квадрат" ? "Исходный квадрат" : "Магический квадрат") + `</div>
+      <div class="lang-uk">` + (title === "Исходный квадрат" ? "Початковий квадрат" : "Магічний квадрат") + `</div>
+      <div class="lang-en">` + (title === "Исходный квадрат" ? "Original Square" : "Magic Square") + `</div>
+      <div class="lang-de">` + (title === "Исходный квадрат" ? "Ausgangsquadrat" : "Magisches Quadrat") + `</div>
+    `;
+    label.classList.add("square-label");
+
+    label.style.fontWeight = "bold";
+    label.style.marginBottom = "0.5rem";
+    label.style.textAlign = "center";
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(resultTable);
+    return wrapper;
+  }
+
+  function isMagic(matrix) {
+    const sums = [
+      ...matrix.map(row => row.reduce((a,b) => a+b)),
+      ...[0,1,2].map(i => matrix[0][i]+matrix[1][i]+matrix[2][i]),
+      matrix[0][0] + matrix[1][1] + matrix[2][2],
+      matrix[0][2] + matrix[1][1] + matrix[2][0]
+    ];
+    return sums.every(s => s === sums[0]);
+  }
+
+  function permutations(arr) {
+    if (arr.length <= 1) return [arr];
+    const result = [];
+    for (let i = 0; i < arr.length; i++) {
+      const rest = [...arr.slice(0, i), ...arr.slice(i+1)];
+      const inner = permutations(rest);
+      for (let perm of inner) result.push([arr[i], ...perm]);
+    }
+    return result;
+  }
+
+  function transpose(matrix) {
+    return matrix[0].map((_, i) => matrix.map(row => row[i]));
+  }
+
+  const output = document.getElementById("analysis-output") || document.createElement("div");
+  output.id = "analysis-output";
+  output.innerHTML = "";
+  output.style.marginTop = "2rem";
+
+  const base = renderSquare(matrix, "Исходный квадрат");
+  output.appendChild(base);
+
+  if (!isMagic(matrix)) {
+    const rowPerms = permutations([0,1,2]);
+    const colPerms = permutations([0,1,2]);
+
+    for (let rp of rowPerms) {
+      for (let cp of colPerms) {
+        const newMatrix = rp.map(i => cp.map(j => matrix[i][j]));
+        if (isMagic(newMatrix)) {
+          const magic = renderSquare(newMatrix, "Магический квадрат");
+          output.appendChild(magic);
+          break;
+        }
+      }
+    }
+  } else {
+    const note = document.createElement("div");
+    note.textContent = "🟢 Это магический квадрат!";
+    note.style.fontSize = "1.3rem";
+    note.style.marginTop = "1rem";
+    output.appendChild(note);
+  }
+
+  const refBox = document.getElementById("analysis-results");
+if (refBox && refBox.parentNode) {
+  refBox.parentNode.insertBefore(output, refBox);
+} else {
+  
+const anchor = document.createElement("div");
+anchor.id = "analyze-anchor";
+output.parentNode.insertBefore(anchor, output);
+document.body.appendChild(output); // fallback
+if (output) {
+  const anchor = document.createElement("div");
+  anchor.id = "analyze-anchor";
+  anchor.style.height = "1px";
+  anchor.style.marginTop = "-200px";
+  output.parentNode.insertBefore(anchor, output);
+
+  // Скроллим с задержкой
+  setTimeout(() => {
+    anchor.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 100);
+}
+}
+
+  document.getElementById("analyze-anchor").scrollIntoView({ behavior: "smooth", block: "start" });
+  updateVisibleLanguageText();
+}
+</script>
+<!-- ВСТАВЛЕННЫЙ СКРИПТ ДЛЯ ПОДСВЕТКИ -->
+<style>
+.analysis-highlight {
+  background-color: #ffe082 !important;
+}
+
+.top-right-button {
+  position: absolute;
+  top: 1.2rem;
+  right: 2rem;
+  z-index: 1000;
+}
+
+
+.styled-select {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  padding-right: 2rem;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+
+
+
+
+
+select, #combo1, #combo2, #select1, #select2 {
+  background: #fff;
+  border: 2px solid #caa98c;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  padding-right: 3rem;
+  font-size: 1.1rem;
+  min-width: 80px;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+
+.lang-ru, .lang-uk, .lang-en, .lang-de {
+  display: none;
+}
+.lang-visible {
+  display: block !important;
+}
+</style>
+<script>
+function attachSumHighlights() {
+  document.querySelectorAll("#analysis-output table").forEach((tbl, tIdx) => {
+    const tds = tbl.querySelectorAll("td[data-val]");
+
+    tbl.querySelectorAll(".sum-row").forEach((cell, rowIndex) => {
+      cell.addEventListener("mouseenter", () => {
+        tds.forEach(td => {
+          if (+td.parentElement.rowIndex === rowIndex + 1) td.classList.add("analysis-highlight");
+        });
+      });
+      cell.addEventListener("mouseleave", () => {
+        tds.forEach(td => td.classList.remove("analysis-highlight"));
+      });
+    });
+
+    tbl.querySelectorAll(".sum-col").forEach((cell, colIndex) => {
+      cell.addEventListener("mouseenter", () => {
+        tds.forEach(td => {
+          const tdCol = td.cellIndex;
+          if (tdCol === colIndex) td.classList.add("analysis-highlight");
+        });
+      });
+      cell.addEventListener("mouseleave", () => {
+        tds.forEach(td => td.classList.remove("analysis-highlight"));
+      });
+    });
+
+    tbl.querySelectorAll(".sum-diag").forEach((cell, i) => {
+      cell.addEventListener("mouseenter", () => {
+        tds.forEach(td => {
+          const row = td.parentElement.rowIndex - 1;
+          const col = td.cellIndex;
+          if ((i === 0 && row + col === 2) || (i === 1 && row === col)) {
+            td.classList.add("analysis-highlight");
+          }
+        });
+      });
+      cell.addEventListener("mouseleave", () => {
+        tds.forEach(td => td.classList.remove("analysis-highlight"));
+      });
+    });
+  });
+}
+
+const origAnalyze = window.autoAnalyzeSquare;
+window.autoAnalyzeSquare = function() {
+  origAnalyze();
+  setTimeout(attachSumHighlights, 100);
+};
+</script>
+<!-- КОНЕЦ СКРИПТА -->
+<script>
+const keys = ["123","456","789","867","291","534","675","918","342","597","831","264","315","648","972","753","186","429","945","378","612","483","726","159","237","561","894","147","258","369"];
+
+function permute(str) {
+  if (str.length <= 1) return [str];
+  const result = [];
+  for (let i = 0; i < str.length; i++) {
+    const rest = str.slice(0, i) + str.slice(i + 1);
+    for (const p of permute(rest)) result.push(str[i] + p);
+  }
+  return [...new Set(result)];
+}
+
+function updateOrderSelect(id, key) {
+  const select = document.getElementById(id);
+  const orders = permute(key);
+  select.innerHTML = '';
+  orders.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p;
+    opt.textContent = p;
+    select.appendChild(opt);
+  });
+}
+
+function hasCommonDigit(arr1, arr2) {
+  return arr1.some(d => arr2.includes(d));
+}
+
+function buildSquare() {
+  const k1 = document.getElementById('order1').value.split('').map(Number);
+  const k2 = document.getElementById('order2').value.split('').map(Number);
+  if (hasCommonDigit(k1, k2)) {
+    alert("Ключи не должны содержать одинаковых цифр. Выберите другие.");
+    return;
+  }
+
+  const col1 = [
+    parseInt(`${k1[0]}${k2[0]}`),
+    parseInt(`${k1[1]}${k2[1]}`),
+    parseInt(`${k1[2]}${k2[2]}`)
+  ];
+  const col2 = [
+    parseInt(`${k1[1]}${k2[2]}`),
+    parseInt(`${k1[2]}${k2[0]}`),
+    parseInt(`${k1[0]}${k2[1]}`)
+  ];
+  const d1 = col2[0].toString().padStart(2, '0').split('');
+  const d2 = col2[1].toString().padStart(2, '0').split('');
+  const d3 = col2[2].toString().padStart(2, '0').split('');
+  const col3 = [
+    parseInt(`${d2[0]}${d3[1]}`),
+    parseInt(`${d3[0]}${d1[1]}`),
+    parseInt(`${d1[0]}${d2[1]}`)
+  ];
+  const square = [
+    [col1[0], col2[0], col3[0]],
+    [col1[1], col2[1], col3[1]],
+    [col1[2], col2[2], col3[2]]
+  ];
+  drawSquare(square);
+  setTimeout(() => drawLines(square), 100);
+  document.getElementById("square").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function drawSquare(square) {
+  const table = document.getElementById('square');
+  table.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const row = document.createElement('tr');
+    for (let j = 0; j < 3; j++) {
+      const cell = document.createElement('td');
+      const val = square[i][j].toString().padStart(2, '0').split('');
+      val.forEach(d => {
+        const span = document.createElement('span');
+        span.className = 'digit-span';
+        span.textContent = d;
+        span.setAttribute("data-digit", d);
+
+        span.addEventListener("mouseenter", () => {
+          const digit = span.getAttribute("data-digit");
+          document.querySelectorAll(".digit-span").forEach(s => {
+            if (s.getAttribute("data-digit") === digit) {
+              s.classList.add("highlighted");
+              s.classList.remove("dimmed");
+            } else {
+              s.classList.add("dimmed");
+              s.classList.remove("highlighted");
+            }
+          });
+          document.querySelectorAll("#lines line").forEach(line => {
+            if (line.getAttribute("data-digit") === digit) {
+              line.classList.add("highlighted");
+              line.classList.remove("dimmed");
+            } else {
+              line.classList.add("dimmed");
+              line.classList.remove("highlighted");
+            }
+          });
+        });
+
+        span.addEventListener("mouseleave", () => {
+          document.querySelectorAll(".digit-span, #lines line").forEach(el => {
+            el.classList.remove("dimmed", "highlighted");
+          });
+        });
+        cell.appendChild(span);
+      });
+      cell.setAttribute("data-val", square[i][j]);
+      const dot = document.createElement('div');
+      dot.className = 'center-dot';
+      cell.appendChild(dot);
+      row.appendChild(cell);
+    }
+    table.appendChild(row);
+  }
+}
+
+function drawLines(square) {
+  const svg = document.getElementById('lines');
+  const table = document.getElementById('square');
+  const svgRect = svg.getBoundingClientRect();
+  svg.innerHTML = '';
+
+  const digitMap = {};
+  const palette = {
+    "1": "red", "2": "blue", "3": "green", "4": "orange", "5": "purple",
+    "6": "teal", "7": "brown", "8": "magenta", "9": "gold"
+  };
+
+  const cells = [...table.querySelectorAll('td')];
+  cells.forEach(td => {
+    const val = td.getAttribute("data-val");
+    const digits = val.toString().padStart(2, '0').split('');
+    const box = td.getBoundingClientRect();
+    const cx = box.left + box.width / 2 - svgRect.left;
+    const cy = box.top + box.height / 2 - svgRect.top;
+
+    digits.forEach(d => {
+      if (!digitMap[d]) digitMap[d] = [];
+      digitMap[d].push({ x: cx, y: cy });
+    });
+  });
+
+  Object.keys(digitMap).forEach(d => {
+    const spans = document.querySelectorAll(`.digit-span[data-digit='${d}']`);
+    spans.forEach(span => {
+      span.style.color = palette[d] || "gray";
+    });
+  });
+
+  let delay = 0;
+  for (let digit in digitMap) {
+    const points = digitMap[digit];
+    const color = palette[digit] || "gray";
+    for (let i = 0; i < points.length; i++) {
+      for (let j = i + 1; j < points.length; j++) {
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", points[i].x);
+        line.setAttribute("y1", points[i].y);
+        line.setAttribute("x2", points[j].x);
+        line.setAttribute("y2", points[j].y);
+        line.setAttribute("stroke", color);
+        line.setAttribute("stroke-width", "3");
+        line.setAttribute("data-digit", digit);
+        line.classList.add("animated");
+        setTimeout(() => svg.appendChild(line), delay);
+        delay += 100;
+      }
+    }
+  }
+}
+
+
+function disableInvalidKeys() {
+  const selected = document.getElementById('order1').value;
+  const digits = selected.split('');
+  const key2 = document.getElementById('key2');
+  Array.from(key2.options).forEach(opt => {
+    const overlap = opt.value.split('').some(d => digits.includes(d));
+    opt.disabled = overlap;
+    opt.style.color = overlap ? '#aaa' : '#000';
+  });
+  if (key2.options[key2.selectedIndex].disabled) {
+    for (let opt of key2.options) {
+      if (!opt.disabled) {
+        key2.value = opt.value;
+        updateOrderSelect('order2', opt.value);
+        break;
+      }
+    }
+  }
+}
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const key1 = document.getElementById('key1');
+const order1 = document.getElementById('order1');
+const key2 = document.getElementById('key2');
+  console.log("KEYS:", keys);
+  console.log("key1 element:", key1);
+
+  keys.forEach(k => {
+    key1.innerHTML += `<option value="${k}">${k}</option>`;
+    key2.innerHTML += `<option value="${k}">${k}</option>`;
+  });
+
+  setTimeout(() => {
+  updateOrderSelect('order1', "147");
+  setTimeout(disableInvalidKeys, 0); setTimeout(disableInvalidKeys, 0);
+    updateOrderSelect('order2', "369");
+    key1.value = "147";
+    key2.value = "369";
+    key1.addEventListener('change', e => { updateOrderSelect('order1', e.target.value); setTimeout(disableInvalidKeys, 0); });
+    key2.addEventListener('change', e => updateOrderSelect('order2', e.target.value));
+    console.log("Initialization done. key1 options now:", key1.innerHTML);
+  }, 0);
+});
+</script>
+<div class="tooltip" id="tooltip"></div>
+<script>
+  const tooltip = document.getElementById("tooltip");
+
+  document.querySelectorAll("[data-tooltip]").forEach(el => {
+    el.addEventListener("mouseenter", e => {
+      tooltip.textContent = el.getAttribute("data-tooltip");
+      tooltip.classList.add("visible");
+    });
+    el.addEventListener("mousemove", e => {
+      tooltip.style.left = e.pageX + 15 + "px";
+      tooltip.style.top = e.pageY + 15 + "px";
+    });
+    el.addEventListener("mouseleave", () => {
+      tooltip.classList.remove("visible");
+    });
+  });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("start-intro");
+  if (btn) {
+    btn.addEventListener("click", () => { startIntroStep();
+    setTimeout(() => document.getElementById("intro-anchor").scrollIntoView({ behavior: "smooth", block: "start" }), 100); });
+  }
+});
+</script>
+<script>
+function getPermutations(str) {
+  if (str.length <= 1) return [str];
+  const perms = [];
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    const rest = str.slice(0, i) + str.slice(i + 1);
+    for (const p of getPermutations(rest)) {
+      perms.push(char + p);
+    }
+  }
+  return [...new Set(perms)];
+}
+
+function removeStepsAfter(n) {
+  for (let i = n + 1; i <= 10; i++) {
+    const el = document.getElementById("step" + i);
+    if (el) el.remove();
+  }
+}
+
+function startIntroStep() {
+  ['step1','step2','step3','step4'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+  });
+  
+  const allKeys = [...document.getElementById('key1').options].map(opt => opt.value);
+  const output = document.getElementById('intro-step-output');
+  output.innerHTML = "";
+
+  removeStepsAfter(0);
+const step1 = document.createElement("div");
+  step1.id = "step1";
+document.querySelectorAll('.step-card').forEach(el => el.classList.remove('active'));
+step1.className = "step-card active";
+  step1.style.padding = "1rem";
+  step1.style.maxWidth = "600px";
+  step1.style.margin = "auto";
+  step1.style.background = "#fff8e1";
+  step1.style.borderRadius = "12px";
+  step1.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+  
+step1.innerHTML = `
+  <div class="step1-text">
+    <h3 class="lang-ru">Шаг 1: Выберите первый ключ</h3>
+    <h3 class="lang-uk">Крок 1: Оберіть перший ключ</h3>
+    <h3 class="lang-en">Step 1: Choose the first key</h3>
+    <h3 class="lang-de">Schritt 1: Wähle den ersten Schlüssel</h3>
+
+    <p class="lang-ru">Выберите ключ и его комбинацию от перестановок цифр в числе.</p>
+    <p class="lang-uk">Оберіть ключ та його комбінацію з перестановок цифр у числі.</p>
+    <p class="lang-en">Choose a key and its permutation of digits.</p>
+    <p class="lang-de">Wähle einen Schlüssel und seine Ziffernpermutation.</p>
+  </div>
+`;
+setTimeout(updateVisibleLanguageText, 0);
+
+
+  const select1 = document.createElement("select");
+  select1.style.fontSize = "1.2rem";
+  select1.classList.add("styled-select");
+  select1.style.padding = "0.5rem";
+  select1.style.marginTop = "1rem";
+  allKeys.forEach(k => {
+    const opt = document.createElement("option");
+    opt.value = k;
+    opt.textContent = k;
+    select1.appendChild(opt);
+  });
+
+  const comboSelect1 = document.createElement("select");
+  comboSelect1.id = "combo1";
+  comboSelect1.classList.add("styled-select");
+  comboSelect1.style.fontSize = "1.2rem";
+  comboSelect1.style.padding = "0.5rem";
+  comboSelect1.style.marginLeft = "1rem";
+
+  select1.addEventListener("change", () => {
+    const perms = getPermutations(select1.value);
+    comboSelect1.innerHTML = "";
+    perms.forEach(p => {
+      const opt = document.createElement("option");
+      opt.value = p;
+      opt.textContent = p;
+      comboSelect1.appendChild(opt);
+    });
+  });
+  select1.dispatchEvent(new Event("change"));
+
+  const nextBtn = document.createElement("button");
+  nextBtn.textContent = "➡";
+  nextBtn.style.marginTop = "1rem";
+  nextBtn.onclick = () => {
+  ["step3", "step4"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+  });
+  ["step2", "step3", "step4"].forEach(id => { const el = document.getElementById(id); if (el) el.remove(); });
+    const combo1 = comboSelect1.value;
+    const chosen1 = combo1.split('');
+
+    removeStepsAfter(1);
+const step2 = document.createElement("div");
+    step2.id = "step2";
+document.querySelectorAll('.step-card').forEach(el => el.classList.remove('active'));
+step2.className = "step-card active";
+    step2.style.padding = "1rem";
+    step2.style.marginTop = "2rem";
+    step2.style.background = "#e3f2fd";
+    step2.style.borderRadius = "12px";
+    step2.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+    step2.innerHTML = `
+      <h3 class="lang-ru">Шаг 2: Выберите второй ключ</h3>
+      <h3 class="lang-uk">Крок 2: Оберіть другий ключ</h3>
+      <h3 class="lang-en">Step 2: Choose the second key</h3>
+      <h3 class="lang-de">Schritt 2: Wähle den zweiten Schlüssel</h3>
+
+      <p class="lang-ru">Выбранный первый ключ: <strong>` + combo1 + `</strong></p>
+      <p class="lang-uk">Обраний перший ключ: <strong>` + combo1 + `</strong></p>
+      <p class="lang-en">Selected first key: <strong>` + combo1 + `</strong></p>
+      <p class="lang-de">Ausgewählter erster Schlüssel: <strong>` + combo1 + `</strong></p>
+
+      <p class="lang-ru">Теперь выберите ключ, не содержащий цифры: <strong>` + chosen1.join(', ') + `</strong></p>
+      <p class="lang-uk">Тепер оберіть ключ, що не містить цифри: <strong>` + chosen1.join(', ') + `</strong></p>
+      <p class="lang-en">Now choose a key that does not contain digits: <strong>` + chosen1.join(', ') + `</strong></p>
+      <p class="lang-de">Wähle nun einen Schlüssel ohne die Ziffern: <strong>` + chosen1.join(', ') + `</strong></p>
+    `;
+    setTimeout(updateVisibleLanguageText, 0);
+
+    const select2 = document.createElement("select");
+    select2.style.fontSize = "1.2rem";
+    select2.classList.add("styled-select");
+    select2.style.padding = "0.5rem";
+
+    allKeys.forEach(k => {
+      if (!k.split('').some(d => chosen1.includes(d))) {
+        const opt = document.createElement("option");
+        opt.value = k;
+        opt.textContent = k;
+        select2.appendChild(opt);
+      }
+    });
+
+    const comboSelect2 = document.createElement("select");
+    comboSelect2.id = "combo2";
+    comboSelect2.classList.add("styled-select");
+    comboSelect2.style.fontSize = "1.2rem";
+    comboSelect2.style.padding = "0.5rem";
+    comboSelect2.style.marginLeft = "1rem";
+
+    select2.addEventListener("change", () => {
+      const perms = getPermutations(select2.value);
+      comboSelect2.innerHTML = "";
+      perms.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p;
+        opt.textContent = p;
+        comboSelect2.appendChild(opt);
+      });
+    });
+    select2.dispatchEvent(new Event("change"));
+
+    const nextBtn2 = document.createElement("button");
+    nextBtn2.textContent = "➡";
+    nextBtn2.style.marginTop = "1rem";
+    nextBtn2.onclick = () => {
+  removeStepsAfter(3);
+const combo2 = comboSelect2.value;
+      const chosen2 = combo2.split('');
+      const col1 = [
+        parseInt(chosen1[0] + chosen2[0]),
+        parseInt(chosen1[1] + chosen2[1]),
+        parseInt(chosen1[2] + chosen2[2])
+      ];
+
+      removeStepsAfter(2);
+const step3 = document.createElement("div");
+      step3.id = "step3";
+document.querySelectorAll('.step-card').forEach(el => el.classList.remove('active'));
+step3.className = "step-card active";
+      step3.style.padding = "1rem";
+      step3.style.marginTop = "2rem";
+      step3.style.background = "#f1f8e9";
+      step3.style.borderRadius = "12px";
+      step3.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+      step3.innerHTML = `
+      <h3 class="lang-ru">Шаг 3: Построение первого столбца</h3>
+      <h3 class="lang-uk">Крок 3: Побудова першого стовпця</h3>
+      <h3 class="lang-en">Step 3: Building the first column</h3>
+      <h3 class="lang-de">Schritt 3:Konstruktion der ersten Spalte</h3>
+
+      <p class="lang-ru">Расставляем выбранные ключи вертикально. Они сформировали первый столбец нашего квадрата.</p>
+      <p class="lang-uk">Ставимо обрані ключі вертикально. Вони побудували перший стовбець нашого квадрату.</p>
+      <p class="lang-en">Place the selected keys vertically. They form the first column of our square.</p>
+      <p class="lang-de">Ordnen Sie die gewählten Schlüssel vertikal an. Sie bilden die erste Spalte unseres Quadrats.</p>
+    `;
+    setTimeout(updateVisibleLanguageText, 0);
+
+      
+      const table = document.createElement("table");
+      table.style.borderCollapse = "collapse";
+      table.style.margin = "1rem auto";
+      table.style.background = "#fff";
+      table.style.boxShadow = "0 0 10px rgba(0,0,0,0.05)";
+      table.style.border = "2px solid #caa98c";
+      table.style.borderRadius = "10px";
+
+      for (let i = 0; i < 3; i++) {
+        const tr = document.createElement("tr");
+
+        const td1 = document.createElement("td");
+        td1.textContent = col1[i];
+        td1.style.fontFamily = "'Fira Mono', monospace";
+        td1.style.fontSize = "1.8rem";
+        td1.style.border = "1px solid #aaa";
+        td1.style.padding = "1rem";
+        td1.style.background = "#f5f5f5";
+        tr.appendChild(td1);
+
+        const td2 = document.createElement("td");
+        td2.textContent = "";
+        td2.style.border = "1px solid #aaa";
+        td2.style.padding = "1rem";
+        td2.style.background = "#ffffff";
+        tr.appendChild(td2);
+
+        const td3 = document.createElement("td");
+        td3.textContent = "";
+        td3.style.border = "1px solid #aaa";
+        td3.style.padding = "1rem";
+        td3.style.background = "#ffffff";
+        tr.appendChild(td3);
+
+        table.appendChild(tr);
+      }
+
+      step3.appendChild(table);
+      output.appendChild(step3);
+
+      const nextBtn3 = document.createElement("button");
+      nextBtn3.textContent = "➡";
+      nextBtn3.style.marginTop = "1rem";
+      nextBtn3.onclick = () => {
+  removeStepsAfter(3);
+const digits = col1.map(n => n.toString().padStart(2, '0').split(''));
+        const top2 = parseInt(digits[1][0] + digits[2][1]);
+
+        const step4 = document.createElement("div");
+        step4.id = "step4";
+document.querySelectorAll('.step-card').forEach(el => el.classList.remove('active'));
+step4.className = "step-card active";
+        step4.style.padding = "1rem";
+        step4.style.marginTop = "2rem";
+        step4.style.background = "#ede7f6";
+        step4.style.borderRadius = "12px";
+        step4.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+        step4.innerHTML = `
+      <h3 class="lang-ru">Шаг 4: Построение верхнего числа второго столбца</h3>
+      <h3 class="lang-uk">Крок 4: Побудова верхнього числа другого стовпця</h3>
+      <h3 class="lang-en">Step 4: Constructing the top number of the second column</h3>
+      <h3 class="lang-de">Schritt 4: Konstruktion der oberen Zahl der zweiten Spalte</h3>
+
+      <p class="lang-ru">Соединяем первую цифру среднего числа со второй цифрой нижнего числа. Вместе они сформировали верхнее число второго столбца.</p>
+           <p class="lang-uk">З'єднуємо першу цифру середнього числа з другою цифрою нижнього числа. Разом вони сформували верхнє число другого стовбця.</p>
+      <p class="lang-en">Combine the first digit of the middle number with the second digit of the bottom number. Together, they form the top number of the second column.</p>
+      <p class="lang-de">Verbinden Sie die erste Ziffer der mittleren Zahl mit der zweiten Ziffer der unteren Zahl. Gemeinsam bilden sie die obere Zahl der zweiten Spalte.
+
+</p>
+<p><strong>${digits[1][0]}</strong>  + <strong>${digits[2][1]}</strong>  → <strong>${top2}</strong></p>
+    `;
+    setTimeout(updateVisibleLanguageText, 0);
+
+        const table = document.createElement("table");
+        table.style.borderCollapse = "collapse";
+        table.style.margin = "1rem auto";
+        table.style.background = "#fff";
+        table.style.boxShadow = "0 0 10px rgba(0,0,0,0.05)";
+        table.style.border = "2px solid #caa98c";
+        table.style.borderRadius = "10px";
+
+        for (let i = 0; i < 3; i++) {
+          const tr = document.createElement("tr");
+
+          const td1 = document.createElement("td");
+          td1.textContent = col1[i];
+          td1.style.fontFamily = "'Fira Mono', monospace";
+          td1.style.fontSize = "1.8rem";
+          td1.style.border = "1px solid #aaa";
+          td1.style.padding = "1rem";
+          td1.style.background = "#f5f5f5";
+          tr.appendChild(td1);
+
+          const td2 = document.createElement("td");
+          td2.textContent = i === 0 ? top2 : "";
+          td2.style.fontFamily = "'Fira Mono', monospace";
+          td2.style.fontSize = "1.8rem";
+          td2.style.border = "1px solid #aaa";
+          td2.style.padding = "1rem";
+          td2.style.background = i === 0 ? "#e1f5fe" : "#ffffff";
+          tr.appendChild(td2);
+
+          const td3 = document.createElement("td");
+          td3.textContent = "";
+          td3.style.border = "1px solid #aaa";
+          td3.style.padding = "1rem";
+          td3.style.background = "#ffffff";
+          tr.appendChild(td3);
+
+          table.appendChild(tr);
+        }
+
+        step4.appendChild(table);
+        const nextBtn4 = document.createElement("button");
+        nextBtn4.textContent = "➡";
+        nextBtn4.style.marginTop = "1rem";
+        nextBtn4.onclick = () => {
+  removeStepsAfter(4);
+const col2_1 = parseInt(chosen1[2] + chosen2[0]);
+
+          const step5 = document.createElement("div");
+          step5.id = "step5";
+document.querySelectorAll('.step-card').forEach(el => el.classList.remove('active'));
+step5.className = "step-card active";
+          step5.style.padding = "1rem";
+          step5.style.marginTop = "2rem";
+          step5.style.background = "#fff3e0";
+          step5.style.borderRadius = "12px";
+          step5.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+          step5.innerHTML = `
+      <h3 class="lang-ru">Шаг 5: Построение среднего числа второго столбца</h3>
+      <h3 class="lang-uk">Крок 5: Побудова середнього числа другого стовпця</h3>
+      <h3 class="lang-en">Step 5: Constructing the middle number of the second column</h3>
+      <h3 class="lang-de">Schritt 5: Konstruktion der mittleren Zahl der zweiten Spalte</h3>
+
+      <p class="lang-ru">Соединяем первую цифру нижнего числа с второй цифрой верхнего числа. Вместо они сформировали среднее числа второго столбца.</p>
+      <p class="lang-uk">З'єднуємо першу цифру нижнього числа з другою цифрою верхнього числа. Разом вони форумають середнє число другого стовпця.</p>
+      <p class="lang-en">Combine the first digit of the bottom number with the second digit of the top number. Together, they form the middle number of the second column.</p>
+      <p class="lang-de">Verbinden Sie die erste Ziffer der unteren Zahl mit der zweiten Ziffer der oberen Zahl. Gemeinsam bilden sie die mittlere Zahl der zweiten Spalte.</p>
+<p><strong>${chosen1[2]}</strong>  + <strong>${chosen2[0]}</strong>  → <strong>${col2_1}</strong></p>
+    `;
+    setTimeout(updateVisibleLanguageText, 0);
+
+          const table = document.createElement("table");
+          table.style.borderCollapse = "collapse";
+          table.style.margin = "1rem auto";
+          table.style.background = "#fff";
+          table.style.boxShadow = "0 0 10px rgba(0,0,0,0.05)";
+          table.style.border = "2px solid #caa98c";
+          table.style.borderRadius = "10px";
+
+          for (let i = 0; i < 3; i++) {
+            const tr = document.createElement("tr");
+
+            const td1 = document.createElement("td");
+            td1.textContent = col1[i];
+            td1.style.fontFamily = "'Fira Mono', monospace";
+            td1.style.fontSize = "1.8rem";
+            td1.style.border = "1px solid #aaa";
+            td1.style.padding = "1rem";
+            td1.style.background = "#f5f5f5";
+            tr.appendChild(td1);
+
+            const td2 = document.createElement("td");
+            td2.textContent = i === 0 ? document.querySelector("#step4 table tr:nth-child(1) td:nth-child(2)").textContent : (i === 1 ? col2_1 : "");
+            td2.style.fontFamily = "'Fira Mono', monospace";
+            td2.style.fontSize = "1.8rem";
+            td2.style.border = "1px solid #aaa";
+            td2.style.padding = "1rem";
+            td2.style.background = (i === 1 ? "#e8f5e9" : "#ffffff");
+            tr.appendChild(td2);
+
+            const td3 = document.createElement("td");
+            td3.textContent = "";
+            td3.style.border = "1px solid #aaa";
+            td3.style.padding = "1rem";
+            td3.style.background = "#ffffff";
+            tr.appendChild(td3);
+
+            table.appendChild(tr);
+          }
+
+          step5.appendChild(table);
+        const nextBtn5 = document.createElement("button");
+        nextBtn5.textContent = "➡";
+        nextBtn5.style.marginTop = "1rem";
+        nextBtn5.onclick = () => {
+  const col2 = [
+    parseInt(chosen1[1] + chosen2[2]),
+    parseInt(chosen1[2] + chosen2[0]),
+    parseInt(chosen1[0] + chosen2[1])
+  ];
+          removeStepsAfter(5);
+const col2_2 = parseInt(chosen1[0] + chosen2[1]);
+
+          const step6 = document.createElement("div");
+          step6.id = "step6";
+document.querySelectorAll('.step-card').forEach(el => el.classList.remove('active'));
+step6.className = "step-card active";
+          step6.style.padding = "1rem";
+          step6.style.marginTop = "2rem";
+          step6.style.background = "#fff3e0";
+          step6.style.borderRadius = "12px";
+          step6.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+          step6.innerHTML = `
+      <h3 class="lang-ru">Шаг 6: Построение нижнего числа второго столбца.</h3>
+      <h3 class="lang-uk">Крок 6: Побудова нижнього числа другого стовпця.</h3>
+      <h3 class="lang-en">Step 6: Constructing the bottom number of the second column</h3>
+      <h3 class="lang-de">Schritt 6: Konstruktion der unteren Zahl der zweiten Spalte</h3>
+
+      <p class="lang-ru">Теперь соеднияем первую цифру верхнего числа со второй цифрой среднего числа. Вместо они дают нижнее число второго столбца.</p>
+      <p class="lang-uk">Тепер з'єднуємо першу цифру верхнього числа з другою цифрою середнього числа. Разом вони дають нижнє число другого стовпця.</p>
+      <p class="lang-en">Now combine the first digit of the top number with the second digit of the middle number. Together, they form the bottom number of the second column.</p>
+      <p class="lang-de">Verbinden Sie nun die erste Ziffer der oberen Zahl mit der zweiten Ziffer der mittleren Zahl. Gemeinsam bilden sie die untere Zahl der zweiten Spalte.
+</p>
+<p><strong>${chosen1[0]}</strong>  + <strong>${chosen2[1]}</strong>  → <strong>${col2_2}</strong></p>
+    `;
+    setTimeout(updateVisibleLanguageText, 0);
+
+          const table = document.createElement("table");
+          table.style.borderCollapse = "collapse";
+          table.style.margin = "1rem auto";
+          table.style.background = "#fff";
+          table.style.boxShadow = "0 0 10px rgba(0,0,0,0.05)";
+          table.style.border = "2px solid #caa98c";
+          table.style.borderRadius = "10px";
+
+          for (let i = 0; i < 3; i++) {
+            const tr = document.createElement("tr");
+
+            const td1 = document.createElement("td");
+            td1.textContent = col1[i];
+            td1.style.fontFamily = "'Fira Mono', monospace";
+            td1.style.fontSize = "1.8rem";
+            td1.style.border = "1px solid #aaa";
+            td1.style.padding = "1rem";
+            td1.style.background = "#f5f5f5";
+            tr.appendChild(td1);
+
+            const td2 = document.createElement("td");
+            
+td2.textContent = col2[i];
+td2.style.background = (i === 2 ? "#fff3e0" : "#ffffff");
+
+            td2.style.fontFamily = "'Fira Mono', monospace";
+            td2.style.fontSize = "1.8rem";
+            td2.style.border = "1px solid #aaa";
+            td2.style.padding = "1rem";
+            tr.appendChild(td2);
+
+            const td3 = document.createElement("td");
+            td3.textContent = "";
+            td3.style.border = "1px solid #aaa";
+            td3.style.padding = "1rem";
+            td3.style.background = "#ffffff";
+            tr.appendChild(td3);
+
+            table.appendChild(tr);
+          }
+
+          step6.appendChild(table);
+          
+          const nextBtn6 = document.createElement("button");
+          nextBtn6.textContent = "➡";
+          nextBtn6.style.marginTop = "1rem";
+          nextBtn6.onclick = () => {
+            removeStepsAfter(6);
+            const d1 = col2[0].toString().padStart(2, '0').split('');
+            const d2 = col2[1].toString().padStart(2, '0').split('');
+            const d3 = col2[2].toString().padStart(2, '0').split('');
+            const col3 = [
+              parseInt(d2[0] + d3[1]),
+              parseInt(d3[0] + d1[1]),
+              parseInt(d1[0] + d2[1])
+            ];
+
+            const step7 = document.createElement("div");
+            step7.id = "step7";
+document.querySelectorAll('.step-card').forEach(el => el.classList.remove('active'));
+step7.className = "step-card active";
+            step7.style.padding = "1rem";
+            step7.style.marginTop = "2rem";
+            step7.style.background = "#e8eaf6";
+            step7.style.borderRadius = "12px";
+            step7.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+            step7.innerHTML = `
+      <h3 class="lang-ru">Шаг 7: Построение третьего столбца</h3>
+      <h3 class="lang-uk">Крок 7: Побудова третього стовпця</h3>
+      <h3 class="lang-en">Step 7: Constructing the third column</h3>
+      <h3 class="lang-de">Schritt 7: Konstruktion der dritten Spalte</h3>
+
+      <p class="lang-ru">Повторяем по очереди шаги номер 4, 5 и 6, но уже с числами второго столбца. Теперь наш квадрат готов. </p>
+      <p class="lang-uk">Повторюємо по черзі кроки 4, 5 та 6, але з числами другого стовпця. Тепер наш квадрат готовий.</p>
+      <p class="lang-en">Repeat steps 4, 5, and 6 in order, but now with the numbers of the second column. Now our square is complete.</p>
+      <p class="lang-de">Wiederholen Sie der Reihe nach die Schritte 4, 5 und 6 – diesmal jedoch mit den Zahlen der zweiten Spalte. Nun ist unser Quadrat fertig.</p>
+    `;
+    setTimeout(updateVisibleLanguageText, 0);
+
+            const table = document.createElement("table");
+            table.style.borderCollapse = "collapse";
+            table.style.margin = "1rem auto";
+            table.style.background = "#fff";
+            table.style.boxShadow = "0 0 10px rgba(0,0,0,0.05)";
+            table.style.border = "2px solid #caa98c";
+            table.style.borderRadius = "10px";
+
+            for (let i = 0; i < 3; i++) {
+              const tr = document.createElement("tr");
+
+              const td1 = document.createElement("td");
+              td1.textContent = col1[i];
+              td1.style.fontFamily = "'Fira Mono', monospace";
+              td1.style.fontSize = "1.8rem";
+              td1.style.border = "1px solid #aaa";
+              td1.style.padding = "1rem";
+              td1.style.background = "#f5f5f5";
+              tr.appendChild(td1);
+
+              const td2 = document.createElement("td");
+              td2.textContent = col2[i];
+              td2.style.fontFamily = "'Fira Mono', monospace";
+              td2.style.fontSize = "1.8rem";
+              td2.style.border = "1px solid #aaa";
+              td2.style.padding = "1rem";
+              td2.style.background = "#ffffff";
+              tr.appendChild(td2);
+
+              const td3 = document.createElement("td");
+              td3.textContent = col3[i];
+              td3.style.fontFamily = "'Fira Mono', monospace";
+              td3.style.fontSize = "1.8rem";
+              td3.style.border = "1px solid #aaa";
+              td3.style.padding = "1rem";
+              td3.style.background = "#e8eaf6";
+              tr.appendChild(td3);
+
+              table.appendChild(tr);
+            }
+
+            step7.appendChild(table);
+            
+          const nextBtn7 = document.createElement("button");
+          nextBtn7.textContent = "➡";
+          nextBtn7.style.marginTop = "1rem";
+          nextBtn7.onclick = () => {
+            removeStepsAfter(7);
+
+            const d1 = col2[0].toString().padStart(2, '0').split('');
+            const d2 = col2[1].toString().padStart(2, '0').split('');
+            const d3 = col2[2].toString().padStart(2, '0').split('');
+            const col3 = [
+              parseInt(d2[0] + d3[1]),
+              parseInt(d3[0] + d1[1]),
+              parseInt(d1[0] + d2[1])
+            ];
+            const square = [
+              [col1[0], col2[0], col3[0]],
+              [col1[1], col2[1], col3[1]],
+              [col1[2], col2[2], col3[2]]
+            ];
+
+            drawSquare(square);
+            setTimeout(() => drawLines(square), 100);
+
+            const step8 = document.createElement("div");
+            step8.id = "step8";
+document.querySelectorAll('.step-card').forEach(el => el.classList.remove('active'));
+step8.className = "step-card active";
+            step8.style.padding = "1rem";
+            step8.style.marginTop = "2rem";
+            step8.style.background = "#fce4ec";
+            step8.style.borderRadius = "12px";
+            step8.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+            step8.innerHTML = `
+      <h3 class="lang-ru">Шаг 8: Визуализация сакральной структуры</h3>
+      <h3 class="lang-uk">Крок 8: Візуалізація сакральної структури</h3>
+      <h3 class="lang-en">Step 8: Visualization of the sacred structure</h3>
+      <h3 class="lang-de">Schritt 8: Visualisierung der sakralen Struktur</h3>
+
+      <p class="lang-ru">Одинаковые цифры в ячейках теперь соединены цветными линиями.</p>
+      <p class="lang-uk">Однакові цифри в комірках тепер з'єднані кольоровими лініями.</p>
+      <p class="lang-en">Identical digits in the cells are now connected by colored lines.</p>
+      <p class="lang-de">Gleiche Ziffern in den Zellen sind nun durch farbige Linien verbunden.</p>
+
+      <p class="lang-ru">Если следовать методике — цифры всегда рисуют восьмилучевую звезду.</p>
+      <p class="lang-uk">Якщо слідувати методиці — цифри завжди формують восьмипроменеву зірку.</p>
+      <p class="lang-en">Following the method, the digits always form an eight-pointed star.</p>
+      <p class="lang-de">Wenn man der Methode folgt, bilden die Ziffern stets einen achtzackigen Stern.</p>
+    `;
+    setTimeout(updateVisibleLanguageText, 0);
+
+            output.appendChild(step8);
+            document.getElementById("square").scrollIntoView({ behavior: "smooth", block: "center" });
+          };
+
+          step7.appendChild(nextBtn7);
+
+output.appendChild(step7);
+          };
+
+          step6.appendChild(nextBtn6);
+
+output.appendChild(step6);
+        };
+
+        step5.appendChild(nextBtn5);
+
+          output.appendChild(step5);
+        };
+
+        step4.appendChild(nextBtn4);
+
+        output.appendChild(step4);
+      };
+
+      step3.appendChild(nextBtn3);
+
+    };
+
+    step2.appendChild(select2);
+    step2.appendChild(comboSelect2);
+    step2.appendChild(nextBtn2);
+    output.appendChild(step2);
+  };
+
+  step1.appendChild(select1);
+  step1.appendChild(comboSelect1);
+  step1.appendChild(nextBtn);
+  output.appendChild(step1);
+}
+</script>
+<script>
+  let currentStepIndex = 0;
+
+  function showStep(stepNumber, stepId, contentBuilder) {
+    const container = document.getElementById("intro-step-output");
+    for (let i = stepNumber + 1; i <= 5; i++) {
+      const el = document.getElementById("step" + i);
+      if (el) el.remove();
+    }
+    const existing = document.getElementById(stepId);
+    if (existing) existing.remove();
+
+    const step = document.createElement("div");
+    step.id = stepId;
+    contentBuilder(step);
+    container.appendChild(step);
+    currentStepIndex = stepNumber;
+  }
+</script>
+<script>
+  function startStep2() {
+    showStep(2, "step2", s => {
+      const h = document.createElement("h3");
+      h.textContent = "Шаг 2: Выберите второй ключ";
+      s.appendChild(h);
+
+      const info = document.createElement("p");
+      info.textContent = "Выберите ключ, не содержащий цифры из первого: " + window.chosenKey1;
+      s.appendChild(info);
+
+      const select = document.createElement("select");
+      select.id = "chosen2";
+      const key1Digits = window.chosenKey1.split("");
+      const allKeys = document.getElementById("key1");
+      Array.from(allKeys.options).forEach(opt => {
+        const digits = opt.value.split("");
+        if (digits.every(d => !key1Digits.includes(d))) {
+          const o = document.createElement("option");
+          o.value = opt.value;
+          o.textContent = opt.textContent;
+          select.appendChild(o);
+        }
+      });
+      s.appendChild(select);
+
+      const comboSelect = document.createElement("select");
+      comboSelect.id = "chosenCombo2";
+      s.appendChild(document.createTextNode(" в комбинации "));
+      s.appendChild(comboSelect);
+
+      select.addEventListener("change", () => {
+        const val = select.value;
+        const digits = val.split("");
+        comboSelect.innerHTML = "";
+        function permute(arr, m = []) {
+          if (arr.length === 0) {
+            const opt = document.createElement("option");
+            opt.value = m.join("");
+            opt.textContent = m.join("");
+            comboSelect.appendChild(opt);
+          } else {
+            for (let i = 0; i < arr.length; i++) {
+              const curr = arr.slice();
+              const next = curr.splice(i, 1);
+              permute(curr.slice(), m.concat(next));
+            }
+          }
+        }
+        permute(digits);
+      });
+
+      select.dispatchEvent(new Event("change"));
+
+      const btn = document.createElement("button");
+      btn.textContent = "➡";
+      btn.onclick = () => {
+        window.chosenKey2 = select.value;
+        window.chosenCombo2 = comboSelect.value;
+        startStep3();
+      };
+      s.appendChild(document.createElement("br"));
+      s.appendChild(btn);
+    });
+  }
+</script>
+<script>
+  function startStep3() {
+    ["step3", "step4", "step5"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    });
+
+    showStep(3, "step3", s => {
+      const h = document.createElement("h3");
+      h.textContent = "Шаг 3: Построение первого столбца";
+      s.appendChild(h);
+
+      const p = document.createElement("p");
+      p.textContent = "Формируем первый столбец из выбранных комбинаций.";
+      s.appendChild(p);
+
+      const pre = document.createElement("pre");
+      pre.textContent = "🔢 " + window.chosenCombo1 + "\n🔢 " + window.chosenCombo2;
+      s.appendChild(pre);
+
+      const btn = document.createElement("button");
+      btn.textContent = "➡";
+      btn.onclick = () => startStep4();
+      s.appendChild(btn);
+    });
+  }
+</script>
+<script>
+document.getElementById("start-intro").addEventListener("click", function () {
+  const step1 = document.getElementById("step1");
+  if (step1) {
+    step1.scrollIntoView({ behavior: "smooth" });
+  }
+});
+</script><script>
+document.getElementById("analyze-auto-btn").addEventListener("click", function () {
+  autoAnalyzeSquare();
+   // Подождать немного, чтобы успел отрендериться анализ
+});
+</script>
+<script>
+const translations = {
+  ru: {
+    "Обучение в пошаговом режиме": "Обучение в пошаговом режиме",
+    "Анализ текущего квадрата и преобразование в магический, если это возможно": "Анализ текущего квадрата и преобразование в магический, если это возможно",
+    "Создать магический квадрат": "Создать магический квадрат",
+    "Выберите первый ключ — три уникальные цифры": "Выберите первый ключ — три уникальные цифры",
+    "Выберите порядок цифр для ключа 1": "Выберите порядок цифр для ключа 1",
+    "Выберите второй ключ — три другие цифры": "Выберите второй ключ — три другие цифры",
+    "Выберите порядок цифр для ключа 2": "Выберите порядок цифр для ключа 2",
+    "Полезные ссылки": "Полезные ссылки",
+    "label_key1": "Ключ 1:",
+    "label_key2": "Ключ 2:",
+    "in_combination": "в комбинации"
+  },
+  uk: {
+    "Обучение в пошаговом режиме": "Навчання покроково",
+    "Анализ текущего квадрата и преобразование в магический, если это возможно": "Аналіз квадрата і перетворення в магічний, якщо можливо",
+    "Создать магический квадрат": "Створити магічний квадрат",
+    "Выберите первый ключ — три уникальные цифры": "Виберіть перший ключ — три унікальні цифри",
+    "Выберите порядок цифр для ключа 1": "Виберіть порядок цифр для ключа 1",
+    "Выберите второй ключ — три другие цифры": "Виберіть другий ключ — інші три цифри",
+    "Выберите порядок цифр для ключа 2": "Виберіть порядок цифр для ключа 2",
+    "Полезные ссылки": "Корисні посилання",
+    "label_key1": "Ключ 1:",
+    "label_key2": "Ключ 2:",
+    "in_combination": "у комбінації"
+  },
+  en: {
+    "Обучение в пошаговом режиме": "Step-by-step learning mode",
+    "Анализ текущего квадрата и преобразование в магический, если это возможно": "Analyze the current square and convert to magic if possible",
+    "Создать магический квадрат": "Build the magic square",
+    "Выберите первый ключ — три уникальные цифры": "Select the first key — three unique digits",
+    "Выберите порядок цифр для ключа 1": "Select the digit order for key 1",
+    "Выберите второй ключ — три другие цифры": "Select the second key — three other digits",
+    "Выберите порядок цифр для ключа 2": "Select the digit order for key 2",
+    "Полезные ссылки": "Helpful resources",
+    "label_key1": "Key 1:",
+    "label_key2": "Key 2:",
+    "in_combination": "in combination"
+  },
+  de: {
+    "Обучение в пошаговом режиме": "Schrittweises Lernen",
+    "Анализ текущего квадрата и преобразование в магический, если это возможно": "Analyse des aktuellen Quadrats und Umwandlung in ein magisches Quadrat, wenn möglich",
+    "Создать магический квадрат": "Magisches Quadrat erstellen",
+    "Выберите первый ключ — три уникальные цифры": "Wählen Sie den ersten Schlüssel – drei eindeutige Ziffern",
+    "Выберите порядок цифр для ключа 1": "Wählen Sie die Ziffernreihenfolge für Schlüssel 1",
+    "Выберите второй ключ — три другие цифры": "Wählen Sie den zweiten Schlüssel – drei andere Ziffern",
+    "Выберите порядок цифр для ключа 2": "Wählen Sie die Ziffernreihenfolge für Schlüssel 2",
+    "Полезные ссылки": "Nützliche Links",
+    "label_key1": "Schlüssel 1:",
+    "label_key2": "Schlüssel 2:",
+    "in_combination": "in Kombination"
+  }
+};
+
+function applyTranslations(language) {
+  // data-tooltip
+  document.querySelectorAll("[data-tooltip-original]").forEach(el => {
+    const original = el.getAttribute("data-tooltip-original");
+    const translated = translations[language]?.[original];
+    if (translated) {
+      el.setAttribute("data-tooltip", translated);
+    }
+  });
+
+  // data-i18n
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    const translated = translations[language]?.[key];
+    if (translated) {
+      el.textContent = translated;
+    }
+  });
+}
+
+document.getElementById("language-select").addEventListener("change", e => {
+  applyTranslations(e.target.value);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  // data-tooltip-original
+  document.querySelectorAll("[data-tooltip]").forEach(el => {
+    if (!el.hasAttribute("data-tooltip-original")) {
+      el.setAttribute("data-tooltip-original", el.getAttribute("data-tooltip"));
+    }
+  });
+});
+</script>
+<script>
+function updateTranslations(lang) {
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    const html = el.hasAttribute("data-html");
+    if (translations[lang] && translations[lang][key]) {
+      if (html) {
+        el.innerHTML = translations[lang][key];
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+}
+</script>
+<script>
+(function() {
+  if (typeof window.translationsInitialized !== 'undefined') {
+    console.warn("[i18n] 🛑 Translations already initialized. Skipping duplicate.");
+    return;
+  }
+  window.translationsInitialized = true;
+
+  const translations = {
+    ru: {
+      training: "🧠 Обучающий режим",
+      analyze: "📊 Анализ",
+      resources: "🔗 Ресурсы",
+      build: "Построить",
+      heading: "Магические квадраты",
+      subheading: "по методике Аслана Уарзиаты",
+      training_tip: "Обучение в пошаговом режиме",
+      analyze_tip: "Анализ текущего квадрата и преобразование в магический, если это возможно",
+      resources_tip: "Полезные ссылки",
+      how_title: "Как это работает?",
+      how_text: "Выберите 2 ключа — тройки уникальных цифр без повторений. Затем нажмите кнопку <i>«Построить»</i>, чтобы увидеть квадрат.",
+    "label_key1": "Ключ 1:",
+    "label_key2": "Ключ 2:",
+    "in_combination": "в комбинации"
+  },
+    uk: {
+      training: "🧠 Навчальний режим",
+      analyze: "📊 Аналіз",
+      resources: "🔗 Ресурси",
+      build: "Побудувати",
+      heading: "Магічні квадрати",
+      subheading: "за методикою Аслана Уарзіати",
+      training_tip: "Навчання покроково",
+      analyze_tip: "Аналіз поточного квадрата і перетворення в магічний, якщо це можливо",
+      resources_tip: "Корисні посилання",
+      how_title: "Як це працює?",
+      how_text: "Виберіть 2 ключі — трійки унікальних цифр без повторень. Потім натисніть кнопку <i>«Побудувати»</i>, щоб побачити квадрат.",
+    "label_key1": "Ключ 1:",
+    "label_key2": "Ключ 2:",
+    "in_combination": "у комбінації"
+  },
+    en: {
+      training: "🧠 Training Mode",
+      analyze: "📊 Analyze",
+      resources: "🔗 Resources",
+      build: "Build",
+      heading: "Magic Squares",
+      subheading: "based on Aslan Uarziaty's method",
+      training_tip: "Step-by-step learning",
+      analyze_tip: "Analyze and convert to magic square if possible",
+      resources_tip: "Helpful resources",
+      how_title: "How does it work?",
+      how_text: "Choose 2 keys — sets of unique digits without repeats. Then click <i>“Build”</i> to see the square.",
+    "label_key1": "Key 1:",
+    "label_key2": "Key 2:",
+    "in_combination": "in combination"
+  },
+    de: {
+      training: "🧠 Lernmodus",
+      analyze: "📊 Analyse",
+      resources: "🔗 Ressourcen",
+      build: "Erstellen",
+      heading: "Magische Quadrate",
+      subheading: "nach der Methode von Aslan Uarziaty",
+      training_tip: "Schrittweises Lernen",
+      analyze_tip: "Analyse des aktuellen Quadrats und Umwandlung in ein magisches Quadrat, falls möglich",
+      resources_tip: "Nützliche Ressourcen",
+      how_title: "Wie funktioniert das?",
+      how_text: "Wähle 2 Schlüssel — jeweils drei eindeutige Ziffern. Klicke dann auf <i>„Erstellen“</i>, um das Quadrat zu sehen.",
+    "label_key1": "Schlüssel 1:",
+    "label_key2": "Schlüssel 2:",
+    "in_combination": "in Kombination"
+  }
+  };
+
+  function updateTranslations(lang) {
+    console.log("[i18n] Updating translations for language:", lang);
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (translations[lang] && translations[lang][key]) {
+        if (el.tagName.toLowerCase() === 'p' || el.tagName.toLowerCase() === 'div' || el.hasAttribute("data-html")) {
+          el.innerHTML = translations[lang][key];
+        } else {
+          el.textContent = translations[lang][key];
+        }
+        console.log(`[i18n] ✅ Updated: [${key}] => "${translations[lang][key]}"`);
+      } else {
+        console.warn(`[i18n] ⚠️ Missing translation for: [${key}] in [${lang}]`);
+      }
+    });
+    document.querySelectorAll("[data-tooltip-key]").forEach(el => {
+      const key = el.getAttribute("data-tooltip-key");
+      if (translations[lang] && translations[lang][key]) {
+        el.setAttribute("data-tooltip", translations[lang][key]);
+        console.log(`[tooltip] ✅ Updated: [${key}] => "${translations[lang][key]}"`);
+      } else {
+        console.warn(`[tooltip] ⚠️ Missing tooltip for: [${key}] in [${lang}]`);
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("[i18n] DOMContentLoaded triggered");
+    const selector = document.getElementById("language-select");
+    if (!selector) {
+      console.error("[i18n] ❌ language-select element not found!");
+      return;
+    }
+    console.log("[i18n] language-select element found. Current value:", selector.value);
+    updateTranslations(selector.value);
+    selector.addEventListener("change", () => {
+      console.log("[i18n] Language changed to:", selector.value);
+      updateTranslations(selector.value);
+    });
+  });
+})();
+</script>
+<script>
+(function() {
+  if (typeof window.translationsInitialized !== 'undefined') {
+    console.warn("[i18n] 🛑 Translations already initialized. Skipping duplicate.");
+    return;
+  }
+  window.translationsInitialized = true;
+
+  const translations = {
+    ru: {
+      training: "🧠 Обучающий режим",
+      analyze: "📊 Анализ",
+      resources: "🔗 Ресурсы",
+      build: "Построить",
+      heading: "Магические квадраты",
+      subheading: "по методике Аслана Уарзиаты",
+      training_tip: "Обучение в пошаговом режиме",
+      analyze_tip: "Анализ текущего квадрата и преобразование в магический, если это возможно",
+      resources_tip: "Полезные ссылки",
+      how_title: "Как это работает?",
+      how_text: "Выберите 2 ключа — тройки уникальных цифр без повторений. Затем нажмите кнопку <i>«Построить»</i>, чтобы увидеть квадрат.",
+    "label_key1": "Ключ 1:",
+    "label_key2": "Ключ 2:",
+    "in_combination": "в комбинации"
+  },
+    uk: {
+      training: "🧠 Навчальний режим",
+      analyze: "📊 Аналіз",
+      resources: "🔗 Ресурси",
+      build: "Побудувати",
+      heading: "Магічні квадрати",
+      subheading: "за методикою Аслана Уарзіати",
+      training_tip: "Навчання покроково",
+      analyze_tip: "Аналіз поточного квадрата і перетворення в магічний, якщо це можливо",
+      resources_tip: "Корисні посилання",
+      how_title: "Як це працює?",
+      how_text: "Виберіть 2 ключі — трійки унікальних цифр без повторень. Потім натисніть кнопку <i>«Побудувати»</i>, щоб побачити квадрат.",
+    "label_key1": "Ключ 1:",
+    "label_key2": "Ключ 2:",
+    "in_combination": "у комбінації"
+  },
+    en: {
+      training: "🧠 Training Mode",
+      analyze: "📊 Analyze",
+      resources: "🔗 Resources",
+      build: "Build",
+      heading: "Magic Squares",
+      subheading: "based on Aslan Uarziaty's method",
+      training_tip: "Step-by-step learning",
+      analyze_tip: "Analyze and convert to magic square if possible",
+      resources_tip: "Helpful resources",
+      how_title: "How does it work?",
+      how_text: "Choose 2 keys — sets of unique digits without repeats. Then click <i>“Build”</i> to see the square.",
+    "label_key1": "Key 1:",
+    "label_key2": "Key 2:",
+    "in_combination": "in combination"
+  },
+    de: {
+      training: "🧠 Lernmodus",
+      analyze: "📊 Analyse",
+      resources: "🔗 Ressourcen",
+      build: "Erstellen",
+      heading: "Magische Quadrate",
+      subheading: "nach der Methode von Aslan Uarziaty",
+      training_tip: "Schrittweises Lernen",
+      analyze_tip: "Analyse des aktuellen Quadrats und Umwandlung in ein magisches Quadrat, falls möglich",
+      resources_tip: "Nützliche Ressourcen",
+      how_title: "Wie funktioniert das?",
+      how_text: "Wähle 2 Schlüssel — jeweils drei eindeutige Ziffern. Klicke dann auf <i>„Erstellen“</i>, um das Quadrat zu sehen.",
+    "label_key1": "Schlüssel 1:",
+    "label_key2": "Schlüssel 2:",
+    "in_combination": "in Kombination"
+  }
+  };
+
+  function updateTranslations(lang) {
+    console.log("[i18n] 🔁 Updating translations for language:", lang);
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      const tag = el.tagName.toLowerCase();
+      if (translations[lang] && translations[lang][key]) {
+        const translated = translations[lang][key];
+        if (tag === 'p' || tag === 'div' || el.hasAttribute("data-html") || tag === 'strong' || tag === 'span' || tag === 'h1' || tag === 'h2') {
+          el.innerHTML = translated;
+        } else {
+          el.textContent = translated;
+        }
+        console.log(`[i18n] ✅ [${tag}] Updated: [${key}] => "${translated}"`);
+      } else {
+        console.warn(`[i18n] ⚠️ [${tag}] Missing translation for: [${key}] in [${lang}]`);
+      }
+    });
+    document.querySelectorAll("[data-tooltip-key]").forEach(el => {
+      const key = el.getAttribute("data-tooltip-key");
+      if (translations[lang] && translations[lang][key]) {
+        el.setAttribute("data-tooltip", translations[lang][key]);
+        console.log(`[tooltip] ✅ Updated: [${key}] => "${translations[lang][key]}"`);
+      } else {
+        console.warn(`[tooltip] ⚠️ Missing tooltip for: [${key}] in [${lang}]`);
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("[i18n] ✅ DOMContentLoaded triggered");
+    const selector = document.getElementById("language-select");
+    if (!selector) {
+      console.error("[i18n] ❌ language-select element not found!");
+      return;
+    }
+    console.log("[i18n] 🌍 Found language-select:", selector.value);
+    updateTranslations(selector.value);
+    selector.addEventListener("change", () => {
+      console.log("[i18n] 🌐 Language changed to:", selector.value);
+      updateTranslations(selector.value);
+    });
+  });
+})();
+</script>
+<!-- DEBUG BLOCK -->
+<script>
+(function() {
+  const observer = new MutationObserver(() => {
+    const keys = Array.from(document.querySelectorAll("[data-i18n]")).map(el => el.getAttribute("data-i18n"));
+    if (keys.includes("how_title") && keys.includes("how_text")) {
+      console.log("[i18n] 🕵️ Обнаружены how_title и how_text в DOM — запускаем повторный перевод");
+      updateTranslations(document.getElementById("language-select").value);
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
+<script>
+function updateVisibleLanguageText() {
+  let lang = localStorage.getItem("lang") || "ru";
+  if (lang === "ua") lang = "uk";
+  document.querySelectorAll('.lang-ru, .lang-uk, .lang-en, .lang-de').forEach(el => {
+    el.classList.remove("lang-visible");
+  });
+  document.querySelectorAll(`.lang-${lang}`).forEach(el => {
+    el.classList.add("lang-visible");
+  });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(updateVisibleLanguageText, 0);
+  const langSelect = document.getElementById("language-select");
+  if (langSelect) {
+    langSelect.addEventListener("change", () => {
+      let value = langSelect.value;
+      if (value === "ua") value = "uk";
+      localStorage.setItem("lang", value);
+      document.querySelectorAll(".step-card").forEach(card => card.remove());
+    });
+  }
+});
+</script>
+
+
+
+
+<script>
+  const langSelect = document.getElementById("language-select");
+  if (langSelect) {
+    langSelect.addEventListener("change", function () {
+      const selectedLang = this.value;
+      localStorage.setItem("lang", selectedLang); // Установка языка
+      updateVisibleLanguageText();
+
+      // Очистка анализа
+      const analysis = document.getElementById("analysis-output");
+      if (analysis) analysis.innerHTML = "";
+    });
+  }
+</script>
+
+</body>
+</html>
