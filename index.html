@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Магические квадраты </title>
+<title>Магические квадраты 22 </title>
 <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <style>
 .top-bar {
@@ -1020,10 +1020,13 @@ function drawLines(square) {
     });
   });
 
-  let delay = 0;
-  for (let digit in digitMap) {
+  let digitOrder = Object.keys(digitMap).sort();
+  let globalDelay = 0;
+
+  digitOrder.forEach(digit => {
     const points = digitMap[digit];
     const color = palette[digit] || "gray";
+
     for (let i = 0; i < points.length; i++) {
       for (let j = i + 1; j < points.length; j++) {
         const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -1035,11 +1038,11 @@ function drawLines(square) {
         line.setAttribute("stroke-width", "3");
         line.setAttribute("data-digit", digit);
         line.classList.add("animated");
-        setTimeout(() => svg.appendChild(line), delay);
-        delay += 100;
+        setTimeout(() => svg.appendChild(line), globalDelay);
+        globalDelay += 400;
       }
     }
-  }
+  });
 }
 
 
@@ -1493,10 +1496,13 @@ function drawLines(square) {
     });
   });
 
-  let delay = 0;
-  for (let digit in digitMap) {
+  let digitOrder = Object.keys(digitMap).sort();
+  let globalDelay = 0;
+
+  digitOrder.forEach(digit => {
     const points = digitMap[digit];
     const color = palette[digit] || "gray";
+
     for (let i = 0; i < points.length; i++) {
       for (let j = i + 1; j < points.length; j++) {
         const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -1508,11 +1514,11 @@ function drawLines(square) {
         line.setAttribute("stroke-width", "3");
         line.setAttribute("data-digit", digit);
         line.classList.add("animated");
-        setTimeout(() => svg.appendChild(line), delay);
-        delay += 100;
+        setTimeout(() => svg.appendChild(line), globalDelay);
+        globalDelay += 400;
       }
     }
-  }
+  });
 }
 
 
