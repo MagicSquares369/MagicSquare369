@@ -1195,28 +1195,7 @@ if (!lang) {
   const base = renderSquare(matrix, "Исходный квадрат");
   output.appendChild(base);
 
-  if (!isMagic(matrix)) {
-    const rowPerms = permutations([0,1,2]);
-    const colPerms = permutations([0,1,2]);
-
-    for (let rp of rowPerms) {
-      for (let cp of colPerms) {
-        const newMatrix = rp.map(i => cp.map(j => matrix[i][j]));
-        if (isMagic(newMatrix)) {
-          const magic = renderSquare(newMatrix, "Магический квадрат");
-          output.appendChild(magic);
-          break;
-        }
-      }
-    }
-  } else {
-    const note = document.createElement("div");
-    note.textContent = "🟢 Это магический квадрат!";
-    note.style.fontSize = "1.3rem";
-    note.style.marginTop = "1rem";
-    output.appendChild(note);
-  }
-
+  
   const refBox = document.getElementById("analysis-results");
 if (refBox && refBox.parentNode) {
   refBox.parentNode.insertBefore(output, refBox);
