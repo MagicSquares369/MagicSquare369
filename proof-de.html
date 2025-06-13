@@ -1,0 +1,733 @@
+
+<!DOCTYPE html>
+<html lang="e">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Beweise für eine weltweite Sensation</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&amp;display=swap" rel="stylesheet"/>
+<style>
+  #crop-image,
+  #crop-caption {
+    transition: opacity 0.5s ease;
+    opacity: 1;
+  }
+
+#calendar-carousel-image,
+#calendar-caption,
+#new-carousel-image,
+#new-caption,
+#schumann-image,
+#schumann-caption {
+  transition: opacity 0.5s ease;
+  opacity: 1;
+}
+
+#proof-image,
+#image-caption {
+  transition: opacity 0.5s ease;
+  opacity: 1;
+}
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: linear-gradient(135deg, #fdfcfb, #e2d1c3);
+      color: #333;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .back-button-fixed {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #b97d52;
+      background-color: rgba(255, 255, 255, 0.85);
+      padding: 8px 16px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s;
+    }
+
+    .back-button-fixed:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+
+    .content-box {
+      max-width: 900px;
+      margin: 60px auto 0;
+      background: rgba(255,255,255,0.95);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #b97d52;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      color: #b97d52;
+      margin-top: 2rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .proof-section {
+      margin-top: 2.5rem;
+      padding: 1.5rem;
+      background: #fffdfc;
+      border-left: 6px solid #b97d52;
+      border-radius: 12px;
+      text-align: left;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .proof-section h2 {
+      margin-top: 0;
+      font-size: 1.5rem;
+      color: #b97d52;
+    }
+
+    .proof-images {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .proof-images img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  
+    .intro-box {
+      max-width: 900px;
+      margin: 20px auto 40px;
+      background: #ffffffcc;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .intro-box h1 {
+      font-size: 2.5rem;
+      color: #b97d52;
+      margin-bottom: 1rem;
+    }
+
+    .intro-box p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #333;
+    }
+
+  
+.image-caption {
+  font-style: italic;
+  color: #555;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+#proof-image.zoomed {
+  transform: scale(2);
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+
+#proof-image {
+  cursor: zoom-in;
+}
+
+
+.proof-calendar {
+  text-align: center;
+  margin-top: 2rem;
+}
+.proof-calendar img {
+  max-width: 600px;
+  width: auto;
+max-height: 450px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: zoom-in;
+}
+#calendar-image.zoomed {
+  transform: scale(2);
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+
+
+.calendar-carousel {
+  text-align: center;
+  margin-top: 1rem;
+}
+.calendar-carousel img {
+  max-width: 600px;
+  width: auto;
+max-height: 100px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: zoom-in;
+}
+#calendar-carousel-image.zoomed {
+  transform: scale(2);
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+
+
+#new-carousel-image.zoomed {
+  transform: scale(2);
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+#new-carousel-image {
+  cursor: zoom-in;
+}
+
+.schumann-carousel {
+  text-align: center;
+  margin-top: 1rem;
+}
+.schumann-carousel img {
+  max-width: 600px;
+  width: auto;
+  max-height: 450px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: zoom-in;
+  transition: opacity 0.5s ease;
+}
+#schumann-image.zoomed {
+  transform: scale(2);
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+
+#crop-image.zoomed {
+  transform: scale(2);
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+
+
+</style>
+</head>
+<body>
+<a class="back-button-fixed" href="#" onclick="return setLangFromStorage()">← Zurück zur Hauptseite</a>
+<div class="intro-box">
+<h1>Beweise für eine weltweite Sensation</h1>
+<p>Auf dieser Seite werden Beweise dafür präsentiert, dass das Buch von Aslan Uarziaty eine wahre weltweite Sensation ist und seine Methode zur Konstruktion von Quadraten in direktem Zusammenhang mit alten Kalendern, sakralen Symbolen und sogar Kornkreisen steht.</p>
+</div>
+<body>
+<div class="proof-section">
+<h2>🌟 Sensationelle Quadrate</h2>
+<p>Auf der Website konnte nur ein kleiner Teil dessen umgesetzt werden, was im Buch präsentiert wird. Darin gibt es magische Quadrate, deren Komplexität und Eleganz beeindrucken. Diese Zahlenstrukturen bewahren perfekte Summen in Reihen, Spalten und Diagonalen – selbst bei steigender Zahlenkomplexität. Das macht die Methode nicht nur einzigartig, sondern auch ästhetisch vollkommen aus mathematischer Sicht. Die Methode von Aslan Uarziaty ist eine <strong>wahre weltweite Sensation</strong>.</p>
+<div class="proof-carousel">
+<img alt="Таблица №3 — Сторона В" id="proof-image" onclick="toggleZoom()" src="123.png"/>
+<p class="image-caption" id="image-caption">Таблица №3 — Сторона В </p>
+<div class="carousel-buttons">
+<button onclick="prevCarousel1Image()">← Zurück</button>
+<button onclick="nextCarousel1Image()">Weiter →</button>
+</div>
+</div>
+</div>
+<style>
+#proof-image,
+#image-caption {
+  transition: opacity 0.5s ease;
+  opacity: 1;
+}
+
+.proof-carousel {
+  text-align: center;
+}
+.proof-carousel img {
+  width: auto;
+  max-width: 600px;
+  height: auto;
+max-height: 600px;
+  margin: 0 auto 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.carousel-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.carousel-buttons button {
+  background-color: #b97d52;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.carousel-buttons button:hover {
+  background-color: #a06741;
+}
+
+    .intro-box {
+      max-width: 900px;
+      margin: 20px auto 40px;
+      background: #ffffffcc;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .intro-box h1 {
+      font-size: 2.5rem;
+      color: #b97d52;
+      margin-bottom: 1rem;
+    }
+
+    .intro-box p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #333;
+    }
+
+  
+.image-caption {
+  font-style: italic;
+  color: #555;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+#proof-image.zoomed {
+  transform: scale(2);
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+
+#proof-image {
+  cursor: zoom-in;
+}
+
+
+.proof-calendar {
+  text-align: center;
+  margin-top: 2rem;
+}
+.proof-calendar img {
+  max-width: 600px;
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: zoom-in;
+}
+#calendar-image.zoomed {
+  transform: scale(2);
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+
+
+.calendar-carousel {
+  text-align: center;
+  margin-top: 1rem;
+}
+.calendar-carousel img {
+  max-width: 600px;
+  width: auto;
+max-height: 450px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: zoom-in;
+}
+#calendar-carousel-image.zoomed {
+  transform: scale(2);
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+
+
+#new-carousel-image.zoomed {
+  transform: scale(2);
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+#new-carousel-image {
+  cursor: zoom-in;
+}
+
+.schumann-carousel {
+  text-align: center;
+  margin-top: 1rem;
+}
+.schumann-carousel img {
+  max-width: 600px;
+  width: auto;
+  max-height: 450px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: zoom-in;
+  transition: opacity 0.5s ease;
+}
+#schumann-image.zoomed {
+  transform: scale(2);
+  transition: transform 0.3s ease;
+  cursor: zoom-out;
+}
+
+</style>
+<div class="proof-section">
+<h2>🕰️ Das Geheimnis der alten Kalender</h2>
+<p>In seinem Buch liefert Aslan Uarziaty Beweise dafür, dass in verschiedenen Kalendern dieselben Informationen verschlüsselt wurden – dieselben Schlüssel und Tabellen. 
+Inspiriert von den Beispielen im Buch, beschloss ich, eine kleine Untersuchung durchzuführen: die beschriebenen Beispiele zu wiederholen, um mich persönlich von ihrer Richtigkeit zu überzeugen.
+Das Ergebnis brachte mich wirklich zum Nachdenken: <em>„Wie ist das möglich?“</em></p>
+
+<p><strong>Eine Sensation, die im slawischen Kalender verborgen ist.</strong></p>
+
+<p>Nach dem Beispiel aus dem Buch führte ich ein Experiment mit dem slawischen Totemkalender durch. Es ist schwer zu glauben, was ich entdeckt habe – aber es ist wahr. Ich nahm den slawischen Kalender und wandelte jedes Jahr in seinen Zahlenwert um. Auf dem <strong>ersten Foto</strong> ist ein Beispiel gezeigt: der Zahlenwert des Jahres <strong>1928</strong> ist <strong>2</strong>, weil <strong>1+9+2+8 = 20, 2 + 0 = 2</strong>.</p>
+
+<p>Diesen einfachen Vorgang wiederholte ich mit allen Jahren, die auf dem Foto dargestellt sind. Um den vollständigen Zyklus zu erhalten, verlängerte ich den Kalender bis zum Jahr 2071. Das Ergebnis war eine Zahlenmatrix – sie ist auf dem <strong>zweiten Foto</strong> zu sehen.</p>
+
+<p>Aus dieser Matrix wählte ich dann Zahlen mit gleicher Stellenanzahl aus und ordnete sie in ein Quadrat <strong>3x3</strong>. Ein Beispiel auf dem <strong>dritten Foto</strong>: Zuerst wählte ich die Zahl <strong>31</strong>. Im Kalender folgt darauf vertikal <strong>42</strong> – sie wurde die nächste, dann <strong>53</strong> und so weiter, bis das Quadrat vollständig war. Danach berechnete ich die Summen der Reihen und Spalten des entstandenen Quadrats. Auf den ersten Blick – nichts Besonderes: Die Summen sind völlig unterschiedlich. Aber! Wenn man die Summen aller drei Reihen addiert, ergibt sich derselbe Wert wie bei den drei Spalten – <strong>495</strong>.</p>
+
+<p>Man könnte denken, dass es nur ein Zufall ist, deshalb wiederholte ich das Experiment und wählte eine andere Zahl, zum Beispiel <strong>75</strong>. Und wieder – die Summe aller Reihen entsprach der Summe aller Spalten: <strong>495</strong>! Ich wollte wissen, was passiert, wenn man dreistellige Zahlen nimmt – das Ergebnis wiederholte sich. Nur war die Summe diesmal <strong>4995</strong>. Dann begann ich, die Anzahl der Ziffern schrittweise zu erhöhen – und jedes Mal war das Ergebnis dasselbe: zuerst eine <strong>4</strong>, dann mehrere <strong>9</strong>, und am Ende eine <strong>5</strong>.</p>
+
+<p><strong>Unglaublich!</strong> Das ist ein wahres <strong>Wunder</strong> – ein solches Codierungssystem hat bis heute überlebt. <i>Wie ist das möglich?</i></p>
+
+<p><strong>Die Beweise liegen direkt vor Ihren Augen.</strong></p>
+
+
+      <div class="proof-calendar">
+<div class="calendar-carousel">
+<img alt="Славянский тотемный календарь" id="calendar-carousel-image" onclick="toggleZoomCalendarCarousel()" src="7.jpg"/>
+<p class="image-caption" id="calendar-caption">Славянский тотемный календарь</p>
+<div class="carousel-buttons">
+<button onclick="prevCarousel2Image()">← Zurück</button>
+<button onclick="nextCarousel2Image()">Weiter →</button>
+</div>
+</div>
+</div>
+</p></div>
+<div class="proof-section">
+<h2>🔍 Weitere Experimente mit Kalendern</h2>
+<p>In seinem Buch stellte Aslan eine äußerst interessante Untersuchung vor. Wenn man den Tzolkin-Kalender (<strong>siehe erstes Foto</strong>) in Zahlenwerte umwandelt <strong>(siehe zweites Foto)</strong> und die resultierende Matrix im Kontext dreistelliger Zahlen betrachtet, erkennt man stets den Hauptschlüssel — <strong>369</strong>, sowohl vertikal als auch horizontal.</p>
+
+<p>Ich beschloss, dieses Experiment mit dem slawischen Totemkalender sowie dem chinesischen Kalender zu wiederholen.</p>
+
+<p>Auf dem <strong>vierten Foto</strong> ist die bereits zuvor gezeigte Zahlenmatrix abgebildet — der slawische Kalender in Zahlenwerten.</p>
+
+<p>Die Zahlen <strong>297</strong> (<span style="color: orange;">orange</span>), <strong>975</strong> (<span style="color:green;">grün</span>) und <strong>753</strong> (<span style="color: deepskyblue;">blau</span>) zeigten durch ihre Quersummen den Hauptschlüssel <strong>369:</strong></p>
+
+<p>2 + 9 + 7 = 18 → 1 + 8 = 9</p>
+
+<p>9 + 7 + 5 = 21 → 2 + 1 = 3</p>
+
+<p>7 + 5 + 3 = 15 → 1 + 5 = 6</p>
+
+<p>Wenn man weiterhin dreistellige Zahlen vertikal oder horizontal betrachtet, erhält man immer wieder den Hauptschlüssel — <strong>369</strong>.</p>
+
+<p>Beim chinesischen Kalender ist die Situation ähnlich: Wenn man ihn in Zahlenwerte umwandelt und das Ergebnis im Kontext dreistelliger Zahlen analysiert, erkennt man erneut den Schlüssel <strong>369</strong> — sowohl vertikal als auch horizontal.</p>
+<div class="calendar-carousel">
+<img alt="Новое изображение" id="new-carousel-image" onclick="toggleZoomNewCarousel()" src="placeholder.jpg"/>
+<p class="image-caption" id="new-caption">Новое изображение</p>
+<div class="carousel-buttons">
+<button onclick="prevNewCarouselImage()">← Zurück</button>
+<button onclick="nextNewCarouselImage()">Weiter →</button>
+</div>
+</div>
+</div>
+
+<div class="proof-section">
+<h2>🌐 Schumann-Resonanz</h2>
+<p>Die nächste Sensation steht im Zusammenhang mit einer erstaunlichen Tatsache: Die Quadrate, die nach der Methode von Aslan Uarziaty erstellt werden, <strong>bilden immer ein in vielen Kulturen verehrtes Symbol – den achtstrahligen Stern</strong>.  
+Auf der Startseite der Website können Sie selbst ein magisches Quadrat erstellen und beobachten, wie das System automatisch gleiche Ziffern miteinander verbindet: <strong>sie formen stets die Struktur dieses Sterns.</strong>  
+Zum ersten Mal zeigte Aslan im Juni 2023, wie die Tabellen diesen achtstrahligen Stern formen. Und kurze Zeit später, im selben Monat, geschah etwas Unerklärliches: Die Schumann-Resonanz schien verrückt zu spielen und „zeichnete“ ebenfalls einen achtstrahligen Stern <strong>(siehe erstes Foto)</strong> – so etwas war zuvor noch nie beobachtet worden.</p>
+
+<p>Auf den folgenden Fotos sehen Sie einen Vergleich zwischen dem Stern aus dem Buch und dem, was auf der Grafik der Schumann-Resonanz erschien.</p>
+
+<p>Ich persönlich glaube nicht an solche Zufälle – zu viele unerklärliche Dinge geschehen rund um dieses Buch.</p>
+
+<p>Ich bin überzeugt, dass dies ein <strong>wahres Zeichen von oben</strong> ist – ein Hinweis für uns, einfache Menschen: <strong>auf das Buch aufmerksam zu werden und es selbst zu überprüfen, anstatt es zu ignorieren oder zu sagen „ich glaube nicht daran“, ohne es je geprüft zu haben.</strong></p>
+<div class="schumann-carousel">
+<img alt="Резонанс Шумана - Изображение 1" id="schumann-image" onclick="toggleZoomSchumann()" src="s1.jpg"/>
+<p class="image-caption" id="schumann-caption">Резонанс Шумана - Изображение 1</p>
+<div class="carousel-buttons">
+<button onclick="prevSchumannImage()">← Zurück</button>
+<button onclick="nextSchumannImage()">Weiter →</button>
+</div>
+</div>
+</div>
+
+<div class="proof-section">
+  <h2>🌾 Kornkreise</h2>
+  <p>Im Internet findet man eine enorme Anzahl von Kornkreiszeichnungen. Viele von ihnen sind so beeindruckend, dass es schwerfällt zu glauben, dass sie von Menschenhand geschaffen wurden.  
+Aslan hat eine dieser Zeichnungen entschlüsselt — <strong>jene, die 2006 auf einem Feld in England erschien</strong> (<strong>siehe erstes</strong> und <strong>zweites Foto</strong>).</p>
+
+<p>Das Muster erinnert stark an ein <strong>aufgeschlagenes Buch mit Zahlen</strong>, umgeben von <strong>neun runden Sphären</strong>.  
+Alles wirkt wie ein weiterer Hinweis: <em>„Überprüft das Buch“</em>.</p>
+
+<p>Auf dem dritten Foto ist dieselbe Zeichnung zu sehen, jedoch bereits in <strong>numerischer Form</strong>.  
+Auf dem vierten Foto zeigt Aslan einen der entscheidenden Schritte der Entschlüsselung: Wie bei der Methode zur Konstruktion magischer Quadrate musste man <strong>die Nullen entfernen</strong> und zudem <strong>wiederholende Spalten ausschließen</strong>.</p>
+
+  <div class="calendar-carousel">
+    <img src="crop1.jpg" alt="Рисунок на поле - 1" id="crop-image" onclick="toggleZoomCrop()"/>
+    <p class="image-caption" id="crop-caption">Рисунок на поле — Изображение 1</p>
+    <div class="carousel-buttons">
+      <button onclick="prevCropImage()">← Zurück</button>
+      <button onclick="nextCropImage()">Weiter →</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="intro-box">
+  <h1>Fazit</h1>
+<p>Diese Liste enthält bei Weitem nicht alle Beweise, die Sie im Buch finden werden. Aber selbst diese wenigen reichen mehr als aus, um einen zum Nachdenken zu bringen: <em>„Wie ist so etwas möglich?“</em></p>
+<p>Konnte ein Mensch allein all diese Geheimnisse entschlüsseln und ein so geniales, vollkommenes System zur Konstruktion magischer Quadrate erschaffen?</p>
+<p>War Aslan wirklich klüger als Hunderte von Wissenschaftlern, die die Kalender in- und auswendig studiert haben, aber dieses verschlüsselte Buch nicht entdecken konnten?</p>
+<p>Oder ist das alles — der Wille Gottes?</p>
+
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  function setLangFromStorage() {
+    const lang = localStorage.getItem('lang') || 'ru';
+    window.location.href = `index.html?lang=${lang}`;
+    return false;
+  }
+  window.setLangFromStorage = setLangFromStorage;
+
+  // === Карусель 1 ===
+  const carousel1Images = [
+    { src: '123.png', alt: 'Таблица №3 — Сторона В', caption: 'Tabelle 3 – Seite "B", im magischen Quadrat' },
+    { src: '1234.png', alt: 'Таблица №4 — Сторона A', caption: 'Tabelle 4 – Seite "A", im magischen Quadrat' },
+    { src: '12345.png', alt: 'Таблица №5 — Сторона A', caption: 'Tabelle 5 – Seite "A", im magischen Quadrat' },
+    { src: '123456.png', alt: 'Таблица №6 — Сторона A', caption: 'Tabelle 6 – Seite "A", im magischen Quadrat' }
+  ];
+  let carousel1Current = 0;
+  function showCarousel1Image(index) {
+    const img = document.getElementById('proof-image');
+    const cap = document.getElementById('image-caption');
+    img.style.opacity = 0;
+    cap.style.opacity = 0;
+    setTimeout(() => {
+      img.src = carousel1Images[index].src;
+      img.alt = carousel1Images[index].alt;
+      cap.textContent = carousel1Images[index].caption;
+      img.style.opacity = 1;
+      cap.style.opacity = 1;
+    }, 200);
+  }
+  function nextCarousel1Image() {
+    carousel1Current = (carousel1Current + 1) % carousel1Images.length;
+    showCarousel1Image(carousel1Current);
+  }
+  function prevCarousel1Image() {
+    carousel1Current = (carousel1Current - 1 + carousel1Images.length) % carousel1Images.length;
+    showCarousel1Image(carousel1Current);
+  }
+  window.nextCarousel1Image = nextCarousel1Image;
+  window.prevCarousel1Image = prevCarousel1Image;
+  showCarousel1Image(carousel1Current);
+
+  // === Карусель 2 ===
+  const carousel2Images = [
+    { src: '7.jpg', alt: 'Славянский тотемный календарь', caption: 'Slawischer Totemkalender' },
+    { src: '8.jpg', alt: 'Календарь в цифровом значении', caption: 'Kalender in digitalem Wert' },
+    { src: '9.jpg', alt: 'Двузначные числа', caption: 'Zweistellige Zahlen' },
+    { src: '10.jpg', alt: 'Трёхзначные числа', caption: 'Dreistellige Zahlen' },
+    { src: '11.jpg', alt: '4-цифровые числа', caption: 'Vierstellige Zahlen' },
+    { src: '12.jpg', alt: '5-цифровые числа', caption: 'fünfstellige Zahlen' },
+    { src: '13.jpg', alt: '6-цифровые числа', caption: 'sechsstellige Zahlen' },
+    { src: '14.jpg', alt: '7-цифровые числа', caption: 'siebenstellige Zahlen' },
+    { src: '15.jpg', alt: '8-цифровые числа', caption: 'achtstellige Zahlen' },
+    { src: '16.jpg', alt: '9-цифровые числа', caption: 'neunstelligе Zahlen' }
+  ];
+  let carousel2Current = 0;
+  function showCarousel2Image(index) {
+    const img = document.getElementById('calendar-carousel-image');
+    const cap = document.getElementById('calendar-caption');
+    img.style.opacity = 0;
+    cap.style.opacity = 0;
+    setTimeout(() => {
+      img.src = carousel2Images[index].src;
+      img.alt = carousel2Images[index].alt;
+      cap.textContent = carousel2Images[index].caption;
+      img.style.opacity = 1;
+      cap.style.opacity = 1;
+    }, 200);
+  }
+  function nextCarousel2Image() {
+    carousel2Current = (carousel2Current + 1) % carousel2Images.length;
+    showCarousel2Image(carousel2Current);
+  }
+  function prevCarousel2Image() {
+    carousel2Current = (carousel2Current - 1 + carousel2Images.length) % carousel2Images.length;
+    showCarousel2Image(carousel2Current);
+  }
+  window.nextCarousel2Image = nextCarousel2Image;
+  window.prevCarousel2Image = prevCarousel2Image;
+  showCarousel2Image(carousel2Current);
+
+  // === Карусель 3 ===
+  const newCarouselImages = [
+    { src: 'c1.jpg', alt: 'Календарь Цолькин', caption: 'Tzolkin-Kalender' },
+    { src: 'c2.jpg', alt: 'Цикл Цолькин', caption: 'Tzolkin in digitalem Wert' },
+    { src: 'c3.jpg', alt: 'Вертикальные и горизонтальные линии', caption: 'Tzolkin im Kontext dreistelliger Zahlen' },
+    { src: 'c4.png', alt: 'Цветные выделения', caption: 'Slawischer Kalender in digitalem Wert' },
+    { src: 'c5.jpg', alt: 'Вертикальные трёхзначные числа', caption: 'Slawischer Kalender im Kontext dreistelliger Zahlen' },
+    { src: 'c6.jpg', alt: 'Годы по знакам', caption: 'Chinesischer Kalender' },
+    { src: 'c7.jpg', alt: 'Таблица по китайскому календарю', caption: 'Chinesischer Kalender in digitalem Wert' },
+    { src: 'c8.jpg', alt: 'Трёхзначные китайские числа', caption: 'Chinesischer Kalender im Kontext dreistelliger Zahlen' }
+  ];
+  let newCarouselCurrent = 0;
+  function showNewCarouselImage(index) {
+    const img = document.getElementById('new-carousel-image');
+    const cap = document.getElementById('new-caption');
+    img.style.opacity = 0;
+    cap.style.opacity = 0;
+    setTimeout(() => {
+      img.src = newCarouselImages[index].src;
+      img.alt = newCarouselImages[index].alt;
+      cap.textContent = newCarouselImages[index].caption;
+      img.style.opacity = 1;
+      cap.style.opacity = 1;
+    }, 200);
+  }
+  function nextNewCarouselImage() {
+    newCarouselCurrent = (newCarouselCurrent + 1) % newCarouselImages.length;
+    showNewCarouselImage(newCarouselCurrent);
+  }
+  function prevNewCarouselImage() {
+    newCarouselCurrent = (newCarouselCurrent - 1 + newCarouselImages.length) % newCarouselImages.length;
+    showNewCarouselImage(newCarouselCurrent);
+  }
+  function toggleZoomNewCarousel() {
+    document.getElementById('new-carousel-image').classList.toggle('zoomed');
+  }
+  window.nextNewCarouselImage = nextNewCarouselImage;
+  window.prevNewCarouselImage = prevNewCarouselImage;
+  window.toggleZoomNewCarousel = toggleZoomNewCarousel;
+  showNewCarouselImage(newCarouselCurrent);
+
+  // === Карусель 4 ===
+  const schumannImages = [
+    { src: 's1.jpg', alt: 'Резонанс Шумана - Изображение 1', caption: 'Schumann-Resonanz vom 19. Juni 2023' },
+    { src: 's2.jpg', alt: 'Резонанс Шумана - Изображение 2', caption: 'Vergleich der Zeichnungen' },
+    { src: 's3.jpg', alt: 'Резонанс Шумана - Изображение 3', caption: 'Erstaunliche Ähnlichkeit' },
+    { src: 's4.jpg', alt: 'Резонанс Шумана - Изображение 4', caption: 'Beide Figuren haben acht Ecken' }
+  ];
+  let schumannCurrent = 0;
+  function showSchumannImage(index) {
+    const img = document.getElementById('schumann-image');
+    const cap = document.getElementById('schumann-caption');
+    img.style.opacity = 0;
+    cap.style.opacity = 0;
+    setTimeout(() => {
+      img.src = schumannImages[index].src;
+      img.alt = schumannImages[index].alt;
+      cap.textContent = schumannImages[index].caption;
+      img.style.opacity = 1;
+      cap.style.opacity = 1;
+    }, 200);
+  }
+  function nextSchumannImage() {
+    schumannCurrent = (schumannCurrent + 1) % schumannImages.length;
+    showSchumannImage(schumannCurrent);
+  }
+  function prevSchumannImage() {
+    schumannCurrent = (schumannCurrent - 1 + schumannImages.length) % schumannImages.length;
+    showSchumannImage(schumannCurrent);
+  }
+  function toggleZoomSchumann() {
+    document.getElementById('schumann-image').classList.toggle('zoomed');
+  }
+  window.nextSchumannImage = nextSchumannImage;
+  window.prevSchumannImage = prevSchumannImage;
+  window.toggleZoomSchumann = toggleZoomSchumann;
+  showSchumannImage(schumannCurrent);
+
+  // === Карусель 5 ===
+  const cropImages = [
+    { src: 'crop1.jpg', alt: 'Рисунок на поле - 1', caption: 'Feldzeichnung' },
+    { src: 'crop2.jpg', alt: 'Рисунок на поле - 2', caption: 'Zeichnung aus einem anderen Blickwinkel' },
+    { src: 'crop3.jpg', alt: 'Рисунок на поле - 3', caption: 'Zeichnung in digitalem Wert' },
+    { src: 'crop4.jpg', alt: 'Рисунок на поле - 4', caption: 'Entschlüsselte Zeichnung' },
+    { src: 'crop5.jpg', alt: 'Рисунок на поле - 5', caption: 'Basistabelle aus der Feldzeichnung' },
+    { src: 'crop6.jpg', alt: 'Рисунок на поле - 5', caption: 'Magisches Quadrat aus der Feldzeichnung' }
+  ];
+  let cropCurrent = 0;
+  function showCropImage(index) {
+    const img = document.getElementById('crop-image');
+    const cap = document.getElementById('crop-caption');
+    img.style.opacity = 0;
+    cap.style.opacity = 0;
+    setTimeout(() => {
+      img.src = cropImages[index].src;
+      img.alt = cropImages[index].alt;
+      cap.textContent = cropImages[index].caption;
+      img.style.opacity = 1;
+      cap.style.opacity = 1;
+    }, 200);
+  }
+  function nextCropImage() {
+    cropCurrent = (cropCurrent + 1) % cropImages.length;
+    showCropImage(cropCurrent);
+  }
+  function prevCropImage() {
+    cropCurrent = (cropCurrent - 1 + cropImages.length) % cropImages.length;
+    showCropImage(cropCurrent);
+  }
+  function toggleZoomCrop() {
+    document.getElementById('crop-image').classList.toggle('zoomed');
+  }
+  window.nextCropImage = nextCropImage;
+  window.prevCropImage = prevCropImage;
+  window.toggleZoomCrop = toggleZoomCrop;
+  showCropImage(cropCurrent);
+});
+
+// === Toggle Zoom для Карусели 1 ===
+function toggleZoom() {
+  document.getElementById('proof-image').classList.toggle('zoomed');
+}
+window.toggleZoom = toggleZoom;
+
+// === Toggle Zoom для Карусели 2 ===
+function toggleZoomCalendarCarousel() {
+  document.getElementById('calendar-carousel-image').classList.toggle('zoomed');
+}
+window.toggleZoomCalendarCarousel = toggleZoomCalendarCarousel;
+
+// === Toggle Zoom для Карусели 5 ===
+function toggleZoomCrop() {
+  document.getElementById('crop-image').classList.toggle('zoomed');
+}
+window.toggleZoomCrop = toggleZoomCrop;
+
+</script>
+
+</body>
+</html>

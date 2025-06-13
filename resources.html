@@ -97,6 +97,14 @@
 <h2>📚 Скачать книгу (безплатно)</h2>
 <div class="cards-row"><div class="card"><h2>📘 Русская версия</h2><p>Оригинальный текст книги на русском языке с сайта автора.</p><a href="https://www.ot369.de/russian" target="_blank">Скачать</a></div><div class="card"><h2>📗 Українська версія</h2><p>Переклад книги українською мовою доступний для завантаження.</p><a href="https://www.ot369.de/slavic-languages/ukrainian" target="_blank">Завантажити</a></div><div class="card"><h2>📕 English version</h2><p>Download the book in English for free from the official website.</p><a href="https://www.ot369.de/" target="_blank">Download</a></div><div class="card"><h2>📙 Deutsche Version</h2><p>Laden Sie das Buch auf Deutsch kostenlos von der offiziellen Website herunter.</p><a href="https://www.ot369.de/german" target="_blank">Herunterladen</a></div></div>
 </div>
-<a class="back-link" href="index.html">🔙 Назад</a>
+<a class="back-link" href="#" onclick="return setLangFromStorage()">🔙 Назад</a>
+
+<script>
+  function setLangFromStorage() {
+    const lang = localStorage.getItem('lang') || 'ru';
+    window.location.href = `index.html?lang=${lang}`;
+    return false;
+  }
+</script>
 </body>
 </html>

@@ -1,0 +1,2462 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Тренажёр магических квадратов</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&amp;family=Inter:wght@700&amp;display=swap" rel="stylesheet"/>
+<style>
+    body {
+ font-family: 'Raleway', sans-serif; margin: 0; min-height: 100vh; background: linear-gradient(to bottom, #f8f1e7, #f0e0cf); color: #333; 
+}
+    .top-right { position: fixed; top: 20px; right: 20px; z-index: 10; }
+    .resource-button { font-family: inherit; font-weight: bold; background-color: #c49b7e; color: white; border: none; border-radius: 8px; padding: 0.6rem 1.2rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; font-size: 1.1rem; text-decoration: none;
+ }
+    .resource-button:hover { box-shadow: 0 6px 10px rgba(0,0,0,0.15); }
+    .mode-selection { text-align: center; margin: 3rem auto 0; max-width: 960px; }
+    .mode-list { list-style: none; padding: 0; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+    .mode-item { flex: 1; max-width: 320px; min-height: 160px; background: #fff; border: 2px solid #caa98c; border-radius: 16px; padding: 2rem; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.15); transition: transform 0.2s, box-shadow 0.2s; font-size: 1.2rem; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .mode-item:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.2); }
+    .trainer-content { display: flex; flex-direction: column; align-items: center; margin-top: 2rem; }
+    .trainer-title { font-size: 2.4rem; font-weight: 700; margin-bottom: 0.7rem; letter-spacing: 1px; text-align: center; }
+    .trainer-desc { text-align: left; margin-left: 20px; font-size: 1.1rem;}
+    .manual-body {
+ display: flex; gap: 2rem; justify-content: center; align-items: flex-start; margin-bottom: 1rem; 
+}
+    .square-grid-container { position: relative; }
+    .square-grid-container svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .square-grid {
+  display: grid;
+  width: fit-content;
+  grid-template-columns: repeat(3, 120px);
+  grid-template-rows: repeat(3, 120px);
+  gap: 16px;
+  background: #fff;
+  border-radius: 28px;
+  box-shadow: 0 8px 36px rgba(180, 157, 126, 0.10);
+  padding: 24px;
+  position: relative;
+  z-index: 0;
+}
+    .square-cell { background: linear-gradient(145deg, #f9f6f2 70%, #ede5de 100%); border-radius: 22px; box-shadow: 0 2px 16px rgba(200,160,120,0.09); display: flex; align-items: center; justify-content: center; font-size: 3.2rem; font-weight: 700; border: 2px solid transparent; font-family: 'Inter', 'Arial', sans-serif; position: relative; }
+    .square-cell.focused { border: 3px solid #e4b36c; box-shadow: 0 0 0 5px #fae1b0; z-index: 2; }
+    .square-cell input[type='number'] { background: transparent; border: none; outline: none; text-align: center; font-size: 3.2rem; font-weight: 700; width: 90%; color: #444; font-family: 'Inter', 'Arial', sans-serif; padding: 0.2rem 0; border-radius: 15px;  padding-left: 0.15em;}
+    .square-cell input[type='number']:focus { outline: none; box-shadow: none; border: none; background: transparent; }
+    /* стили для цветных цифр */
+    .back-button { position: fixed; top: 60px; right: 20px; z-index: 10; }
+    .trainer-title { position: fixed; top: 60px; left: 20px; margin: 0; }
+    .col-digit { position: absolute; top: 50%; font-size: 3.2rem; font-weight: 700; pointer-events: none; font-family: 'Inter', 'Arial', sans-serif; }
+    .col-digit.left { left: 25%; transform: translate(-50%, -50%); }
+    .col-digit.right { left: 75%; transform: translate(-50%, -50%); }
+
+    .reset-row { display: flex; gap: 1.2rem; justify-content: center; margin-bottom: 1rem; }
+    .result { font-weight: bold; font-size: 1.3rem; text-align: center; min-height: 1.2em; display: flex; align-items: center; justify-content: center; gap: 0.4em; }
+    .key-list { display: none; background: #fff; border: 1px solid #caa98c; border-radius: 12px; padding: 1rem; font-size: 1rem; color: #333; text-align: left; box-shadow: 0 4px 16px rgba(0,0,0,0.1); column-count: 2; column-gap: 1rem; }
+    .key-list ul { list-style: disc; padding-left: 1.2em; margin: 0; }
+    @media (max-width: 900px) {
+      .manual-body {
+ flex-direction: column; align-items: center; 
+}
+      .square-grid {
+  display: grid;
+  width: fit-content;
+  grid-template-columns: repeat(3, 120px);
+  grid-template-rows: repeat(3, 120px);
+  gap: 16px;
+  background: #fff;
+  border-radius: 28px;
+  box-shadow: 0 8px 36px rgba(180, 157, 126, 0.10);
+  padding: 24px;
+  position: relative;
+  z-index: 0;
+}
+      .trainer-title { font-size: 1.3rem; }
+    }
+  
+.square-cell input[type='number'] {
+  font-size: 3.2rem;
+  width: 80%;
+ padding-left: 0.15em;}
+
+.square-cell {
+  box-shadow: 0 2px 8px rgba(180,160,120,0.08);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.square-cell.focused {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 6px #fae1b0;
+}
+
+.square-grid-container {
+  background: linear-gradient(135deg, #f3e9dd, #ffffff);
+  padding: 2rem;
+  border-radius: 32px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.result {
+  background: #fffbe6;
+  border: 1px solid #e7d1a4;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: background 0.3s ease;
+}
+
+.resource-button {
+  border-radius: 12px;
+  font-size: 1.05rem;
+  padding: 0.6rem 1.5rem;
+}
+
+input[type='number'] {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+input[type='number']:focus-visible {
+  outline: none !important;
+}
+
+.col-digit {
+  outline: none;
+  box-shadow: none;
+}
+
+.result:empty {
+  display: none;
+}
+
+.key-list {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.8rem;
+}
+
+.trainer-title {
+  font-size: 1.6rem;
+  top: 20px;
+}
+
+.col-digit-group {
+  font-size: 3.2rem;
+  font-weight: 700;
+  font-family: 'Inter', 'Arial', sans-serif;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  display: flex;
+  gap: 0.05em;
+}
+
+.mode-preview {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+
+.digit-input:focus { outline: none; border-bottom: 2px solid #000; }
+
+
+
+
+
+
+
+
+
+.digit-input:disabled {
+  border-bottom: none;
+}
+
+
+
+.digit-hint {
+  color: #C49B0D;
+  font-style: normal;
+  font-weight: 600;
+  font-family: 'Inter', 'Arial', sans-serif;
+  font-size: 2.6rem;
+}
+.digit-hint.pair {
+  display: flex;
+  gap: 0.55em;
+  justify-content: center;
+}
+.digit-input {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 2.2rem;
+  text-align: center;
+  border: none;
+  border-bottom: 2px solid #888;
+  width: 1.2em;
+  color: #000;
+  background: transparent;
+  outline: none;
+}
+.digit-input:disabled {
+  border-bottom: none;
+}
+
+.digit-input.digit-hint:disabled {
+  color: #C49B0D;
+}
+
+  /* Убираем стрелки в числовых полях */
+  .square-cell input[type="number"]::-webkit-outer-spin-button,
+  .square-cell input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .square-cell input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+
+.transform-sum-grid {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 1.2rem 3rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.sum-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+.sum-group input.sum-cell {
+  width: 3rem;
+  font-size: 1.4rem;
+  font-family: 'Rubik', sans-serif;
+  text-align: center;
+  padding: 0.4rem;
+  border: 2px solid #c49b7e;
+  border-radius: 10px;
+  background: #fdf7f1;
+  box-shadow: 0 2px 6px rgba(200, 160, 120, 0.1);
+  transition: all 0.2s ease;
+}
+
+.sum-group input.sum-cell:focus {
+  border-color: #a67856;
+  box-shadow: 0 0 0 4px rgba(196, 155, 126, 0.2);
+  outline: none;
+  transform: scale(1.05);
+}
+
+.sum-result {
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.3rem;
+  margin-top: 0.5rem;
+  color: #333;
+}
+.sum-result {
+  font-weight: bold;
+  margin-top: 0.2rem;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.transform-sum-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 1.2rem;
+}
+.sum-row {
+  display: flex;
+  gap: 2.5rem;
+  justify-content: center;
+}
+.sum-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+.sum-inputs {
+  display: flex;
+  gap: 0.5rem;
+}
+.sum-group input.sum-cell {
+  width: 3rem;
+  font-size: 1.4rem;
+  font-family: 'Rubik', sans-serif;
+  text-align: center;
+  padding: 0.4rem;
+  border: 2px solid #c49b7e;
+  border-radius: 10px;
+  background: #fdf7f1;
+  box-shadow: 0 2px 6px rgba(200, 160, 120, 0.1);
+  transition: all 0.2s ease;
+}
+
+.sum-group input.sum-cell:focus {
+  border-color: #a67856;
+  box-shadow: 0 0 0 4px rgba(196, 155, 126, 0.2);
+  outline: none;
+  transform: scale(1.05);
+}
+
+.sum-result {
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.3rem;
+  margin-top: 0.5rem;
+  color: #333;
+}
+.sum-result {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Убираем стрелки в input[type=number] */
+.sum-cell::-webkit-outer-spin-button,
+.sum-cell::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.sum-cell {
+  -moz-appearance: textfield;
+}
+
+/* Новое позиционирование суммы справа */
+.sum-group {
+  flex-direction: row;
+  align-items: center;
+}
+.sum-inputs {
+  gap: 0.4rem;
+}
+.sum-result {
+  margin-left: 0.6rem;
+}
+
+/* Обёртка для всей нижней части */
+.transform-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Группа сумм */
+.transform-sum-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Кнопки располагаем в wrap */
+.transform-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+/* Чуть уменьшим кнопки */
+.transform-buttons .resource-button {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+}
+
+/* Отступ от квадрата */
+#transform-grid {
+  margin-bottom: 1rem;
+}
+
+/* Уменьшаем отступы и размеры на экранах <= 768px */
+@media (max-width: 768px) {
+  .transform-sum-grid input.sum-cell {
+    width: 2.5rem;
+    font-size: 1.2rem;
+  }
+  .sum-result {
+    font-size: 1rem;
+  }
+  .transform-buttons .resource-button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+.transform-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 0.2rem;  /* почти убран отступ */
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.square-wrapper {
+  position: relative;
+}
+
+#transform-generate.generate-icon {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: #c49b7e;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: background 0.3s ease;
+}
+
+#transform-generate.generate-icon:hover {
+  background: #b18568;
+}
+
+.transform-left-btn,
+.transform-right-btn {
+  position: absolute;
+  top: 87%;
+  transform: translateY(-50%);
+  width: 160px;
+  text-align: center;
+  line-height: 1.3;
+  padding: 1rem 1.2rem;
+  font-size: 1.05rem;
+  transition: none !important;
+}
+
+.transform-left-btn {
+  left: -230px !important;
+}
+
+.transform-right-btn {
+  right: -230px !important;
+}
+
+.transform-left-btn {
+  left: -230px;
+}
+
+.transform-right-btn {
+  right: -230px;
+}
+
+.transform-left-btn {
+  left: -200px;
+}
+
+.transform-right-btn {
+  right: -200px;
+}
+
+.transform-left-btn {
+  left: -170px;
+}
+
+.transform-right-btn {
+  right: -170px;
+}
+
+.transform-left-btn {
+  left: -150px;
+}
+
+.transform-right-btn {
+  right: -150px;
+}
+
+.transform-left-btn {
+  left: -150px;
+}
+
+.transform-right-btn {
+  right: -150px;
+}
+
+.transform-left-btn {
+  left: -150px;
+}
+
+.transform-right-btn {
+  right: -150px;
+}
+
+.transform-left-btn {
+  left: -150px;
+}
+
+.transform-right-btn {
+  right: -150px;
+}
+
+
+#manual-header,
+#partial-header,
+#transform-header {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  max-width: 300px;
+  background: #fff6eb;
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 5;
+}
+
+.transform-mode-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+.transform-mode-desc {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+
+#transform-grid .square-cell {
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  animation: pop 0.4s ease-in-out;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-family: 'Fira Mono', monospace !important;
+}
+
+#transform-grid .square-cell:hover {
+  box-shadow: 0 0 10px #00c3ff;
+  transform: scale(1.05);
+}
+
+@keyframes pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+#transform-grid {
+  position: relative;
+}
+.square-cell {
+  transition: transform 0.3s ease;
+}
+.dragging {
+  z-index: 10;
+}
+
+.column-handle {
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: grab;
+  z-index: 15;
+}
+#column-handle-1, #column-handle-6 { background-color: red; }
+#column-handle-4, #column-handle-5 { background-color: blue; }
+#column-handle-9, #column-handle-10 { background-color: purple; }
+
+
+.column-handle,
+.row-handle {
+  background-color: rgba(128, 128, 128, 0.5) !important;
+  border: 1px solid rgba(100, 100, 100, 0.5);
+  color: white !important;
+}
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Rubik&amp;display=swap" rel="stylesheet"/><style>
+.mode-item h3,
+.mode-item p {
+  font-family: 'Rubik', sans-serif;
+}
+
+.trainer-title,
+.trainer-desc,
+.result,
+#manual-input .resource-button,
+#manual-input .key-list {
+  font-family: 'Rubik', sans-serif;
+}
+
+.transform-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 0.2rem;  /* почти убран отступ */
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.square-wrapper {
+  position: relative;
+}
+
+#transform-generate.generate-icon {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: #c49b7e;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: background 0.3s ease;
+}
+
+#transform-generate.generate-icon:hover {
+  background: #b18568;
+}
+
+.transform-left-btn,
+.transform-right-btn {
+  position: absolute;
+  top: 87%;
+  transform: translateY(-50%);
+  width: 160px;
+  text-align: center;
+  line-height: 1.3;
+  padding: 1rem 1.2rem;
+  font-size: 1.05rem;
+  transition: none !important;
+}
+
+.transform-left-btn {
+  left: -230px !important;
+}
+
+.transform-right-btn {
+  right: -230px !important;
+}
+
+.transform-left-btn {
+  left: -230px;
+}
+
+.transform-right-btn {
+  right: -230px;
+}
+
+.transform-left-btn {
+  left: -200px;
+}
+
+.transform-right-btn {
+  right: -200px;
+}
+
+.transform-left-btn {
+  left: -170px;
+}
+
+.transform-right-btn {
+  right: -170px;
+}
+
+.transform-left-btn {
+  left: -150px;
+}
+
+.transform-right-btn {
+  right: -150px;
+}
+
+.transform-left-btn {
+  left: -150px;
+}
+
+.transform-right-btn {
+  right: -150px;
+}
+
+.transform-left-btn {
+  left: -150px;
+}
+
+.transform-right-btn {
+  right: -150px;
+}
+
+.transform-left-btn {
+  left: -150px;
+}
+
+.transform-right-btn {
+  right: -150px;
+}
+
+
+#manual-header,
+#partial-header,
+#transform-header {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  max-width: 300px;
+  background: #fff6eb;
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 5;
+}
+
+.transform-mode-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+.transform-mode-desc {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+</style>
+<style>
+#transform-grid .square-cell {
+  transition: transform 0.2s ease;
+}
+#transform-grid .square-cell:hover {
+  transform: scale(1.12);
+  z-index: 2;
+}
+</style>
+<style>
+  /* Shift column handles slightly to the right */
+  .column-handle {
+    transform: translateX(31px) !important;
+  }
+</style>
+<style>
+  /* Скрываем верхние копии ручек столбцов */
+  #column-handle-1,
+  #column-handle-4,
+  #column-handle-9 {
+    display: none !important;
+  }
+</style>
+<style>
+  /* Запрет выделения и стандартного drag, правильные курсоры */
+  .column-handle,
+  .row-handle {
+    user-select: none !important;
+    -webkit-user-drag: none !important;
+    cursor: grab !important;
+  }
+  .column-handle:active,
+  .row-handle:active {
+    cursor: grabbing !important;
+  }
+</style>
+<style>
+.row-sum {
+  position: absolute;
+  left: -40px;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+#sum-row-0 { top: 30px; }
+#sum-row-1 { top: 166px; }
+#sum-row-2 { top: 302px; }
+
+.col-sum {
+  position: absolute;
+  top: 400px;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+#sum-col-0 { left: 30px; }
+#sum-col-1 { left: 166px; }
+#sum-col-2 { left: 302px; }
+
+.diag-sum {
+  position: absolute;
+  font-weight: bold;
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+#sum-dia-left { top: 400px; left: 50%; transform: translateX(-50%); }
+#sum-dia-right { top: -30px; left: 50%; transform: translateX(-50%); }
+</style><style>
+.column-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+}
+</style><style>
+.column-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+}
+</style><style>
+.column-handle span {
+  display: block;
+  line-height: 1;
+  transform: translateY(1px);
+}
+</style><style>
+.column-handle {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 20px;
+  width: 40px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  transform: none !important;
+}
+
+.column-handle span {
+  line-height: 20px;
+  transform: none;
+  display: inline-block;
+}
+</style><style>
+.column-handle {
+  transform: translateX(20px) !important;
+}
+</style>
+<style>
+#transform-grid .square-cell.hover-effect {
+  box-shadow: 0 0 10px #00c3ff;
+  transform: scale(1.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 2;
+}
+</style>
+<style>
+.sum-plus {
+  font-weight: bold;
+  font-size: 1.4rem;
+  margin: 0 0.3rem;
+  display: inline-block;
+  transform: translateY(4px);
+}
+</style></head>
+<body>
+
+<!-- Обучающие карточки -->
+<div id="tutorial-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
+  <div id="tutorial-modal" style="background:#fff6eb; padding:2rem; border-radius:16px; box-shadow:0 8px 20px rgba(0,0,0,0.2); max-width:700px; width:90%; text-align:center; position:relative;">
+    <div id="tutorial-content" style="font-family:'Rubik',sans-serif; font-size:1.1rem; line-height:1.6;">
+<div data-step="0">
+  <b> Wie benutzt man diesen Modus?</b><br/>
+  Dieser Modus hilft dir, zu lernen, wie man ein Basisquadrat in ein magisches Quadrat verwandelt. Klicke auf „Weiter“, um zu starten. <br/>
+  <img src="img/tutorial-drag.gif" alt="Перетаскивание чисел" style="max-width:100%; border-radius:12px; margin-top:1rem;">
+</div>
+
+<div data-step="1" style="display:none;">
+   <b> Schritt 1. Überprüfung der Summen.</b><br/>
+Zuerst muss die mittlere Zahl bestimmt werden. Dazu wird jede untere Zahl mit zwei anderen Zahlen des Quadrats addiert. Alle drei Zahlen müssen in unterschiedlichen horizontalen und vertikalen Reihen liegen. Beispiel im Video.
+  <img src="img/tutorial-step2.gif" alt="Гифка Шаг 2" style="max-width:100%; border-radius:12px; margin-top:1rem;">
+</div>
+
+<div data-step="2" style="display:none;">
+   <b>Schritt 2. Die gemeinsame Zahl finden
+</b> <br/>
+Von den sechs erhaltenen Kombinationen achten wir auf zwei mit derselben Summe – <b>168</b>. Unter den sechs Zahlen dieser beiden Kombinationen suchen wir eine gemeinsame Zahl. Im Beispiel ist es <b>56</b>. Diese wird zur mittleren Zahl. Wenn es keine gleichen Summen gibt, kann das Quadrat nicht magisch werden.  <img src="img/tutorial-step3.gif" alt="Гифка Шаг 3" style="max-width:100%; border-radius:12px; margin-top:1rem;">
+</div>
+
+<div data-step="3" style="display:none;">
+   <b>Schritt 3. Verschieben von Reihen und Spalten.
+</b><br/>
+Jetzt ist es einfach, ein magisches Quadrat zu bilden. Dabei dürfen horizontale und vertikale Reihen vertauscht werden. Um sie zu verschieben, halte den Griff der gewünschten Reihe oder Spalte gedrückt und ziehe sie mit der Maus.
+
+  <img src="img/tutorial-step4.gif" alt="Гифка Шаг 4" style="max-width:100%; border-radius:12px; margin-top:1rem;">
+</div>
+</div>
+    <div style="margin-top:1.5rem; display:flex; justify-content:space-between;">
+      <button id="tutorial-prev" class="resource-button" style="visibility:hidden;">← Zurück</button>
+      <button id="tutorial-next" class="resource-button">Weiter →</button>
+    </div>
+    <button onclick="document.getElementById('tutorial-overlay').style.display='none'" style="position:absolute;top:12px;right:16px;font-size:1.5rem;border:none;background:none;cursor:pointer;">×</button>
+  </div>
+</div>
+
+
+
+
+
+<div id="transform-tutorial-button" style="display:none;">
+  <button id="open-tutorial" title="Anleitung" style="position:fixed; top:20px; left:290px; background:#ffe8b3; border:none; border-radius:50%; width:44px; height:44px; font-size:1.4rem; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.2); z-index:1000;">
+    💡
+  </button>
+</div>
+
+<a class="resource-button top-right" href="index.html?lang=de">← Zurück zur hauptseite</a>
+<button class="resource-button back-button" id="back-manual" style="display:none;">← Modus wählen</button>
+<section class="mode-selection">
+<h2>Wähle einen Trainingsmodus</h2>
+<ul class="mode-list">
+<li class="mode-item" data-mode="manual-input"><img class="mode-preview" src="img/manual-preview.jpg"/><h3>Manuelle Eingabe</h3><p class="mode-desc">Gib alle 9 Zahlen manuell ein und erhalte eine sofortige Überprüfung nach der Methode.</p></li>
+<li class="mode-item" data-mode="partial-fill"><img class="mode-preview" src="img/preview-partial.png"/><h3>Quadrat ergänzen</h3><p class="mode-desc">Ergänze die fehlenden Zahlen anhand der Hinweise in den Zellen.</p></li>
+<li class="mode-item" data-mode="guess-keys">
+<img class="mode-preview" src="img/preview-transform.png"/>
+<h3>Quadrat-Transformation</h3>
+<p class="mode-desc">Bestimme, ob das Quadrat magisch gemacht werden kann.</p>
+</li>
+</ul>
+</section>
+<section class="mode-container" id="manual-input" style="display:none;">
+<div class="trainer-content">
+<div id="manual-header">
+<div class="transform-mode-title">Modus: Manuelle Eingabe</div>
+<div class="transform-mode-desc">Fülle das Quadrat mit zweistelligen Zahlen</div>
+</div>
+<div class="manual-body">
+<div class="square-grid-container">
+<svg id="lines-trainer"></svg>
+<div class="square-grid" id="manual-grid"></div>
+</div>
+<div class="key-list" id="key-list"><strong>Schlüsselliste:</strong><ul><li>123</li><li>456</li><li>789</li><li>159</li><li>483</li><li>726</li><li>186</li><li>429</li><li>753</li><li>597</li><li>831</li><li>264</li><li>534</li><li>867</li><li>291</li><li>561</li><li>894</li><li>237</li><li>945</li><li>378</li><li>612</li><li>972</li><li>315</li><li>648</li><li>918</li><li>342</li><li>675</li><li>174</li><li>258</li><li>369</li></ul></div>
+</div>
+<div class="reset-row">
+<button class="resource-button" id="manual-check">Prüfen</button>
+<button class="resource-button" id="manual-reset" style="background:#f6efe5;color:#b08b68;">Neu starten</button>
+<button class="resource-button" id="manual-show-keys" style="background:#fff;color:#795b3c;border:1px solid #caa98c;">Schlüssel anzeigen</button>
+<button class="resource-button" id="manual-autofill">Automatisch erstellen</button>
+<button class="resource-button" id="manual-connect" style="display:none;background:#d7c0aa;color:#4b3b2a;">Ziffern verbinden</button>
+</div>
+<div class="result" id="manual-result"></div>
+</div>
+</section>
+<section class="mode-container" id="partial-fill" style="display:none;">
+<div class="trainer-content">
+<div id="partial-header">
+<div class="transform-mode-title">Modus: Quadrat ergänzen</div>
+<div class="transform-mode-desc">Fülle das Quadrat mithilfe der Hinweise aus</div>
+</div>
+<div class="manual-body">
+<div class="square-grid-container">
+<svg id="lines-partial"></svg>
+<div class="square-grid" id="partial-grid"></div>
+</div>
+</div>
+<div class="reset-row">
+<button class="resource-button" id="partial-check">Prüfen</button>
+<button class="resource-button" id="partial-reset" style="background:#f6efe5;color:#b08b68;">Neu starten</button>
+</div>
+<div class="result" id="partial-result"></div>
+</div>
+</section>
+<section class="mode-container" id="guess-keys" style="display:none;">
+
+
+
+<div class="trainer-content">
+<div id="transform-header">
+<div class="transform-mode-title">Modus: Quadrat-Transformation</div>
+<div class="transform-mode-desc">Bestimme, ob das Quadrat in ein magisches Quadrat umgewandelt werden kann</div>
+</div>
+<div class="transform-layout">
+<button class="transform-left-btn resource-button" id="transform-no">Kann nicht<br/>umgewandelt werden</button>
+<div class="square-wrapper">
+<button class="generate-icon" id="transform-generate">⟳</button>
+<div class="square-grid-container">
+<svg id="lines-transform"></svg>
+<div class="square-grid" id="transform-grid"></div>
+<!-- Second column handles (blue) -->
+<div class="column-handle" id="column-handle-4" title="Ziehe die 2. Spalte"><span>⇆</span></div>
+<div class="column-handle" id="column-handle-5" title="Ziehe die 2. Spalte"><span>⇆</span></div>
+<!-- Third column handles (purple) -->
+<div class="column-handle" id="column-handle-9" title="Ziehe die 3. Spalte"><span>⇆</span></div>
+<div class="column-handle" id="column-handle-10" title="Ziehe die 3. Spalte"><span>⇆</span></div>
+<div class="column-handle" id="column-handle-1" title="Ziehe die 1. Spalte"><span>⇆</span></div>
+<div class="column-handle" id="column-handle-6" title="Ziehe die 1. Spalte"><span>⇆</span></div>
+<div class="row-sum" id="sum-row-0">0</div>
+<div class="row-sum" id="sum-row-1">0</div>
+<div class="row-sum" id="sum-row-2">0</div>
+<div class="col-sum" id="sum-col-0">0</div>
+<div class="col-sum" id="sum-col-1">0</div>
+<div class="col-sum" id="sum-col-2">0</div>
+<div class="diag-sum" id="sum-dia-left">0</div>
+<div class="diag-sum" id="sum-dia-right">0</div>
+</div><div class="row-handle" id="row-handle-2" style="display:none;position:absolute;width:40px;height:20px;left:0px;background:#6c4;color:white;border-radius:12px;cursor:grab;z-index:10;text-align:center;line-height:20px;" title="Ziehe die 3. Zeile">⇅</div><div class="row-handle" id="row-handle-1" style="display:none;position:absolute;width:40px;height:20px;left:0px;background:#6c4;color:white;border-radius:12px;cursor:grab;z-index:10;text-align:center;line-height:20px;" title="Ziehe die 2. Zeile">⇅</div><div class="row-handle" id="row-handle-0" style="display:none;position:absolute;width:40px;height:20px;left:0px;background:#6c4;color:white;border-radius:12px;cursor:grab;z-index:10;text-align:center;line-height:20px;" title="Ziehe die 1. Zeile">⇅</div>
+</div>
+<button class="transform-right-btn resource-button" id="transform-yes">Kann<br/>umgewandelt werden</button>
+</div>
+<div class="transform-sum-grid">
+<div class="sum-row">
+<div class="sum-group" data-index="0">
+<div class="sum-inputs"><input class="sum-cell" type="number"/><span class="sum-plus">+</span><input class="sum-cell" type="number"/><span class="sum-plus">+</span><input class="sum-cell" type="number"/></div>
+<div class="sum-result">= 0</div>
+</div>
+<div class="sum-group" data-index="1">
+<div class="sum-inputs"><input class="sum-cell" type="number"/><span class="sum-plus">+</span><input class="sum-cell" type="number"/><span class="sum-plus">+</span><input class="sum-cell" type="number"/></div>
+<div class="sum-result">= 0</div>
+</div>
+<div class="sum-group" data-index="2">
+<div class="sum-inputs"><input class="sum-cell" type="number"/><span class="sum-plus">+</span><input class="sum-cell" type="number"/><span class="sum-plus">+</span><input class="sum-cell" type="number"/></div>
+<div class="sum-result">= 0</div>
+</div>
+</div>
+<div class="sum-row">
+<div class="sum-group" data-index="3">
+<div class="sum-inputs"><input class="sum-cell" type="number"/><span class="sum-plus">+</span><input class="sum-cell" type="number"/><span class="sum-plus">+</span><input class="sum-cell" type="number"/></div>
+<div class="sum-result">= 0</div>
+</div>
+<div class="sum-group" data-index="4">
+<div class="sum-inputs"><input class="sum-cell" type="number"/><span class="sum-plus">+</span><input class="sum-cell" type="number"/><span class="sum-plus">+</span><input class="sum-cell" type="number"/></div>
+<div class="sum-result">= 0</div>
+</div>
+<div class="sum-group" data-index="5">
+<div class="sum-inputs"><input class="sum-cell" type="number"/><span class="sum-plus">+</span><input class="sum-cell" type="number"/><span class="sum-plus">+</span><input class="sum-cell" type="number"/></div>
+<div class="sum-result">= 0</div>
+</div>
+</div>
+</div>
+<div class="result" id="transform-result"></div>
+</div>
+</section>
+<script>
+
+function getCell(row, col) {
+  const idx = row * 3 + col;
+  return document.querySelectorAll('#transform-grid .square-cell')[idx];
+}
+
+
+function swapRows(rowA, rowB) {
+  if (rowA === rowB) return;
+
+  // Сброс transform перед свапом
+  for (let col = 0; col < 3; col++) {
+    updateSums();
+    getCell(rowA, col).style.transform = '';
+    getCell(rowB, col).style.transform = '';
+  }
+
+  for (let col = 0; col < 3; col++) {
+    updateSums();
+    const cellA = getCell(rowA, col);
+    const cellB = getCell(rowB, col);
+    [cellA.textContent, cellB.textContent] = [cellB.textContent, cellA.textContent];
+  }
+}
+
+
+function enableRowRealtimeSwap(rowIndex, handleId) {
+  const handle = document.getElementById(handleId);
+  let isDragging = false;
+  let startY = 0;
+  let draggedRow = 0;
+
+  handle.addEventListener('mousedown', (e) => {
+    console.log("mousedown on row", rowIndex);
+    isDragging = true;
+    draggedRow = rowIndex;
+    startY = e.clientY;
+
+    document.addEventListener('mousemove', onDrag);
+    document.addEventListener('mouseup', onDrop);
+  });
+
+  function onDrag(e) {
+    if (!isDragging) return;
+    const dy = e.clientY - startY;
+    const direction = dy > 0 ? 1 : -1;
+    const threshold = 40;
+    const targetRow = draggedRow + direction;
+
+    console.log("mousemove", {dy, draggedRow, targetRow});
+
+    for (let col = 0; col < 3; col++) {
+    updateSums();
+      const cell = getCell(draggedRow, col);
+      cell.style.transform = `translateY(${dy}px)`;
+      cell.classList.add('dragging');
+    }
+
+    if (Math.abs(dy) > threshold && targetRow >= 0 && targetRow <= 2) {
+      swapRows(draggedRow, targetRow);
+      startY = e.clientY;
+      draggedRow = targetRow;
+    }
+  }
+
+  function onDrop() {
+    console.log("mouseup");
+    isDragging = false;
+    document.removeEventListener('mousemove', onDrag);
+    document.removeEventListener('mouseup', onDrop);
+
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 3; c++) {
+        const cell = getCell(r, c);
+        cell.style.transform = '';
+        cell.classList.remove('dragging');
+      }
+    }
+  }
+}
+
+    const modes = ['manual-input','partial-fill','guess-keys'];
+    function showMode(mode) {
+      const sel = document.querySelector('.mode-selection');
+      if (sel) sel.style.display = 'none';
+      modes.forEach(m => {
+        const sec = document.getElementById(m);
+        if (sec) sec.style.display = (m === mode ? 'block' : 'none');
+      document.getElementById('back-manual').style.display = 'inline-block';
+      });
+    }
+    function showSelection() {
+      const sel = document.querySelector('.mode-selection');
+      if (sel) sel.style.display = '';
+      document.getElementById('back-manual').style.display = 'none';
+      modes.forEach(m => {
+  tutorialBtnBlock.style.display = 'none';
+        const sec = document.getElementById(m);
+        if (sec) sec.style.display = 'none';
+      });
+    }
+    document.querySelectorAll('.mode-item').forEach(item => {
+      item.addEventListener('click', () => showMode(item.dataset.mode));
+    });
+    document.getElementById('back-manual').addEventListener('click', showSelection);
+
+    const gridCont = document.getElementById('manual-grid');
+    for (let i = 0; i < 9; i++) {
+      const cell = document.createElement('div'); cell.className = 'square-cell';
+      const inp = document.createElement('input'); inp.type = 'number'; inp.min = 10; inp.max = 99; inp.inputMode = 'numeric';
+      cell.appendChild(inp); gridCont.appendChild(cell);
+      inp.onfocus = () => {
+        document.querySelectorAll('.square-cell').forEach(c => c.classList.remove('focused'));
+        cell.classList.add('focused');
+      };
+      inp.onblur = () => setTimeout(() => cell.classList.remove('focused'), 100);
+    }
+    document.getElementById('manual-show-keys').onclick = () => {
+      const kl = document.getElementById('key-list');
+      kl.style.display = kl.style.display === 'block' ? 'none' : 'block';
+    };
+    document.getElementById('manual-reset').onclick = () => {
+      document.querySelectorAll('#manual-grid input').forEach(i => i.value = '');
+      document.getElementById('manual-result').textContent = '';
+      document.getElementById('manual-connect').style.display = 'none';
+      document.getElementById('manual-connect').textContent = 'Ziffern verbinden';
+      colorsVisible = false;
+      document.getElementById('key-list').style.display = 'none';
+      document.querySelectorAll('.col-digit').forEach(el => el.remove());
+      document.querySelectorAll('#manual-grid input').forEach(inp => inp.style.visibility = '');
+      document.getElementById('lines-trainer').innerHTML = '';
+      document.querySelectorAll('.col-digit-group').forEach(el => el.remove());
+      gridCont.querySelector('input').focus();
+    };
+
+    const KEYS = ["123","456","789","159","483","726","186","429","753","597","831","264","534","867","291","561","894","237","945","378","612","972","315","648","918","342","675","174","258","369"];
+    function allPerms(str){let out=new Set();function perm(a,l,r){if(l==r)out.add(a.join(''));else for(let i=l;i<=r;i++){[a[l],a[i]]=[a[i],a[l]];perm(a,l+1,r);[a[l],a[i]]=[a[i],a[l]];}}perm(str.split(''),0,2);return out;}
+    let validTriples = new Set(); KEYS.forEach(k => allPerms(k).forEach(p => validTriples.add(p)));
+    function invertPerm(p){const inv=[];for(let i=0;i<3;i++)inv[p[i]]=i;return inv;}
+    function checkSquare(grid){
+      let perms=[[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]];
+      for(const prow of perms) for(const pcol of perms){
+        const invR = invertPerm(prow), invC = invertPerm(pcol), base=[[],[],[]];
+        for(let i=0;i<3;i++) for(let j=0;j<3;j++) base[i][j] = grid[invR[i]][invC[j]];
+        const [x,y,z] = base.map(r => String(r[0]).padStart(2,'0'));
+        const d0 = parseInt(y[0]+z[1]), d1 = parseInt(z[0]+x[1]), d2 = parseInt(x[0]+y[1]);
+        const [a,b,c] = [d0,d1,d2].map(n => String(n).padStart(2,'0'));
+        const p0 = parseInt(b[0]+c[1]), p1 = parseInt(c[0]+a[1]), p2 = parseInt(a[0]+b[1]);
+        const exp = [[base[0][0],d0,p0],[base[1][0],d1,p1],[base[2][0],d2,p2]];
+        if(exp.flat().every((v,i)=>v===base.flat()[i])) return true;
+      }
+      return false;
+    }
+
+    function drawLinesTrainer() {
+  const container = document.querySelector('.square-grid-container');
+  const svg = document.getElementById('lines-trainer');
+  const cells = [...document.querySelectorAll('#manual-grid .square-cell')];
+  const rect = container.getBoundingClientRect();
+  svg.innerHTML = '';
+  document.querySelectorAll('.col-digit-group').forEach(el => el.remove());
+
+  const digitMap = {};
+  const palette = {"1":"red","2":"blue","3":"green","4":"orange","5":"purple","6":"teal","7":"brown","8":"magenta","9":"dodgerblue"};
+
+  cells.forEach(cell => {
+    const inp = cell.querySelector('input');
+    const val = inp.value;
+    const digits = String(val).padStart(2, '0').split('');
+    const box = cell.getBoundingClientRect();
+    const cx = box.left + box.width / 2 - rect.left;
+    const cy = box.top + box.height / 2 - rect.top;
+    digits.forEach(d => {
+      (digitMap[d] ||= []).push({ x: cx, y: cy });
+    });
+
+    inp.style.visibility = 'hidden';
+    const group = document.createElement('div');
+    group.className = 'col-digit-group';
+    digits.forEach(d => {
+      const span = document.createElement('span');
+      span.textContent = d;
+      span.style.color = palette[d] || 'gray';
+      group.appendChild(span);
+    });
+    cell.appendChild(group);
+  });
+
+  let delay = 0;
+  Object.entries(digitMap).sort((a, b) => a[0] - b[0]).forEach(([digit, points]) => {
+    const color = palette[digit] || "gray";
+    for (let i = 0; i < points.length; i++) {
+      for (let j = i + 1; j < points.length; j++) {
+        const x1 = points[i].x;
+        const y1 = points[i].y;
+        const x2 = points[j].x;
+        const y2 = points[j].y;
+        const length = Math.hypot(x2 - x1, y2 - y1);
+
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", x1);
+        line.setAttribute("y1", y1);
+        line.setAttribute("x2", x2);
+        line.setAttribute("y2", y2);
+        line.setAttribute("stroke", color);
+        line.setAttribute("stroke-width", "3");
+        line.setAttribute("stroke-dasharray", length);
+        line.setAttribute("stroke-dashoffset", length);
+        line.style.transition = "stroke-dashoffset 0.5s ease";
+        line.style.strokeLinecap = "round";
+        svg.appendChild(line);
+
+        setTimeout(() => {
+          line.setAttribute("stroke-dashoffset", "0");
+        }, delay);
+
+        delay += 300;
+      }
+    }
+  });
+}
+
+    document.getElementById('manual-check').onclick = () => {
+      const inputs = [...gridCont.querySelectorAll('input')];
+      const resultElem = document.getElementById('manual-result');
+      const nums = inputs.map(i=>parseInt(i.value,10));
+      if(nums.every(n=>isNaN(n))) return resultElem.textContent='❌ Fülle zuerst das Quadrat aus!';
+      if(nums.some(n=>isNaN(n)||n<10||n>99)) return resultElem.textContent='❌ Alle Zellen müssen mit zweistelligen Zahlen gefüllt sein!';
+      const strs = nums.map(n=>String(n).padStart(2,'0'));
+      for(const s of strs) if(s[0]===s[1]) return resultElem.textContent=`❌ Die Zahl  ${s} enthält gleiche Ziffern`;
+      const set = new Set(strs);
+      for(const s of set){ const m = s[1]+s[0]; if(m!==s&&set.has(m)) return resultElem.textContent=`❌ Spiegelzahlen sind nicht erlaubt: ${s} und ${m}`; }
+      const firstCol = [strs[0],strs[3],strs[6]];
+      const key1 = firstCol.map(s=>s[0]).join('');
+      const key2 = firstCol.map(s=>s[1]).join('');
+      if(!validTriples.has(key1)) return resultElem.textContent=`❌ Ungültiger Schlüssel (Erster Schlüssel): ${key1}`;
+      if(!validTriples.has(key2)) return resultElem.textContent=`❌ Ungültiger Schlüssel (Zweiter Schlüssel): ${key2}`;
+      const grid = [nums.slice(0,3), nums.slice(3,6), nums.slice(6)];
+      const ok = checkSquare(grid);
+      resultElem.textContent = ok?'✅ Das Quadrat entspricht der Methode!':'❌ Das Quadrat entspricht nicht der Methode.';
+      
+    if(ok) {
+      resultElem.textContent = '✅ Das Quadrat entspricht der Methode!';
+      document.getElementById('manual-connect').style.display = 'inline-block';
+    } else {
+      document.getElementById('manual-connect').style.display = 'none';
+      document.getElementById('manual-connect').textContent = 'Ziffern verbinden';
+      colorsVisible = false;
+    }
+
+    };
+  </script>
+<script>
+document.getElementById('manual-autofill').onclick = () => {
+  const key1 = "123"; // Верхний, средний, нижний ряды — первые цифры
+  const key2 = "456"; // Вторые цифры
+
+  const col1 = [
+    parseInt(key1[0] + key2[0]), // верхний ряд
+    parseInt(key1[1] + key2[1]), // средний ряд
+    parseInt(key1[2] + key2[2])  // нижний ряд
+  ];
+
+  const col2 = [
+    parseInt(key1[1] + key2[2]), // от среднего и нижнего ряда
+    parseInt(key1[2] + key2[0]), // от нижнего и верхнего
+    parseInt(key1[0] + key2[1])  // от верхнего и среднего
+  ];
+
+  const col3 = [
+    parseInt(String(col2[1])[0] + String(col2[2])[1]),
+    parseInt(String(col2[2])[0] + String(col2[0])[1]),
+    parseInt(String(col2[0])[0] + String(col2[1])[1])
+  ];
+
+  const fullGrid = [
+    [col1[0], col2[0], col3[0]],
+    [col1[1], col2[1], col3[1]],
+    [col1[2], col2[2], col3[2]],
+  ];
+
+  const inputs = [...document.querySelectorAll('#manual-grid input')];
+  for (let i = 0; i < 9; i++) {
+    inputs[i].value = fullGrid[Math.floor(i/3)][i%3];
+  }
+  document.getElementById('manual-check').click();
+};
+</script>
+<script>
+document.getElementById('manual-check').addEventListener('click', () => {
+  setTimeout(() => {
+    const resultElem = document.getElementById('manual-result');
+    if (resultElem && resultElem.textContent.trim() !== '') {
+      resultElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, 100); // задержка, чтобы успел обновиться текст
+});
+</script>
+<script>
+let colorsVisible = false;
+
+document.getElementById('manual-connect').addEventListener('click', () => {
+  const btn = document.getElementById('manual-connect');
+  if (!colorsVisible) {
+    drawLinesTrainer();
+    btn.textContent = 'Farben ausblenden';
+    colorsVisible = true;
+  } else {
+    document.getElementById('lines-trainer').innerHTML = '';
+    document.querySelectorAll('.col-digit-group').forEach(el => el.remove());
+    document.querySelectorAll('#manual-grid input').forEach(inp => inp.style.visibility = '');
+    btn.textContent = 'Ziffern verbinden';
+    colorsVisible = false;
+  }
+});
+</script>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  const KEYS = [
+    "123", "456", "789", "159", "483", "726", "186", "429", "753", "597", "831",
+    "264", "534", "867", "291", "561", "894", "237", "945", "378", "612", "972",
+    "315", "648", "918", "342", "675", "147", "258", "369"
+  ];
+
+  function getCompatibleKeys() {
+    const pairs = [];
+    for (let i = 0; i < KEYS.length; i++) {
+      for (let j = 0; j < KEYS.length; j++) {
+        if (i !== j) {
+          const a = KEYS[i].split('');
+          const b = KEYS[j].split('');
+          if (!a.some(d => b.includes(d))) pairs.push([KEYS[i], KEYS[j]]);
+        }
+      }
+    }
+    return pairs[Math.floor(Math.random() * pairs.length)];
+  }
+
+  function buildSquare(k1, k2) {
+    const col1 = [k1[0]+k2[0], k1[1]+k2[1], k1[2]+k2[2]].map(Number);
+    const col2 = [k1[1]+k2[2], k1[2]+k2[0], k1[0]+k2[1]].map(Number);
+    const col3 = [
+      String(col2[1])[0] + String(col2[2])[1],
+      String(col2[2])[0] + String(col2[0])[1],
+      String(col2[0])[0] + String(col2[1])[1]
+    ].map(Number);
+    return [
+      [col1[0], col2[0], col3[0]],
+      [col1[1], col2[1], col3[1]],
+      [col1[2], col2[2], col3[2]]
+    ];
+  }
+
+  function extractDigits(square) {
+    const key1 = square.map(row => String(row[0]).padStart(2, '0')[0]);
+    const key2 = square.map(row => String(row[0]).padStart(2, '0')[1]);
+    return [key1.join(''), key2.join('')];
+  }const grid = document.getElementById("partial-grid");
+  const result = document.getElementById("partial-result");
+  let correctSquare = [];
+
+  function renderGrid({ square, hints }) {
+    grid.innerHTML = '';
+    correctSquare = square;
+
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 3; col++) {
+        const cell = document.createElement("div");
+        cell.className = "square-cell";
+        const fullKey = `${row},${col}`;
+        const hintVal = hints[fullKey];
+        const digit0 = hints[`${fullKey}:digit0`];
+        const digit1 = hints[`${fullKey}:digit1`];
+
+        if (hintVal !== undefined) {
+          
+            const pair = String(hintVal).padStart(2, '0');
+            const spanWrap = document.createElement("div");
+            spanWrap.className = "digit-hint pair";
+            spanWrap.innerHTML = `<span>${pair[0]}</span><span>${pair[1]}</span>`;
+            cell.appendChild(spanWrap);
+            cell.dataset.locked = "true";
+            
+        } else {
+          const container = document.createElement("div");
+          container.style.display = "flex";
+          container.style.gap = "0.3em";
+
+          const input1 = document.createElement("input");
+          const input2 = document.createElement("input");
+          input1.type = "text";
+          input2.type = "text";
+          input1.maxLength = 1;
+          input2.maxLength = 1;
+          input1.className = "digit-input";
+          input2.className = "digit-input";
+          input1.inputMode = "numeric";
+          input2.inputMode = "numeric";
+
+          if (digit0 !== undefined) {
+            input1.value = digit0;
+            input1.disabled = true; input1.classList.add("digit-hint");
+            input1.classList.add("digit-hint");
+          }
+          if (digit1 !== undefined) {
+            input2.value = digit1;
+            input2.disabled = true; input2.classList.add("digit-hint");
+            input2.classList.add("digit-hint");
+          }
+
+          container.appendChild(input1);
+          container.appendChild(input2);
+          cell.appendChild(container);
+        }
+        grid.appendChild(cell);
+      }
+    }
+  }
+
+  let generated;
+  function resetGame() {
+    const [k1, k2] = getCompatibleKeys();
+    const square = buildSquare(k1, k2);
+    const hints = generateHints(square);
+    generated = { square, hints };
+    result.textContent = '';
+    renderGrid(generated);
+  }
+
+  resetGame();
+
+  document.getElementById("partial-reset").onclick = resetGame;
+
+  document.getElementById("partial-check").onclick = () => {
+    const inputs = [...grid.querySelectorAll(".square-cell")];
+    const allValues = [];
+
+    for (let row = 0; row < 3; row++) {
+      const rowVals = [];
+      for (let col = 0; col < 3; col++) {
+        const key = `${row},${col}`;
+        if (key in generated.hints) {
+          rowVals.push(generated.hints[key]);
+        } else {
+          const cell = inputs[row * 3 + col];
+          const digits = cell.querySelectorAll("input");
+          const val1 = digits[0]?.value ?? '';
+          const val2 = digits[1]?.value ?? '';
+          const num = parseInt(val1 + val2, 10);
+          rowVals.push(num);
+        }
+      }
+      allValues.push(rowVals);
+    }
+
+    const flatCorrect = generated.square.flat();
+    const flatUser = allValues.flat();
+    const correct = flatCorrect.every((v, i) => v === flatUser[i]);
+
+    result.textContent = correct ? '✅ Alles korrekt!' : '❌ Es gibt Fehler in der Eingabe.';
+  };
+});
+</script>
+<script>
+// ДОБАВЛЕНО: исправление логики подсказок для режима 'Дополнить квадрат'
+const allCompatibleKeyPairs = (() => {
+  const pairs = [];
+  for (let i = 0; i < KEYS.length; i++) {
+    for (let j = 0; j < KEYS.length; j++) {
+      if (i !== j) {
+        const a = KEYS[i].split('');
+        const b = KEYS[j].split('');
+        if (!a.some(d => b.includes(d))) pairs.push([KEYS[i], KEYS[j]]);
+      }
+    }
+  }
+  return pairs;
+})();
+
+function buildSquare(k1, k2) {
+  const col1 = [k1[0]+k2[0], k1[1]+k2[1], k1[2]+k2[2]].map(Number);
+  const col2 = [k1[1]+k2[2], k1[2]+k2[0], k1[0]+k2[1]].map(Number);
+  const col3 = [
+    String(col2[1])[0] + String(col2[2])[1],
+    String(col2[2])[0] + String(col2[0])[1],
+    String(col2[0])[0] + String(col2[1])[1]
+  ].map(Number);
+  return [
+    [col1[0], col2[0], col3[0]],
+    [col1[1], col2[1], col3[1]],
+    [col1[2], col2[2], col3[2]]
+  ];
+}
+
+function matchesHints(square, hints) {
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 3; c++) {
+      const key = `${r},${c}`;
+      const val = String(square[r][c]).padStart(2, '0');
+      if (hints[key] !== undefined && Number(hints[key]) !== square[r][c]) return false;
+      if (hints[`${key}:digit0`] && hints[`${key}:digit0`] != val[0]) return false;
+      if (hints[`${key}:digit1`] && hints[`${key}:digit1`] != val[1]) return false;
+    }
+  }
+  return true;
+}
+
+function countMatchingKeyPairs(hints) {
+  let count = 0;
+  for (const [k1, k2] of allCompatibleKeyPairs) {
+    const testSquare = buildSquare(k1, k2);
+    if (matchesHints(testSquare, hints)) count++;
+    if (count > 1) return count;
+  }
+  return count;
+}
+
+function generateHints(square) {
+  const all = [];
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) all.push([r, c]);
+  const hints = {};
+
+  while (Object.keys(hints).length < 4 && all.length) {
+    const idx = Math.floor(Math.random() * all.length);
+    const [r, c] = all.splice(idx, 1)[0];
+    hints[`${r},${c}`] = square[r][c];
+  }
+
+  let attempts = 0;
+  while (countMatchingKeyPairs(hints) > 1 && attempts < 10) {
+    for (let r = 0; r < 3; r++) {
+      const val = String(square[r][0]).padStart(2, '0');
+      if (!hints[`${r},0`] && !hints[`${r},0:digit0`] && !hints[`${r},0:digit1`]) {
+        hints[`${r},0:digit0`] = val[0];
+        attempts++;
+        break;
+      }
+    }
+  }
+
+  return hints;
+}
+</script>
+<script>
+function generateHints(square) {
+  const hintVariants = [
+    [[0, 0], [1, 0], [2, 0]], // первый столбец
+    [[0, 1], [1, 1], [2, 1]], // второй столбец
+    [[0, 2], [1, 2], [2, 2]], // третий столбец
+    [[0, 0], [0, 1], [0, 2]], // верхний ряд
+    [[1, 0], [1, 1], [1, 2]], // средний ряд
+    [[2, 0], [2, 1], [2, 2]], // нижний ряд
+  ];
+  const hints = {};
+  const selected = hintVariants[Math.floor(Math.random() * hintVariants.length)];
+  selected.forEach(([r, c]) => {
+    hints[`${r},${c}`] = square[r][c];
+  });
+  return hints;
+}
+</script>
+<script>
+(function(){
+  const KEYS = [
+    "123", "456", "789", "159", "483", "726", "186", "429", "753", "597",
+    "831", "264", "534", "867", "291", "561", "894", "237", "945", "378",
+    "612", "972", "315", "648", "918", "342", "675", "147", "258", "369"
+  ];
+
+  function getCompatibleKeys() {
+    const pairs = [];
+    for (let i = 0; i < KEYS.length; i++) {
+      for (let j = 0; j < KEYS.length; j++) {
+        if (i !== j) {
+          const a = KEYS[i].split('');
+          const b = KEYS[j].split('');
+          if (!a.some(d => b.includes(d))) pairs.push([KEYS[i], KEYS[j]]);
+        }
+      }
+    }
+    return pairs[Math.floor(Math.random() * pairs.length)];
+  }
+
+  function buildSquare(k1, k2) {
+    const col1 = [k1[0]+k2[0], k1[1]+k2[1], k1[2]+k2[2]].map(Number);
+    const col2 = [k1[1]+k2[2], k1[2]+k2[0], k1[0]+k2[1]].map(Number);
+    const col3 = [
+      String(col2[1])[0] + String(col2[2])[1],
+      String(col2[2])[0] + String(col2[0])[1],
+      String(col2[0])[0] + String(col2[1])[1]
+    ].map(Number);
+    return [
+      [col1[0], col2[0], col3[0]],
+      [col1[1], col2[1], col3[1]],
+      [col1[2], col2[2], col3[2]]
+    ];
+  }
+
+  function renderTransformSquare(square) {
+    const grid = document.getElementById("transform-grid");
+    grid.innerHTML = '';
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 3; c++) {
+        const cell = document.createElement("div");
+        cell.className = "square-cell";
+        cell.textContent = square[r][c];
+        grid.appendChild(cell);
+      }
+    }
+  }
+
+  window.window.currentSquare = [];
+
+  function enableDrag() {
+  document.querySelectorAll('#transform-grid .square-cell').forEach(cell => {
+    cell.setAttribute('draggable', true);
+    cell.addEventListener('dragstart', (e) => {
+      const text = cell.textContent.trim();
+      if (!text) return;
+
+      e.dataTransfer.setData('text/plain', text);
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 110;
+      canvas.height = 70;
+      const ctx = canvas.getContext('2d');
+
+      // Сплошной непрозрачный фон
+      ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const radius = 16;
+
+      // Создание градиента для 3D-эффекта
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, '#ffffff');
+      gradient.addColorStop(0.5, '#f0f0f0');
+      gradient.addColorStop(1, '#e0e0e0');
+
+      ctx.beginPath();
+      ctx.moveTo(radius, 0);
+      ctx.lineTo(canvas.width - radius, 0);
+      ctx.quadraticCurveTo(canvas.width, 0, canvas.width, radius);
+      ctx.lineTo(canvas.width, canvas.height - radius);
+      ctx.quadraticCurveTo(canvas.width, canvas.height, canvas.width - radius, canvas.height);
+      ctx.lineTo(radius, canvas.height);
+      ctx.quadraticCurveTo(0, canvas.height, 0, canvas.height - radius);
+      ctx.lineTo(0, radius);
+      ctx.quadraticCurveTo(0, 0, radius, 0);
+      ctx.closePath();
+
+      ctx.fillStyle = gradient;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetY = 3;
+      ctx.fill();
+
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#cccccc';
+      ctx.stroke();
+
+      // Текст
+      ctx.font = '700 34px Inter, sans-serif';
+      ctx.fillStyle = '#111';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
+      ctx.shadowBlur = 1;
+      ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+      canvas.style.position = 'absolute';
+      canvas.style.left = '-9999px';
+      document.body.appendChild(canvas);
+      e.dataTransfer.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
+      setTimeout(() => canvas.remove(), 0);
+    });
+  });
+
+  document.querySelectorAll('#guess-keys .sum-cell').forEach(input => {
+    input.addEventListener('dragover', (e) => e.preventDefault());
+    input.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const data = e.dataTransfer.getData('text/plain');
+      const num = parseInt(data, 10);
+      if (!isNaN(num)) {
+        input.value = num;
+        input.dispatchEvent(new Event('input'));
+      }
+    });
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  enableDrag();
+});
+
+
+function getCell(row, col) {
+  const idx = row * 3 + col;
+  return document.querySelectorAll('#transform-grid .square-cell')[idx];
+}
+
+
+
+function generateNewSquare() {
+    // Очищаем суммы
+    document.querySelectorAll('#guess-keys .sum-cell').forEach(el => el.value = '');
+    document.querySelectorAll('#guess-keys .sum-result').forEach(el => el.textContent = '= 0');
+
+    const [k1, k2] = getCompatibleKeys();
+    window.window.currentSquare = buildSquare(k1, k2);
+    renderTransformSquare(window.window.currentSquare);
+
+  requestAnimationFrame(() => {
+    initializeRowHandles();
+    
+    
+    
+
+    const gridRect = document.getElementById('transform-grid').getBoundingClientRect();
+    const offsetY = window.scrollY + gridRect.top + 24;
+    const cellHeight = 120 + 16;
+
+    ['row-handle-0', 'row-handle-1', 'row-handle-2'].forEach((id, idx) => {
+      const el = document.getElementById(id);
+      el.style.display = 'block';
+      el.style.top = `${offsetY + idx * cellHeight}px`;
+    });
+  });
+
+    
+  const gridRect = document.getElementById('transform-grid').getBoundingClientRect();
+  const containerRect = document.querySelector('.square-grid-container').getBoundingClientRect();
+  const baseLeft = containerRect.left + window.scrollX + 24;
+  const baseTop = containerRect.top + window.scrollY;
+  const cellWidth = 120 + 16;
+
+  const handleOffsets = [0, 1, 2]; // столбцы
+
+  ['column-handle-1', 'column-handle-4', 'column-handle-9'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.style.display = 'block';
+    el.style.left = `${baseLeft + handleOffsets[i] * cellWidth + 50}px`;
+    el.style.top = `${baseTop - 50}px`;
+  });
+
+  ['column-handle-6', 'column-handle-5', 'column-handle-10'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.style.display = 'block';
+    el.style.left = `${baseLeft + handleOffsets[i] * cellWidth + 50}px`;
+    el.style.top = `${baseTop + gridRect.height + 10}px`;
+  });
+
+    document.getElementById("transform-result").textContent = '';
+  enableDrag();  // Добавлено повторное подключение перетаскивания
+  }
+
+  document.getElementById("transform-generate").onclick = generateNewSquare;
+
+  document.getElementById("transform-yes").onclick = () => {
+    document.getElementById("transform-result").textContent = '🔧 Проверка ещё не реализована';
+  };
+  document.getElementById("transform-no").onclick = () => {
+    document.getElementById("transform-result").textContent = '🔧 Проверка ещё не реализована';
+  };
+
+  
+let rowHandlesInitialized = false;
+function initializeRowHandles() {
+  if (rowHandlesInitialized) return;
+  enableRowRealtimeSwap(0, 'row-handle-0');
+  enableRowRealtimeSwap(1, 'row-handle-1');
+  enableRowRealtimeSwap(2, 'row-handle-2');
+  rowHandlesInitialized = true;
+}
+
+  generateNewSquare();
+})();
+</script>
+<script>
+document.querySelectorAll('#guess-keys .sum-cell').forEach(input => {
+  input.addEventListener('input', () => {
+    const group = input.closest('.sum-group');
+    const inputs = group.querySelectorAll('.sum-cell');
+    const sum = Array.from(inputs).reduce((acc, el) => acc + (parseInt(el.value) || 0), 0);
+    group.querySelector('.sum-result').textContent = '= ' + sum;
+  });
+});
+</script>
+<script>
+(function() {
+  function getFormulas(square) {
+    const [a, b, c] = square;
+    return [
+      {sum: a[2] + b[1] + c[0], values: [a[2], b[1], c[0]]}, // 1
+      {sum: a[2] + b[0] + c[1], values: [a[2], b[0], c[1]]}, // 2
+      {sum: b[2] + c[1] + a[0], values: [b[2], c[1], a[0]]}, // 3
+      {sum: b[2] + a[1] + c[0], values: [b[2], a[1], c[0]]}, // 4
+      {sum: c[2] + b[1] + a[0], values: [c[2], b[1], a[0]]}, // 5
+      {sum: c[2] + a[1] + b[0], values: [c[2], a[1], b[0]]}, // 6
+    ];
+  }
+
+  function canBeTransformed(square) {
+    const formulas = getFormulas(square);
+    const sumsMap = new Map();
+
+    for (const f of formulas) {
+      const key = f.sum;
+      if (!sumsMap.has(key)) sumsMap.set(key, []);
+      sumsMap.get(key).push(f.values);
+    }
+
+    for (const [sum, groups] of sumsMap.entries()) {
+      if (groups.length >= 2) {
+        for (let i = 0; i < groups.length; i++) {
+          for (let j = i + 1; j < groups.length; j++) {
+            const overlap = groups[i].find(v => groups[j].includes(v));
+            if (overlap !== undefined) {
+              return { possible: true, common: overlap, sum };
+            }
+          }
+        }
+      }
+    }
+
+    return { possible: false };
+  }
+
+  let actualAnswer = false;
+
+  const yesBtn = document.getElementById("transform-yes");
+  const noBtn = document.getElementById("transform-no");
+  const resultElem = document.getElementById("transform-result");
+
+  yesBtn.onclick = () => {
+    const check = canBeTransformed(window.currentSquare);
+    if (check.possible) {
+      resultElem.textContent = `✅ Richtig! Kann umgewandelt werden. Gemeinsame Zahl: ${check.common}, summe: ${check.sum}`;
+    } else {
+      resultElem.textContent = `❌ Falsch. Dieses Quadrat kann nicht umgewandelt werden.`;
+    }
+  };
+
+  noBtn.onclick = () => {
+    const check = canBeTransformed(window.currentSquare);
+    if (!check.possible) {
+      resultElem.textContent = `✅ Richtig! Dieses Quadrat kann tatsächlich nicht umgewandelt werden.`;
+    } else {
+      resultElem.textContent = `❌ Falsch. Es kann umgewandelt werden. Gemeinsame Zahl: ${check.common}, summe: ${check.sum}`;
+    }
+  };
+})();
+</script>
+<script>
+// Поддержка перетаскивания чисел из ячеек квадрата в поля суммы (копирование)
+document.querySelectorAll('#transform-grid .square-cell').forEach(cell => {
+  cell.setAttribute('draggable', true);
+  cell.addEventListener('dragstart', (e) => {
+    e.dataTransfer.setData('text/plain', cell.textContent.trim());
+  });
+});
+
+document.querySelectorAll('#guess-keys .sum-cell').forEach(input => {
+  input.addEventListener('dragover', (e) => e.preventDefault());
+  input.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData('text/plain');
+    const num = parseInt(data, 10);
+    if (!isNaN(num)) {
+      input.value = num;
+      input.dispatchEvent(new Event('input'));
+    }
+  });
+});
+</script>
+<script>
+// Поддержка перетаскивания чисел из ячеек квадрата в поля суммы (копирование) с кастомным превью
+document.querySelectorAll('#transform-grid .square-cell').forEach(cell => {
+  cell.setAttribute('draggable', true);
+  cell.addEventListener('dragstart', (e) => {
+    const text = cell.textContent.trim();
+    e.dataTransfer.setData('text/plain', text);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 80;
+    canvas.height = 80;
+    const ctx = canvas.getContext('2d');
+
+    // фон
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // текст
+    ctx.font = 'bold 40px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#c49b7e';
+    ctx.shadowColor = 'rgba(0,0,0,0.2)';
+    ctx.shadowBlur = 6;
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    e.dataTransfer.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
+  });
+});
+
+document.querySelectorAll('#guess-keys .sum-cell').forEach(input => {
+  input.addEventListener('dragover', (e) => e.preventDefault());
+  input.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData('text/plain');
+    const num = parseInt(data, 10);
+    if (!isNaN(num)) {
+      input.value = num;
+      input.dispatchEvent(new Event('input'));
+    }
+  });
+});
+</script>
+<script>
+// Поддержка перетаскивания чисел с кастомным изображением (надежно)
+document.querySelectorAll('#transform-grid .square-cell').forEach(cell => {
+  cell.setAttribute('draggable', true);
+  cell.addEventListener('dragstart', (e) => {
+    const text = cell.textContent.trim();
+    e.dataTransfer.setData('text/plain', text);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 100;
+    canvas.height = 100;
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = 'bold 48px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#c49b7e';
+    ctx.shadowColor = 'rgba(0,0,0,0.25)';
+    ctx.shadowBlur = 8;
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    canvas.style.position = 'absolute';
+    canvas.style.left = '-9999px';
+    document.body.appendChild(canvas);
+
+    e.dataTransfer.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
+
+    setTimeout(() => canvas.remove(), 0);
+  });
+});
+
+document.querySelectorAll('#guess-keys .sum-cell').forEach(input => {
+  input.addEventListener('dragover', (e) => e.preventDefault());
+  input.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData('text/plain');
+    const num = parseInt(data, 10);
+    if (!isNaN(num)) {
+      input.value = num;
+      input.dispatchEvent(new Event('input'));
+    }
+  });
+});
+</script>
+<script>
+</script>
+<script>
+let isDragging = false;
+let startX = 0;
+let draggedCol = 0;
+const cellWidth = 100;
+
+function getCell(row, col) {
+  const idx = row * 3 + col;
+  return document.querySelectorAll('#transform-grid .square-cell')[idx];
+}
+
+function swapColumns(colA, colB) {
+  if (colA === colB) return;
+
+  // Сброс transform перед свапом
+  for (let row = 0; row < 3; row++) {
+    getCell(row, colA).style.transform = '';
+    getCell(row, colB).style.transform = '';
+  }
+
+  for (let row = 0; row < 3; row++) {
+    const cellA = getCell(row, colA);
+    const cellB = getCell(row, colB);
+    [cellA.textContent, cellB.textContent] = [cellB.textContent, cellA.textContent];
+  }
+}
+
+function enableColumnRealtimeSwap(colIndex, handleId) {
+  const handle = document.getElementById(handleId);
+
+  handle.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    draggedCol = colIndex;
+    startX = e.clientX;
+
+    document.addEventListener('mousemove', onDrag);
+    document.addEventListener('mouseup', onDrop);
+  });
+
+  function onDrag(e) {
+    if (!isDragging) return;
+    const dx = e.clientX - startX;
+    const direction = dx > 0 ? 1 : -1;
+    const threshold = 50;
+    const targetCol = draggedCol + direction;
+
+    for (let row = 0; row < 3; row++) {
+      const cell = getCell(row, draggedCol);
+      cell.style.transform = `translateX(${dx}px)`;
+      cell.classList.add('dragging');
+    }
+
+    if (Math.abs(dx) > threshold && targetCol >= 0 && targetCol <= 2) {
+      swapColumns(draggedCol, targetCol);
+      startX = e.clientX;
+      draggedCol = targetCol;
+    }
+  }
+
+  function onDrop(e) {
+    if (!isDragging) return;
+    for (let row = 0; row < 3; row++) {
+      const cell = getCell(row, draggedCol);
+      cell.style.transform = '';
+      cell.classList.remove('dragging');
+    }
+
+    isDragging = false;
+    document.removeEventListener('mousemove', onDrag);
+    document.removeEventListener('mouseup', onDrop);
+  }
+}
+
+enableColumnRealtimeSwap(0, 'column-handle-1');
+enableColumnRealtimeSwap(0, 'column-handle-6');
+
+enableColumnRealtimeSwap(1, 'column-handle-4');
+enableColumnRealtimeSwap(1, 'column-handle-5');
+enableColumnRealtimeSwap(2, 'column-handle-9');
+enableColumnRealtimeSwap(2, 'column-handle-10');
+</script>
+<!-- Ручки для строк (изначально скрыты) -->
+<div class="row-handle" id="row-handle-0" style="position:absolute; left: 10px; top: 0px; width: 40px; height: 20px; background-color: red; border-radius: 50%; cursor: grab; display: none;" title="Перетащить 1-й ряд"></div>
+<div class="row-handle" id="row-handle-1" style="position:absolute; left: 10px; top: 0px; width: 40px; height: 20px; background-color: green; border-radius: 50%; cursor: grab; display: none;" title="Перетащить 2-й ряд"></div>
+<div class="row-handle" id="row-handle-2" style="position:absolute; left: 10px; top: 0px; width: 40px; height: 20px; background-color: blue; border-radius: 50%; cursor: grab; display: none;" title="Перетащить 3-й ряд"></div>
+<!-- Ручки для строк (отладка: фиксированные координаты и z-index) -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof showMode === 'function') {
+    const originalShow = showMode;
+    showMode = function(mode) {
+      originalShow(mode);
+      if (mode === 'guess-keys') {
+        // auto-click generate button after display
+        requestAnimationFrame(() => {
+          const btn = document.getElementById('transform-generate');
+          if (btn) btn.click();
+        });
+      }
+    };
+  }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.column-handle, .row-handle').forEach(el => {
+    el.addEventListener('mousedown', e => {
+      e.preventDefault(); // блокируем стандартный drag, убираем стоп-курсор
+    });
+  });
+});
+</script>
+<script>
+let diagTop = null;
+let diagLeftCoords = null;
+let rowPositions = [];
+let colPositions = [];
+
+function updateSums() {
+  const grid = document.getElementById('transform-grid');
+  const container = document.querySelector('#guess-keys .square-grid-container');
+  const cells = grid.querySelectorAll('.square-cell');
+  if (cells.length !== 9) return;
+
+  const values = [...cells].map(cell => parseInt(cell.textContent) || 0);
+  const matrix = [values.slice(0,3), values.slice(3,6), values.slice(6)];
+
+  const cbox = container.getBoundingClientRect();
+
+  if (rowPositions.length === 0 || colPositions.length === 0) {
+    for (let r = 0; r < 3; r++) {
+      const box = cells[r*3].getBoundingClientRect();
+      rowPositions[r] = (box.top - cbox.top + box.height/2 - 10);
+    }
+    for (let c = 0; c < 3; c++) {
+      const box = cells[c].getBoundingClientRect();
+      colPositions[c] = (box.left - cbox.left + box.width/2 - 10);
+    }
+  }
+
+  for (let r = 0; r < 3; r++) {
+    const sum = matrix[r].reduce((a, b) => a + b, 0);
+    const sumEl = document.getElementById('sum-row-' + r);
+    sumEl.style.position = 'absolute';
+    sumEl.style.left = '-42px';
+    sumEl.style.top = rowPositions[r] + 'px';
+    sumEl.textContent = sum;
+  }
+
+  for (let c = 0; c < 3; c++) {
+    const sum = matrix[0][c] + matrix[1][c] + matrix[2][c];
+    const sumEl = document.getElementById('sum-col-' + c);
+    sumEl.style.position = 'absolute';
+    sumEl.style.top = (cbox.height - 15) + 'px';
+    sumEl.style.left = colPositions[c] + 'px';
+    sumEl.textContent = sum;
+  }
+
+  const d1 = matrix[0][0] + matrix[1][1] + matrix[2][2];
+  const d2 = matrix[0][2] + matrix[1][1] + matrix[2][0];
+  const diagLeft = document.getElementById('sum-dia-left');
+  const diagRight = document.getElementById('sum-dia-right');
+
+  diagLeft.textContent = d1;
+  diagRight.textContent = d2;
+
+  if (diagTop === null || diagLeftCoords === null) {
+    const leftCell = cells[8].getBoundingClientRect();
+    const rightCell = cells[2].getBoundingClientRect();
+
+    diagTop = {
+      topOffset: 52,
+      left: (leftCell.left - cbox.left + 128),
+      top: (leftCell.top - cbox.top + 40)
+    };
+    diagLeftCoords = {
+      topOffset: -13,
+      left: (rightCell.left - cbox.left + 123),
+      top: (rightCell.top - cbox.top - 30)
+    };
+
+    diagLeft.style.position = 'absolute';
+    diagLeft.style.top = (diagTop.top + diagTop.topOffset) + 'px';
+    diagLeft.style.left = diagTop.left + 'px';
+
+    diagRight.style.position = 'absolute';
+    diagRight.style.top = (diagLeftCoords.top + diagLeftCoords.topOffset) + 'px';
+    diagRight.style.left = (diagLeftCoords.left + 5) + 'px';
+  }
+}
+
+setInterval(() => {
+  const mode = document.getElementById('guess-keys');
+  if (mode && mode.style.display !== 'none') updateSums();
+}, 300);
+</script>
+<script>
+(function(){
+  let activeNumbers = [];
+
+  function highlightNumbers(on) {
+    document.querySelectorAll('#transform-grid .square-cell').forEach(cell => {
+      const num = cell.textContent.trim();
+      if (on && activeNumbers.includes(num)) {
+        cell.classList.add('hover-effect');
+      } else {
+        cell.classList.remove('hover-effect');
+      }
+    });
+  }
+
+  // Row handle logic
+  ['row-handle-0','row-handle-1','row-handle-2'].forEach(id => {
+    const handle = document.getElementById(id);
+    if (!handle) return;
+    const rowIndex = parseInt(id.split('-')[2], 10);
+    handle.addEventListener('mousedown', () => {
+      activeNumbers = [];
+      for (let col = 0; col < 3; col++) {
+        activeNumbers.push(getCell(rowIndex, col).textContent.trim());
+      }
+      highlightNumbers(true);
+    });
+  });
+
+  // Column handle logic
+  const colMap = {'column-handle-1':0,'column-handle-4':1,'column-handle-9':2};
+  Object.keys(colMap).forEach(id => {
+    const handle = document.getElementById(id);
+    if (!handle) return;
+    const colIndex = colMap[id];
+    handle.addEventListener('mousedown', () => {
+      activeNumbers = [];
+      for (let row = 0; row < 3; row++) {
+        activeNumbers.push(getCell(row, colIndex).textContent.trim());
+      }
+      highlightNumbers(true);
+    });
+  });
+
+  // Wrap swapRows to reapply highlight after each swap
+  if (window.swapRows) {
+    const originalSwapRows = window.swapRows;
+    window.swapRows = function(rowA, rowB) {
+      originalSwapRows(rowA, rowB);
+      highlightNumbers(true);
+    };
+  }
+
+  // Clear on mouseup
+  document.addEventListener('mouseup', () => {
+    highlightNumbers(false);
+    activeNumbers = [];
+  });
+})();
+</script>
+<script>
+(function(){
+  let activeNumbers = [];
+
+  function highlightCells() {
+    document.querySelectorAll('#transform-grid .square-cell').forEach(cell => {
+      if (activeNumbers.includes(cell.textContent.trim())) {
+        cell.classList.add('hover-effect');
+      } else {
+        cell.classList.remove('hover-effect');
+      }
+    });
+  }
+
+  // Row handles
+  ['row-handle-0','row-handle-1','row-handle-2'].forEach(id => {
+    const handle = document.getElementById(id);
+    if (!handle) return;
+    const rowIndex = parseInt(id.split('-')[2], 10);
+    handle.addEventListener('mousedown', () => {
+      activeNumbers = [];
+      for (let col = 0; col < 3; col++) {
+        activeNumbers.push(getCell(rowIndex, col).textContent.trim());
+      }
+      highlightCells();
+    });
+  });
+
+  // Column handles (all 6)
+  [['column-handle-1',0],['column-handle-6',0],
+   ['column-handle-4',1],['column-handle-5',1],
+   ['column-handle-9',2],['column-handle-10',2]].forEach(([id,colIndex]) => {
+    const handle = document.getElementById(id);
+    if (!handle) return;
+    handle.addEventListener('mousedown', () => {
+      activeNumbers = [];
+      for (let row = 0; row < 3; row++) {
+        activeNumbers.push(getCell(row, colIndex).textContent.trim());
+      }
+      highlightCells();
+    });
+  });
+
+  // Override swapRows to re-highlight
+  if (window.swapRows) {
+    const originalSwapRows = window.swapRows;
+    window.swapRows = function(rowA, rowB) {
+      originalSwapRows(rowA, rowB);
+      highlightCells();
+    };
+  }
+
+  // Clear on mouseup
+  document.addEventListener('mouseup', () => {
+    activeNumbers = [];
+    highlightCells();
+  });
+})();
+</script>
+<script>
+(function(){
+  let activeNumbers = [];
+
+  function highlightNumbers(on) {
+    document.querySelectorAll('#transform-grid .square-cell').forEach(cell => {
+      const num = cell.textContent.trim();
+      if (on && activeNumbers.includes(num)) {
+        cell.classList.add('hover-effect');
+      } else {
+        cell.classList.remove('hover-effect');
+      }
+    });
+  }
+
+  ['row-handle-0','row-handle-1','row-handle-2'].forEach(id => {
+    const handle = document.getElementById(id);
+    if (!handle) return;
+    const rowIndex = parseInt(id.split('-')[2], 10);
+    handle.addEventListener('mousedown', () => {
+      activeNumbers = [];
+      for (let col = 0; col < 3; col++) {
+        activeNumbers.push(getCell(rowIndex, col).textContent.trim());
+      }
+      highlightNumbers(true);
+    });
+  });
+
+  [['column-handle-6', 0], ['column-handle-5', 1], ['column-handle-10', 2]]
+    .forEach(([id, colIndex]) => {
+      const handle = document.getElementById(id);
+      if (!handle) return;
+      handle.addEventListener('mousedown', () => {
+        activeNumbers = [];
+        for (let row = 0; row < 3; row++) {
+          activeNumbers.push(getCell(row, colIndex).textContent.trim());
+        }
+        highlightNumbers(true);
+      });
+    });
+
+  if (window.swapRows) {
+    const orig = window.swapRows;
+    window.swapRows = function(a, b) {
+      orig(a, b);
+      highlightNumbers(true);
+    };
+  }
+  if (window.swapColumns) {
+    const orig = window.swapColumns;
+    window.swapColumns = function(a, b) {
+      orig(a, b);
+      highlightNumbers(true);
+    };
+  }
+
+  document.addEventListener('mouseup', () => {
+    activeNumbers = [];
+    highlightNumbers(false);
+  });
+})();
+</script>
+
+<script>
+let currentStep = 0;
+const steps = document.querySelectorAll('#tutorial-content > div');
+document.getElementById('tutorial-next').onclick = () => {
+  if (currentStep < steps.length - 1) {
+    steps[currentStep].style.display = 'none';
+    currentStep++;
+    steps[currentStep].style.display = 'block';
+    document.getElementById('tutorial-prev').style.visibility = 'visible';
+    if (currentStep === steps.length - 1)
+      document.getElementById('tutorial-next').style.visibility = 'hidden';
+  }
+};
+document.getElementById('tutorial-prev').onclick = () => {
+  if (currentStep > 0) {
+    steps[currentStep].style.display = 'none';
+    currentStep--;
+    steps[currentStep].style.display = 'block';
+    document.getElementById('tutorial-next').style.visibility = 'visible';
+    if (currentStep === 0)
+      document.getElementById('tutorial-prev').style.visibility = 'hidden';
+  }
+};
+</script>
+
+
+<script>
+document.getElementById('open-tutorial').onclick = () => {
+  document.getElementById('tutorial-overlay').style.display = 'flex';
+  currentStep = 0;
+  document.querySelectorAll('#tutorial-content > div').forEach((el, i) => {
+    el.style.display = i === 0 ? 'block' : 'none';
+  });
+  document.getElementById('tutorial-prev').style.visibility = 'hidden';
+  document.getElementById('tutorial-next').style.visibility = 'visible';
+};
+</script>
+
+
+<script>
+const tutorialBtnBlock = document.getElementById('transform-tutorial-button');
+function showMode(mode) {
+  const sel = document.querySelector('.mode-selection');
+  if (sel) sel.style.display = 'none';
+  ['manual-input','partial-fill','guess-keys'].forEach(m => {
+    const sec = document.getElementById(m);
+    if (sec) sec.style.display = (m === mode ? 'block' : 'none');
+    document.getElementById('back-manual').style.display = 'inline-block';
+  });
+  tutorialBtnBlock.style.display = (mode === 'guess-keys') ? 'block' : 'none';
+}
+</script>
+
+
+<script>
+  const overlay = document.getElementById('tutorial-overlay');
+  const modal = document.getElementById('tutorial-modal');
+
+  overlay.addEventListener('click', function(e) {
+    if (!modal.contains(e.target)) {
+      overlay.style.display = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>

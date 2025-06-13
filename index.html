@@ -558,14 +558,7 @@ select[title] {
   font-family: 'Merriweather', serif;
   font-size: 3rem;
   margin-top: 2rem;
-  padding: 1rem 2.5rem;
-  background: #f7f3ed;
-  border-radius: 3rem;
-  border: 2px solid #b5956b;
   display: inline-block;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-  background-clip: padding-box;
-  background-origin: padding-box;
   background-image: linear-gradient(to right, #d4bfa3, #caa98c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -888,35 +881,119 @@ select, #combo1, #combo2, #select1, #select2 {
 </select>
 </div>
 <div class="top-bar">
-<a class="custom-button" data-i18n="resources" data-tooltip="Полезные ссылки" data-tooltip-key="resources_tip" href="resources.html">🔗 Ресурсы</a>
-<button class="custom-button" data-i18n="training" data-tooltip="Обучение в пошаговом режиме" data-tooltip-key="training_tip" id="start-intro">🧠 Обучающий режим</button>
-<button class="custom-button" data-i18n="analyze" data-tooltip="Анализ текущего квадрата и преобразование в магический, если это возможно" data-tooltip-key="analyze_tip" id="analyze-auto-btn">📊 Анализ</button>
+
+<a class="custom-button" data-tooltip-key="resources_tip" data-tooltip-key="resources_tip" href="resources.html">
+  <span class="lang-ru lang-visible">🔗 Ресурсы</span>
+  <span class="lang-uk">🔗 Ресурси</span>
+  <span class="lang-en">🔗 Resources</span>
+  <span class="lang-de">🔗 Ressourcen</span>
+</a>
+
+
+<button class="custom-button" data-tooltip-key="training_tip" data-tooltip-key="training_tip" id="start-intro">
+  <span class="lang-ru lang-visible">🧠 Обучающий режим</span>
+  <span class="lang-uk">🧠 Навчальний режим</span>
+  <span class="lang-en">🧠 Learning mode</span>
+  <span class="lang-de">🧠 Lernmodus</span>
+</button>
+
+
+<button class="custom-button" data-tooltip-key="analyze_tip" data-tooltip-key="analyze_tip" id="analyze-auto-btn">
+  <span class="lang-ru lang-visible">📊 Анализ</span>
+  <span class="lang-uk">📊 Аналіз</span>
+  <span class="lang-en">📊 Analyze</span>
+  <span class="lang-de">📊 Analyse</span>
+</button>
+
+
+<button class="custom-button" data-tooltip-key="proof_tip" data-tooltip-key="proof_tip" id="proof-button">
+  <span class="lang-ru lang-visible">✅ Доказано!</span>
+  <span class="lang-uk">✅ Доведено!</span>
+  <span class="lang-en">✅ Proven!</span>
+  <span class="lang-de">✅ Bewiesen!</span>
+</button>
+
+
+<a class="custom-button" id="trainer-button" data-tooltip-key="trainer_tip">
+  <span class="lang-ru lang-visible">🎯 Тренажёр</span>
+  <span class="lang-uk">🎯 Тренажер</span>
+  <span class="lang-en">🎯 Trainer</span>
+  <span class="lang-de">🎯 Trainer</span>
+</a>
 </div>
-<h1 data-i18n="heading">Магические квадраты </h1>
-<h2 class="subheading" data-i18n="subheading">по методике Аслана Уарзиаты</h2>
+
+<h1 class="lang-ru lang-visible">Магические квадраты</h1>
+<h1 class="lang-uk">Магічні квадрати</h1>
+<h1 class="lang-en">Magic Squares</h1>
+<h1 class="lang-de">Magische Quadrate</h1>
+
+<h2 class="subheading lang-ru lang-visible">по методике Аслана Уарзиаты</h2>
+<h2 class="subheading lang-uk">за методикою Аслана Уарзіати</h2>
+<h2 class="subheading lang-en">based on Aslan Uarziaty’s method</h2>
+<h2 class="subheading lang-de">nach der Methode von Aslan Uarziaty</h2>
 
 
-<p class="key-info-hint" data-i18n="how_text" data-html="true"></p>
+<p class="key-info-hint lang-ru lang-visible">
+  Выберите 2 ключа — тройки уникальных цифр без повторений. Затем нажмите кнопку <i>«Построить»</i>, чтобы увидеть квадрат.
+</p>
+<p class="key-info-hint lang-uk">
+  Оберіть 2 ключі — трійки унікальних цифр без повторень. Потім натисніть кнопку <i>«Побудувати»</i>, щоб побачити квадрат.
+</p>
+<p class="key-info-hint lang-en">
+  Select 2 keys — triplets of unique digits with no repeats. Then click the <i>“Build”</i> button to see the square.
+</p>
+<p class="key-info-hint lang-de">
+  Wähle 2 Schlüssel — Dreiergruppen eindeutiger Ziffern ohne Wiederholungen. Klicke dann auf <i>„Erstellen“</i>, um das Quadrat zu sehen.
+</p>
 
 
 
 <div class="key-select-group">
-<label for="key1" data-i18n="label_key1">Ключ 1:</label>
+<label for="key1">
+  <span class="lang-ru lang-visible">Ключ 1:</span>
+  <span class="lang-en">Key 1:</span>
+  <span class="lang-uk">Ключ 1:</span>
+  <span class="lang-de">Schlüssel 1:</span>
+</label>
 <div class="select-pair">
-<select data-tooltip="Выберите первый ключ — три уникальные цифры" id="key1"></select>
-<span class="combo-text" data-i18n="in_combination">в комбинации</span>
-<select data-tooltip="Выберите порядок цифр для ключа 1" id="order1"></select>
+<select data-tooltip-key="tooltip_key1" id="key1"></select>
+<span class="combo-text">
+  <span class="lang-ru lang-visible">в комбинации</span>
+  <span class="lang-en">in combination</span>
+  <span class="lang-uk">в комбінації</span>
+  <span class="lang-de">in Kombination</span>
+</span>
+<select data-tooltip-key="tooltip_order1" id="order1"></select>
 </div>
 </div>
 <div class="key-select-group">
-<label for="key2" data-i18n="label_key2">Ключ 2:</label>
+<label for="key2">
+  <span class="lang-ru lang-visible">Ключ 2:</span>
+  <span class="lang-en">Key 2:</span>
+  <span class="lang-uk">Ключ 2:</span>
+  <span class="lang-de">Schlüssel 2:</span>
+</label>
 <div class="select-pair">
-<select data-tooltip="Выберите второй ключ — три другие цифры" id="key2"></select>
-<span class="combo-text" data-i18n="in_combination">в комбинации</span>
-<select data-tooltip="Выберите порядок цифр для ключа 2" id="order2"></select>
+<select data-tooltip-key="tooltip_key2" id="key2"></select>
+<span class="combo-text">
+  <span class="lang-ru lang-visible">в комбинации</span>
+  <span class="lang-en">in combination</span>
+  <span class="lang-uk">в комбінації</span>
+  <span class="lang-de">in Kombination</span>
+</span>
+<select data-tooltip-key="tooltip_order2" id="order2"></select>
 </div>
 </div>
-<button data-i18n="build" data-tooltip="Создать магический квадрат" onclick="buildSquare()">Построить</button>
+
+
+<button class="custom-button" id="build-button" data-tooltip-key="build_tip" onclick="buildSquare()">
+  <span class="lang-ru lang-visible">Построить</span>
+  <span class="lang-uk">Побудувати</span>
+  <span class="lang-en">Build</span>
+  <span class="lang-de">Erstellen</span>
+</button>
+
+
 <div class="outer-wrapper" style="display: flex; justify-content: center;"><div class="container">
 <svg id="lines" xmlns="http://www.w3.org/2000/svg"></svg>
 <table id="square"></table></div></div>
@@ -996,7 +1073,7 @@ function drawLines(square) {
   const digitMap = {};
   const palette = {
     "1": "red", "2": "blue", "3": "green", "4": "orange", "5": "purple",
-    "6": "teal", "7": "brown", "8": "magenta", "9": "gold"
+    "6": "teal", "7": "brown", "8": "magenta", "9": "dodgerblue"
   };
 
   const cells = [...table.querySelectorAll('td')];
@@ -1495,7 +1572,7 @@ function drawLines(square) {
   const digitMap = {};
   const palette = {
     "1": "red", "2": "blue", "3": "green", "4": "orange", "5": "purple",
-    "6": "teal", "7": "brown", "8": "magenta", "9": "gold"
+    "6": "teal", "7": "brown", "8": "magenta", "9": "dodgerblue"
   };
 
   const cells = [...table.querySelectorAll('td')];
@@ -1591,23 +1668,7 @@ const key2 = document.getElementById('key2');
 });
 </script>
 <div class="tooltip" id="tooltip"></div>
-<script>
-  const tooltip = document.getElementById("tooltip");
 
-  document.querySelectorAll("[data-tooltip]").forEach(el => {
-    el.addEventListener("mouseenter", e => {
-      tooltip.textContent = el.getAttribute("data-tooltip");
-      tooltip.classList.add("visible");
-    });
-    el.addEventListener("mousemove", e => {
-      tooltip.style.left = e.pageX + 15 + "px";
-      tooltip.style.top = e.pageY + 15 + "px";
-    });
-    el.addEventListener("mouseleave", () => {
-      tooltip.classList.remove("visible");
-    });
-  });
-</script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("start-intro");
@@ -1667,7 +1728,7 @@ step1.innerHTML = `
     <h3 class="lang-en">Step 1: Choose the first key</h3>
     <h3 class="lang-de">Schritt 1: Wähle den ersten Schlüssel</h3>
 
-    <p class="lang-ru">Выберите ключ и его комбинацию от перестановок цифр в числе.</p>
+    <p class="lang-ru lang-visible">Выберите ключ и его комбинацию от перестановок цифр в числе.</p>
     <p class="lang-uk">Оберіть ключ та його комбінацію з перестановок цифр у числі.</p>
     <p class="lang-en">Choose a key and its permutation of digits.</p>
     <p class="lang-de">Wähle einen Schlüssel und seine Ziffernpermutation.</p>
@@ -2376,6 +2437,9 @@ document.getElementById("analyze-auto-btn").addEventListener("click", function (
 <script>
 const translations = {
   ru: {
+    proof: "✅ Доказано!",
+    proof_tip: "Доказательства мировой сенсации",
+
     "Обучение в пошаговом режиме": "Обучение в пошаговом режиме",
     "Анализ текущего квадрата и преобразование в магический, если это возможно": "Анализ текущего квадрата и преобразование в магический, если это возможно",
     "Создать магический квадрат": "Создать магический квадрат",
@@ -2389,6 +2453,9 @@ const translations = {
     "in_combination": "в комбинации"
   },
   uk: {
+    proof: "✅ Доведено!",
+    proof_tip: "Докази світової сенсації",
+
     "Обучение в пошаговом режиме": "Навчання покроково",
     "Анализ текущего квадрата и преобразование в магический, если это возможно": "Аналіз квадрата і перетворення в магічний, якщо можливо",
     "Создать магический квадрат": "Створити магічний квадрат",
@@ -2402,6 +2469,9 @@ const translations = {
     "in_combination": "у комбінації"
   },
   en: {
+    proof: "✅ Proven!",
+    proof_tip: "Proof of a worldwide sensation",
+
     "Обучение в пошаговом режиме": "Step-by-step learning mode",
     "Анализ текущего квадрата и преобразование в магический, если это возможно": "Analyze the current square and convert to magic if possible",
     "Создать магический квадрат": "Build the magic square",
@@ -2415,6 +2485,9 @@ const translations = {
     "in_combination": "in combination"
   },
   de: {
+    proof: "✅ Bewiesen!",
+    proof_tip: "Beweise für eine weltweite Sensation",
+
     "Обучение в пошаговом режиме": "Schrittweises Lernen",
     "Анализ текущего квадрата и преобразование в магический, если это возможно": "Analyse des aktuellen Quadrats und Umwandlung in ein magisches Quadrat, wenn möglich",
     "Создать магический квадрат": "Magisches Quadrat erstellen",
@@ -2487,6 +2560,9 @@ function updateTranslations(lang) {
 
   const translations = {
     ru: {
+    proof: "✅ Доказано!",
+    proof_tip: "Доказательства мировой сенсации",
+
       training: "🧠 Обучающий режим",
       analyze: "📊 Анализ",
       resources: "🔗 Ресурсы",
@@ -2503,6 +2579,9 @@ function updateTranslations(lang) {
     "in_combination": "в комбинации"
   },
     uk: {
+    proof: "✅ Доведено!",
+    proof_tip: "Докази світової сенсації",
+
       training: "🧠 Навчальний режим",
       analyze: "📊 Аналіз",
       resources: "🔗 Ресурси",
@@ -2519,6 +2598,9 @@ function updateTranslations(lang) {
     "in_combination": "у комбінації"
   },
     en: {
+    proof: "✅ Proven!",
+    proof_tip: "Proof of a worldwide sensation ",
+
       training: "🧠 Training Mode",
       analyze: "📊 Analyze",
       resources: "🔗 Resources",
@@ -2535,6 +2617,9 @@ function updateTranslations(lang) {
     "in_combination": "in combination"
   },
     de: {
+    proof: "✅ Bewiesen!",
+    proof_tip: "Beweise für eine weltweite Sensation",
+
       training: "🧠 Lernmodus",
       analyze: "📊 Analyse",
       resources: "🔗 Ressourcen",
@@ -2604,6 +2689,9 @@ function updateTranslations(lang) {
 
   const translations = {
     ru: {
+    proof: "✅ Доказано!",
+    proof_tip: "Доказательства мировой сенсации",
+
       training: "🧠 Обучающий режим",
       analyze: "📊 Анализ",
       resources: "🔗 Ресурсы",
@@ -2620,6 +2708,9 @@ function updateTranslations(lang) {
     "in_combination": "в комбинации"
   },
     uk: {
+    proof: "✅ Доведено!",
+    proof_tip: "Докази світової сенсації",
+
       training: "🧠 Навчальний режим",
       analyze: "📊 Аналіз",
       resources: "🔗 Ресурси",
@@ -2636,6 +2727,9 @@ function updateTranslations(lang) {
     "in_combination": "у комбінації"
   },
     en: {
+    proof: "✅ Proven!",
+    proof_tip: "Proof of a worldwide sensation ",
+
       training: "🧠 Training Mode",
       analyze: "📊 Analyze",
       resources: "🔗 Resources",
@@ -2652,6 +2746,9 @@ function updateTranslations(lang) {
     "in_combination": "in combination"
   },
     de: {
+    proof: "✅ Bewiesen!",
+    proof_tip: "Beweise für eine weltweite Sensation",
+
       training: "🧠 Lernmodus",
       analyze: "📊 Analyse",
       resources: "🔗 Ressourcen",
@@ -2770,6 +2867,445 @@ document.addEventListener("DOMContentLoaded", () => {
       if (analysis) analysis.innerHTML = "";
     });
   }
+</script>
+
+
+<script>
+  document.querySelector('[]').addEventListener('click', function () {
+    const rawLang = localStorage.getItem('lang') || 'ru';
+    const lang = rawLang === "ua" ? "uk" : rawLang;
+    const langMap = {
+      ru: 'proofru.html',
+      uk: 'proofuk.html',
+      en: 'proofen.html',
+      de: 'proofde.html'
+    };
+    window.location.href = langMap[lang] || 'proofru.html';
+  });
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const proofBtn = document.getElementById("proof-button");
+  if (proofBtn) {
+    proofBtn.addEventListener("click", () => {
+      let lang = localStorage.getItem('lang') || 'ru';
+      let url = "proof.html"; // default
+
+      switch (lang) {
+        case "ru": url = "proof-ru.html"; break;
+        case "uk": url = "proof-uk.html"; break;
+        case "en": url = "proof-en.html"; break;
+        case "de": url = "proof-de.html"; break;
+      }
+
+      window.location.href = url;
+    });
+  }
+});
+</script>
+
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let lang = urlParams.get('lang');
+
+    if (!lang) {
+      lang = localStorage.getItem('lang') || 'ru';
+    } else {
+      localStorage.setItem('lang', lang);
+    }
+
+    document.getElementById('language-select').value = lang;
+    updateVisibleLanguageText();
+  });
+
+  document.getElementById('language-select').addEventListener('change', function () {
+    const selectedLang = this.value;
+    localStorage.setItem('lang', selectedLang);
+    updateVisibleLanguageText();
+  });
+
+  function updateVisibleLanguageText() {
+    const lang = localStorage.getItem('lang') || 'ru';
+    document.querySelectorAll('.lang-ru, .lang-uk, .lang-en, .lang-de').forEach(el => {
+      el.classList.remove('lang-visible');
+    });
+    const show = document.querySelectorAll(`.lang-${lang}`);
+    show.forEach(el => el.classList.add('lang-visible'));
+  }
+</script>
+
+<script>
+function updateVisibleLanguageText() {
+  const lang = localStorage.getItem("lang") || "ru";
+  document.querySelectorAll(".lang-ru, .lang-en, .lang-uk, .lang-de").forEach(el => {
+    el.classList.remove("lang-visible");
+  });
+  document.querySelectorAll(".lang-" + lang).forEach(el => {
+    el.classList.add("lang-visible");
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const lang = localStorage.getItem("lang") || "ru";
+  document.getElementById("language-select").value = lang;
+  updateVisibleLanguageText();
+  document.getElementById("language-select").addEventListener("change", function () {
+    localStorage.setItem("lang", this.value);
+    updateVisibleLanguageText();
+  });
+});
+</script>
+
+
+<script>
+function updateVisibleLanguageText() {
+  const lang = localStorage.getItem('lang') || 'ru';
+  document.querySelectorAll('.lang-ru, .lang-uk, .lang-en, .lang-de').forEach(el => {
+    el.classList.remove('lang-visible');
+  });
+  document.querySelectorAll('.lang-' + lang).forEach(el => {
+    el.classList.add('lang-visible');
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const langSelect = document.getElementById("language-select");
+  if (langSelect) {
+    langSelect.addEventListener("change", function() {
+      const lang = this.value;
+      localStorage.setItem("lang", lang);
+      updateVisibleLanguageText();
+    });
+  }
+  updateVisibleLanguageText();
+});
+</script>
+
+
+
+
+
+
+
+<script>
+const tooltips = {
+  trainer_tip: {
+    ru: "Интерактивные режимы для практики",
+    en: "Interactive modes for practice",
+    uk: "Інтерактивні режими для практики",
+    de: "Interaktive Übungsmodi"
+  },
+
+  build_tip: {
+    ru: "Создать магический квадрат",
+    en: "Create a magic square",
+    uk: "Створити магічний квадрат",
+    de: "Magisches Quadrat erstellen"
+  },
+  tooltip_key1: {
+    ru: "Выберите первый ключ — три уникальные цифры",
+    en: "Choose the first key — three unique digits",
+    uk: "Оберіть перший ключ — три унікальні цифри",
+    de: "Wählen Sie den ersten Schlüssel — drei eindeutige Ziffern"
+  },
+  resources_tip: {
+    ru: "Полезные ссылки",
+    en: "Useful links",
+    uk: "Корисні посилання",
+    de: "Nützliche Links"
+  },
+  training_tip: {
+    ru: "Обучение в пошаговом режиме",
+    en: "Step-by-step learning mode",
+    uk: "Навчання у покроковому режимі",
+    de: "Lernen im Schritt-für-Schritt-Modus"
+  },
+  analyze_tip: {
+    ru: "Анализ текущего квадрата и преобразование в магический, если это возможно",
+    en: "Analyze current square and convert to magic if possible",
+    uk: "Аналіз поточного квадрата та перетворення на магічний, якщо можливо",
+    de: "Analyse des aktuellen Quadrats und Umwandlung in ein magisches (falls möglich)"
+  },
+  proof_tip: {
+    ru: "Доказательства мировой сенсации ",
+    en: "Proof of a worldwide sensation",
+    uk: "Докази світової сенсації",
+    de: "Beweise für eine weltweite Sensation"
+  }
+  ,
+  tooltip_order1: {
+    ru: "Выберите порядок цифр для ключа 1",
+    en: "Choose digit order for Key 1",
+    uk: "Оберіть порядок цифр для ключа 1",
+    de: "Wählen Sie die Ziffernreihenfolge für Schlüssel 1"
+  },
+  tooltip_key2: {
+    ru: "Выберите второй ключ — три другие цифры",
+    en: "Choose second key — three other digits",
+    uk: "Оберіть другий ключ — три інші цифри",
+    de: "Wählen Sie den zweiten Schlüssel – drei andere Ziffern"
+  },
+  tooltip_order2: {
+    ru: "Выберите порядок цифр для ключа 2",
+    en: "Choose digit order for Key 2",
+    uk: "Оберіть порядок цифр для ключа 2",
+    de: "Wählen Sie die Ziffernreihenfolge für Schlüssel 2"
+  }
+
+};
+</script>
+
+<script>
+  const tooltip = document.getElementById("tooltip");
+
+  function updateTooltipLanguage() {
+    document.querySelectorAll("[data-tooltip-key], [data-tooltip]").forEach(el => {
+      el.addEventListener("mouseenter", e => {
+        const key = el.getAttribute("data-tooltip-key");
+        const raw = el.getAttribute("data-tooltip");
+        const lang = localStorage.getItem("lang") || "ru";
+        if (key && tooltips[key]?.[lang]) {
+          tooltip.textContent = tooltips[key][lang];
+        } else if (raw) {
+          tooltip.textContent = raw;
+        } else {
+          tooltip.textContent = "";
+        }
+        tooltip.classList.add("visible");
+      });
+      el.addEventListener("mousemove", e => {
+        tooltip.style.left = e.pageX + 15 + "px";
+        tooltip.style.top = e.pageY + 15 + "px";
+      });
+      el.addEventListener("mouseleave", () => {
+        tooltip.classList.remove("visible");
+      });
+    });
+  }
+
+  updateTooltipLanguage();
+</script>
+
+
+<script>
+const tooltips = {
+  build_tip: {
+    ru: "Создать магический квадрат",
+    en: "Create a magic square",
+    uk: "Створити магічний квадрат",
+    de: "Magisches Quadrat erstellen"
+  },
+  ru: {
+    build_tip: "Создать магический квадрат",
+    training_tip: "Обучение в пошаговом режиме",
+    analyze_tip: "Анализировать квадрат",
+    proof_tip: "Доказательство связи с календарями",
+    resources_tip: "Полезные ссылки"
+  },
+  uk: {
+    build_tip: "Створити магічний квадрат",
+    training_tip: "Покроковий режим навчання",
+    analyze_tip: "Аналізувати квадрат",
+    proof_tip: "Доказ зв'язку з календарями",
+    resources_tip: "Корисні посилання"
+  },
+  en: {
+    build_tip: "Create a magic square",
+    training_tip: "Step-by-step learning",
+    analyze_tip: "Analyze the square",
+    proof_tip: "Proof of a worldwide sensation",
+    resources_tip: "Helpful resources"
+  },
+  de: {
+    build_tip: "Magisches Quadrat erstellen",
+    training_tip: "Schrittweiser Lernmodus",
+    analyze_tip: "Quadrat analysieren",
+    proof_tip: "Beweis der Verbindung mit Kalendern",
+    resources_tip: "Nützliche Links"
+  }
+};
+
+function updateVisibleLanguageText() {
+  const lang = localStorage.getItem("lang") || "ru";
+
+  // Обновление title по data-tooltip-key
+  document.querySelectorAll("[data-tooltip-key]").forEach(el => {
+    const key = el.getAttribute("data-tooltip-key");
+    const tip = tooltips[lang]?.[key];
+    if (tip) {
+      el.setAttribute("title", tip);
+    }
+  });
+
+  // Показать нужные языки
+  document.querySelectorAll(".lang-ru, .lang-uk, .lang-en, .lang-de").forEach(el => {
+    el.classList.remove("lang-visible");
+  });
+  document.querySelectorAll(".lang-" + lang).forEach(el => {
+    el.classList.add("lang-visible");
+  });
+}
+
+document.addEventListener("DOMContentLoaded", updateVisibleLanguageText);
+</script>
+
+
+<!-- Visitor Counter -->
+
+<div id="sfcu3cr41s8ucfgqju4ud7sfbp4mfn6y7p7"></div>
+<script type="text/javascript" src="https://counter1.optistats.ovh/private/counter.js?c=u3cr41s8ucfgqju4ud7sfbp4mfn6y7p7&down=async" async></script>
+<noscript><a href="https://www.freecounterstat.com" title="free website visitor counter"><img src="https://counter1.optistats.ovh/private/freecounterstat.php?c=u3cr41s8ucfgqju4ud7sfbp4mfn6y7p7" border="0" title="free website visitor counter" alt="free website visitor counter"></a></noscript>
+
+
+<script>
+// Обновление языка на странице
+function updateVisibleLanguageText() {
+  const lang = localStorage.getItem("lang") || "ru";
+  document.querySelectorAll(".lang-ru, .lang-uk, .lang-en, .lang-de").forEach(el => {
+    el.classList.remove("lang-visible");
+  });
+  document.querySelectorAll(".lang-" + lang).forEach(el => {
+    el.classList.add("lang-visible");
+  });
+}
+
+// При загрузке страницы: читаем язык из URL или localStorage
+window.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlLang = urlParams.get("lang");
+  const storedLang = localStorage.getItem("lang");
+
+  const lang = urlLang || storedLang || "ru";
+  localStorage.setItem("lang", lang);
+  document.getElementById("language-select").value = lang;
+
+  updateVisibleLanguageText();
+});
+
+// При смене языка: обновляем localStorage и URL
+const langSelect = document.getElementById("language-select");
+if (langSelect) {
+  langSelect.addEventListener("change", function () {
+    const selectedLang = this.value;
+    localStorage.setItem("lang", selectedLang);
+
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set("lang", selectedLang);
+    window.history.replaceState({}, '', newUrl);
+
+    updateVisibleLanguageText();
+  });
+}
+</script>
+
+
+<script>
+// Обновление языка на странице
+function updateVisibleLanguageText() {
+  const lang = localStorage.getItem("lang") || "ru";
+  document.querySelectorAll(".lang-ru, .lang-uk, .lang-en, .lang-de").forEach(el => {
+    el.classList.remove("lang-visible");
+  });
+  document.querySelectorAll(".lang-" + lang).forEach(el => {
+    el.classList.add("lang-visible");
+  });
+}
+
+// При загрузке страницы: читаем язык из URL или localStorage
+window.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlLang = urlParams.get("lang");
+  let lang = localStorage.getItem("lang") || "ru";
+
+  if (urlLang) {
+    lang = urlLang;
+    localStorage.setItem("lang", lang);
+  } else {
+    // если в URL нет ?lang=..., обновим его
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set("lang", lang);
+    window.history.replaceState({}, '', newUrl);
+  }
+
+  document.getElementById("language-select").value = lang;
+  updateVisibleLanguageText();
+});
+
+// При смене языка: обновляем localStorage и URL
+const langSelect = document.getElementById("language-select");
+if (langSelect) {
+  langSelect.addEventListener("change", function () {
+    const selectedLang = this.value;
+    localStorage.setItem("lang", selectedLang);
+
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set("lang", selectedLang);
+    window.history.replaceState({}, '', newUrl);
+
+    updateVisibleLanguageText();
+  });
+}
+</script>
+
+
+<script>
+// Получить язык из URL
+function getLanguageFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('lang') || 'ru';
+}
+
+// Установить язык в select и применить его
+function applyLanguage(lang) {
+  localStorage.setItem('lang', lang);
+  document.getElementById("language-select").value = lang;
+
+  // Скрываем все языки
+  document.querySelectorAll(".lang-ru, .lang-en, .lang-uk, .lang-de").forEach(el => {
+    el.classList.remove("lang-visible");
+  });
+
+  // Показываем нужный
+  document.querySelectorAll(".lang-" + lang).forEach(el => {
+    el.classList.add("lang-visible");
+  });
+}
+
+// При загрузке
+document.addEventListener("DOMContentLoaded", () => {
+  const lang = getLanguageFromURL();
+  applyLanguage(lang);
+
+  document.getElementById("language-select").addEventListener("change", (e) => {
+    const selectedLang = e.target.value;
+
+    // Перезаписываем URL с параметром lang
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', selectedLang);
+    window.location.href = url.toString(); // перезагружаем с новым параметром
+  });
+});
+</script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const trainerBtn = document.getElementById("trainer-button");
+    trainerBtn.addEventListener("click", () => {
+      const lang = localStorage.getItem('lang') || 'ru';
+      const pages = {
+        ru: "trainer-ru.html",
+        uk: "trainer-uk.html",
+        en: "trainer-en.html",
+        de: "trainer-de.html"
+      };
+      window.location.href = pages[lang] || "trainer-ru.html";
+    });
+  });
 </script>
 
 </body>
