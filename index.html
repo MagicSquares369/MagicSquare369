@@ -3154,6 +3154,11 @@ document.addEventListener("DOMContentLoaded", updateVisibleLanguageText);
 </script>
 
 
+<!-- Visitor Counter -->
+
+<div id="sfcu3cr41s8ucfgqju4ud7sfbp4mfn6y7p7"></div>
+<script type="text/javascript" src="https://counter1.optistats.ovh/private/counter.js?c=u3cr41s8ucfgqju4ud7sfbp4mfn6y7p7&down=async" async></script>
+<noscript><a href="https://www.freecounterstat.com" title="free website visitor counter"><img src="https://counter1.optistats.ovh/private/freecounterstat.php?c=u3cr41s8ucfgqju4ud7sfbp4mfn6y7p7" border="0" title="free website visitor counter" alt="free website visitor counter"></a></noscript>
 
 
 <script>
@@ -3287,6 +3292,21 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const trainerBtn = document.getElementById("trainer-button");
+    trainerBtn.addEventListener("click", () => {
+      const lang = localStorage.getItem('lang') || 'ru';
+      const pages = {
+        ru: "trainer-ru.html",
+        uk: "trainer-uk.html",
+        en: "trainer-en.html",
+        de: "trainer-de.html"
+      };
+      window.location.href = pages[lang] || "trainer-ru.html";
+    });
+  });
+</script>
 
 </body>
 </html>
